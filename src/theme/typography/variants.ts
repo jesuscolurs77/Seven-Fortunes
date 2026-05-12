@@ -47,6 +47,13 @@ export const typography: Record<TextVariant, TypographyStyle> = {
     letterSpacing: letterSpacing.h3,
     fontWeight: fontWeight.h3,
   },
+  h4: {
+    fontFamily: fontFamily.heading,
+    fontSize: fontSize.h4,
+    lineHeight: lineHeight.h4,
+    letterSpacing: letterSpacing.h4,
+    fontWeight: fontWeight.h3,
+  },
   title: {
     fontFamily: fontFamily.heading,
     fontSize: fontSize.title,
@@ -68,12 +75,26 @@ export const typography: Record<TextVariant, TypographyStyle> = {
     letterSpacing: letterSpacing.input,
     fontWeight: fontWeight.input,
   },
+  h5: {
+    fontFamily: fontFamily.heading,
+    fontSize: fontSize.h5,
+    lineHeight: lineHeight.h5,
+    letterSpacing: letterSpacing.h5,
+    fontWeight: fontWeight.body,
+  },
   body: {
     fontFamily: fontFamily.body,
     fontSize: fontSize.body,
     lineHeight: lineHeight.body,
     letterSpacing: letterSpacing.body,
     fontWeight: fontWeight.body,
+  },
+  h6: {
+    fontFamily: fontFamily.heading,
+    fontSize: fontSize.h6,
+    lineHeight: lineHeight.h6,
+    letterSpacing: letterSpacing.h6,
+    fontWeight: fontWeight.bodySmall,
   },
   bodySmall: {
     fontFamily: fontFamily.body,

@@ -4,14 +4,17 @@ export const fontSize = {
   h2: 24,
   subtitle: 20,
   h3: 20,
+  h4: 18,
   title: 17,
   button: 18,
   input: 16,
+  h5: 16,
   body: 15,
+  h6: 15,
   bodySmall: 13,
+  mono: 13,
   caption: 12,
   label: 11,
-  mono: 13,
 } as const;
 
 export const lineHeight = {
@@ -20,14 +23,17 @@ export const lineHeight = {
   h2: 30,
   subtitle: 26,
   h3: 26,
+  h4: 22,
   title: 22,
   button: 22,
   input: 22,
+  h5: 20,
   body: 20,
+  h6: 19,
   bodySmall: 18,
+  mono: 18,
   caption: 16,
   label: 14,
-  mono: 18,
 } as const;
 
 export const letterSpacing = {
@@ -36,14 +42,17 @@ export const letterSpacing = {
   h2: -0.3,
   subtitle: -0.2,
   h3: -0.2,
+  h4: -0.1,
   title: 0,
   button: 0,
   input: 0,
+  h5: 0,
   body: 0,
+  h6: 0,
   bodySmall: 0,
+  mono: 0,
   caption: 0.2,
   label: 0.5,
-  mono: 0,
 } as const;
 
 export type TextVariant = keyof typeof fontSize;

@@ -1,7 +1,24 @@
 export { PressableScale, type PressableScaleProps } from './PressableScale';
-export { Text, type TextVariant, type TextColorVariant, type TextComponentProps } from './Text';
+export { Text, type TextColorVariant, type TextComponentProps } from './Text';
+export type { TextVariant } from '@/theme';
 export { Button, type ButtonVariant, type ButtonSize, type ButtonProps } from './Button';
 export { IconButton, type IconButtonVariant, type IconButtonProps } from './IconButton';
+export { GlassButton, type GlassButtonProps, GlassContainer } from './GlassButton';
+export { GlassCard } from './GlassCard';
+export { GlassNavbar, type GlassNavbarProps } from './GlassNavbar';
+export {
+  GlassBottomBar,
+  type GlassBottomBarProps,
+  type GlassBottomTabItem,
+} from './GlassBottomBar';
+export { GlassModal, type GlassModalProps } from './GlassModal';
+export { GlassBackground } from './GlassBackground';
+export {
+  FallbackCornerBorders,
+  FallbackGlassBackground,
+  FallbackSubtleInnerGlow,
+} from './FallbackCornerBorders';
+export { Switch, type SwitchProps } from './Switch';
 export { Screen, type ScreenProps } from './Screen';
 export {
   Card,
@@ -11,4 +28,30 @@ export {
   type CardContentProps,
   type CardFooterProps,
 } from './Card';
-export { Input, type InputVariant, type InputSize, type InputProps } from './Input';
+export { Input, type InputProps } from './Input';
+
+export {
+  useLiquidTabAnimation,
+  type LiquidTabConfig,
+  type LiquidSpringConfig,
+  type UseLiquidTabAnimationReturn,
+} from './hooks/useLiquidTabAnimation';
+export {
+  FloatingGlassCapsule,
+  type FloatingGlassCapsuleProps,
+} from './FloatingGlassCapsule';
+export {
+  GlassTabItem,
+  type GlassTabItemProps,
+  TAB_ITEM_HEIGHT,
+  TAB_ITEM_MIN_WIDTH,
+  TAB_ICON_SIZE,
+} from './GlassTabItem';
+export {
+  LiquidGlassTabBar,
+  type LiquidGlassTabItem,
+  type LiquidGlassTabBarProps,
+  CAPSULE_HEIGHT,
+  TAB_BAR_HEIGHT,
+  TAB_BAR_PADDING_HORIZONTAL,
+} from './LiquidGlassTabBar';
