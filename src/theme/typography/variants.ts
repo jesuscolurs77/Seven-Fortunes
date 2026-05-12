@@ -33,6 +33,13 @@ export const typography: Record<TextVariant, TypographyStyle> = {
     letterSpacing: letterSpacing.h2,
     fontWeight: fontWeight.h2,
   },
+  subtitle: {
+    fontFamily: fontFamily.heading,
+    fontSize: fontSize.subtitle,
+    lineHeight: lineHeight.subtitle,
+    letterSpacing: letterSpacing.subtitle,
+    fontWeight: fontWeight.subtitle,
+  },
   h3: {
     fontFamily: fontFamily.heading,
     fontSize: fontSize.h3,

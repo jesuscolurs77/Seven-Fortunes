@@ -1,12 +1,28 @@
-import React, { useState } from 'react';
-import { ActivityIndicator, View, type ViewStyle, StyleSheet, Text as RNText } from 'react-native';
+import React, { useState } from "react";
+import {
+  ActivityIndicator,
+  Text as RNText,
+  StyleSheet,
+  type ViewStyle,
+} from "react-native";
 
-import { semantic, palette, radius, radiusUsage, typography, opacity } from '@/theme';
-import { cn } from '@/utils/cn';
-import { PressableScale } from './PressableScale';
+import {
+  opacity,
+  palette,
+  radius,
+  radiusUsage,
+  semantic,
+  typography,
+} from "@/theme";
+import { PressableScale } from "./PressableScale";
 
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive';
-export type ButtonSize = 'sm' | 'md' | 'lg';
+export type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "outline"
+  | "ghost"
+  | "destructive";
+export type ButtonSize = "sm" | "md" | "lg";
 
 export interface ButtonProps {
   variant?: ButtonVariant;
@@ -23,20 +39,30 @@ export interface ButtonProps {
 
 const styles = StyleSheet.create({
   base: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+  },
+  sm: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    gap: 8,
   },
   md: {
     paddingVertical: 12,
     paddingHorizontal: 16,
     gap: 12,
   },
+  lg: {
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    gap: 16,
+  },
   buttonText: {
     ...typography.button,
     includeFontPadding: false,
-    textAlignVertical: 'center',
+    textAlignVertical: "center",
   },
 });
 
@@ -63,8 +89,8 @@ const secondaryStyles = {
 };
 
 export function Button({
-  variant = 'primary',
-  size = 'md',
+  variant = "primary",
+  size = "md",
   disabled = false,
   loading = false,
   className,
@@ -79,9 +105,9 @@ export function Button({
 
   const getVariantConfig = () => {
     switch (variant) {
-      case 'primary':
+      case "primary":
         return primaryStyles;
-      case 'secondary':
+      case "secondary":
         return secondaryStyles;
       default:
         return primaryStyles;
@@ -91,12 +117,12 @@ export function Button({
   const config = getVariantConfig();
 
   const getButtonStyles = (): ViewStyle => {
-    if (variant === 'primary' || variant === 'secondary') {
+    if (variant === "primary" || variant === "secondary") {
       const bgStyle = isDisabled
         ? config.disabled
         : isPressed
-        ? config.pressed
-        : config.default;
+          ? config.pressed
+          : config.default;
 
       return {
         borderRadius: config.borderRadius,
@@ -105,19 +131,19 @@ export function Button({
     }
 
     switch (variant) {
-      case 'outline':
+      case "outline":
         return {
-          backgroundColor: 'transparent',
+          backgroundColor: "transparent",
           borderWidth: 1,
           borderColor: semantic.border.default,
           borderRadius: radiusUsage.button,
         };
-      case 'ghost':
+      case "ghost":
         return {
-          backgroundColor: 'transparent',
+          backgroundColor: "transparent",
           borderRadius: radiusUsage.button,
         };
-      case 'destructive':
+      case "destructive":
         return {
           backgroundColor: semantic.error.default,
           borderRadius: radiusUsage.button,
@@ -128,7 +154,7 @@ export function Button({
   };
 
   const getTextColor = (): string => {
-    if (variant === 'primary' || variant === 'secondary') {
+    if (variant === "primary" || variant === "secondary") {
       return isDisabled ? config.textColor.disabled : config.textColor.default;
     }
     return palette.white;
@@ -138,12 +164,17 @@ export function Button({
     styles.base,
     styles[size],
     getButtonStyles(),
-    isDisabled && variant !== 'primary' && variant !== 'secondary' && { opacity: opacity.disabled },
+    isDisabled &&
+      variant !== "primary" &&
+      variant !== "secondary" && { opacity: opacity.disabled },
     style,
   ];
 
   const textColor = getTextColor();
-  const indicatorColor = variant === 'primary' || variant === 'destructive' ? textColor : semantic.text.primary;
+  const indicatorColor =
+    variant === "primary" || variant === "destructive"
+      ? textColor
+      : semantic.text.primary;
 
   return (
     <PressableScale

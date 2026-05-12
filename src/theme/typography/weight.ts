@@ -2,6 +2,7 @@ export const fontWeight = {
   display: '600',
   h1: '600',
   h2: '500',
+  subtitle: '500',
   h3: '500',
   title: '500',
   body: '400',

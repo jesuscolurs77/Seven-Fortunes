@@ -1,125 +1,133 @@
-import React from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import React from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
 
-import { Button, Card, Screen, Text, Input, IconButton } from '@/ui';
-import { palette, semantic, radius, spacing } from '@/theme';
+import { palette, radius, semantic, spacing } from "@/theme";
+import { Button, Card, IconButton, Input, Screen, Text } from "@/ui";
 
 export default function IndexScreen() {
   return (
     <Screen>
       <ScrollView contentContainerStyle={{ paddingVertical: spacing[8] }}>
-         <View className="items-center mb-10">
-           <Text variant="display">Design System</Text>
-           <Text variant="body" color="muted" className="mt-2">
-             Seven Fortunes - Expo SDK 55
-           </Text>
-         </View>
-
-      <Card variant="outlined" className="mb-6">
-        <Card.Content>
-          <Text variant="h3" className="mb-6">
-            Estados del Botón Primario
+        <View className="items-center mb-10">
+          <Text variant="display">Design System</Text>
+          <Text variant="body" color="muted" className="mt-2">
+            Seven Fortunes - Expo SDK 55
           </Text>
+        </View>
 
-          <View style={styles.section}>
-            <Text variant="bodySmall" color="secondary" className="mb-3">
-              Default
+        <Card variant="outlined" className="mb-6">
+          <Card.Content>
+            <Text variant="h3" className="mb-6">
+              Estados del Botón Primario
             </Text>
-            <Button variant="primary" onPress={() => console.log('Primary pressed')}>
-              Ingresar
-            </Button>
-          </View>
 
-          <View style={styles.section}>
-            <Text variant="bodySmall" color="secondary" className="mb-3">
-              Pressed (manten presionado para ver)
-            </Text>
-            <Button variant="primary" onPress={() => {}}>
-              Botón Presionado
-            </Button>
-            <Text variant="caption" color="muted" className="mt-2">
-              background: blue[600] = #274786
-            </Text>
-          </View>
-
-          <View style={styles.section}>
-            <Text variant="bodySmall" color="secondary" className="mb-3">
-              Disabled
-            </Text>
-            <Button variant="primary" disabled onPress={() => {}}>
-              Botón Desactivado
-            </Button>
-            <View className="flex-row gap-4 mt-2">
-              <Text variant="caption" color="muted">
-                bg: blue[700] = #1C3360
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="secondary" className="mb-3">
+                Default
               </Text>
-              <Text variant="caption" color="muted">
-                text: blue[400] = #7493D3
+              <Button
+                variant="primary"
+                onPress={() => console.log("Primary pressed")}
+              >
+                Ingresar
+              </Button>
+            </View>
+
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="secondary" className="mb-3">
+                Pressed (manten presionado para ver)
+              </Text>
+              <Button variant="primary" onPress={() => {}}>
+                Botón Presionado
+              </Button>
+              <Text variant="caption" color="muted" className="mt-2">
+                background: blue[600] = #274786
               </Text>
             </View>
-          </View>
 
-          <View style={styles.section}>
-            <Text variant="bodySmall" color="secondary" className="mb-3">
-              Loading
-            </Text>
-            <Button variant="primary" loading onPress={() => {}}>
-              Cargando...
-            </Button>
-          </View>
-        </Card.Content>
-      </Card>
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="secondary" className="mb-3">
+                Disabled
+              </Text>
+              <Button variant="primary" disabled onPress={() => {}}>
+                Botón Desactivado
+              </Button>
+              <View className="flex-row gap-4 mt-2">
+                <Text variant="caption" color="muted">
+                  bg: blue[700] = #1C3360
+                </Text>
+                <Text variant="caption" color="muted">
+                  text: blue[400] = #7493D3
+                </Text>
+              </View>
+            </View>
 
-      <Card variant="outlined">
-        <Card.Content>
-          <Text variant="h3" className="mb-4">
-            Especificación
-          </Text>
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="secondary" className="mb-3">
+                Loading
+              </Text>
+              <Button variant="primary" loading onPress={() => {}}>
+                Cargando...
+              </Button>
+            </View>
+          </Card.Content>
+        </Card>
 
-          <View style={styles.specRow}>
-            <Text variant="bodySmall" color="secondary">
-              Border radius:
+        <Card variant="outlined">
+          <Card.Content>
+            <Text variant="h3" className="mb-4">
+              Especificación
             </Text>
-            <Text variant="mono">8px (radius.sm)</Text>
-          </View>
 
-          <View style={styles.specRow}>
-            <Text variant="bodySmall" color="secondary">
-              Padding:
-            </Text>
-            <Text variant="mono">12px vertical, 16px horizontal</Text>
-          </View>
+            <View style={styles.specRow}>
+              <Text variant="bodySmall" color="secondary">
+                Border radius:
+              </Text>
+              <Text variant="mono">8px (radius.sm)</Text>
+            </View>
 
-          <View style={styles.specRow}>
-            <Text variant="bodySmall" color="secondary">
-              Gap:
-            </Text>
-            <Text variant="mono">12px</Text>
-          </View>
+            <View style={styles.specRow}>
+              <Text variant="bodySmall" color="secondary">
+                Padding:
+              </Text>
+              <Text variant="mono">12px vertical, 16px horizontal</Text>
+            </View>
 
-          <View style={styles.specRow}>
-            <Text variant="bodySmall" color="secondary">
-              Typography:
-            </Text>
-            <Text variant="mono">display, 18px, 600 weight</Text>
-          </View>
+            <View style={styles.specRow}>
+              <Text variant="bodySmall" color="secondary">
+                Gap:
+              </Text>
+              <Text variant="mono">12px</Text>
+            </View>
 
-          <View style={styles.specRow}>
-            <Text variant="bodySmall" color="secondary">
-              Default bg:
-            </Text>
-            <View style={[styles.colorDot, { backgroundColor: semantic.brand.primary }]} />
-            <Text variant="mono">blue[500] = #3865C0</Text>
-          </View>
+            <View style={styles.specRow}>
+              <Text variant="bodySmall" color="secondary">
+                Typography:
+              </Text>
+              <Text variant="mono">display, 18px, 600 weight</Text>
+            </View>
 
-          <View style={styles.specRow}>
-            <Text variant="bodySmall" color="secondary">
-              Disabled SIN opacity:
-            </Text>
-            <Text variant="mono" color="muted">
-              colores explícitos, no opacity
-            </Text>
-          </View>
+            <View style={styles.specRow}>
+              <Text variant="bodySmall" color="secondary">
+                Default bg:
+              </Text>
+              <View
+                style={[
+                  styles.colorDot,
+                  { backgroundColor: semantic.brand.primary },
+                ]}
+              />
+              <Text variant="mono">blue[500] = #3865C0</Text>
+            </View>
+
+            <View style={styles.specRow}>
+              <Text variant="bodySmall" color="secondary">
+                Disabled SIN opacity:
+              </Text>
+              <Text variant="mono" color="muted">
+                colores explícitos, no opacity
+              </Text>
+            </View>
           </Card.Content>
         </Card>
 
@@ -136,7 +144,10 @@ export default function IndexScreen() {
               <Text variant="bodySmall" color="secondary" className="mb-3">
                 Default
               </Text>
-              <Button variant="secondary" onPress={() => console.log('Secondary pressed')}>
+              <Button
+                variant="secondary"
+                onPress={() => console.log("Secondary pressed")}
+              >
                 Ingresar
               </Button>
             </View>
@@ -245,9 +256,7 @@ export default function IndexScreen() {
               <Text variant="bodySmall" color="secondary" className="mb-3">
                 Focused (toca para ver)
               </Text>
-              <Input
-                placeholder="Toca para enfocar..."
-              />
+              <Input placeholder="Toca para enfocar..." />
               <Text variant="caption" color="muted" className="mt-2">
                 border: 2px blue[500] = #3865C0
               </Text>
@@ -305,7 +314,12 @@ export default function IndexScreen() {
               <Text variant="bodySmall" color="secondary">
                 Background (todos):
               </Text>
-              <View style={[styles.colorDot, { backgroundColor: semantic.surface.primary }]} />
+              <View
+                style={[
+                  styles.colorDot,
+                  { backgroundColor: semantic.surface.primary },
+                ]}
+              />
               <Text variant="mono">gray[900] = #232530</Text>
             </View>
 
@@ -359,14 +373,14 @@ export default function IndexScreen() {
                     <Text
                       style={{
                         fontSize: 20,
-                        fontWeight: '600',
+                        fontWeight: "600",
                         color: palette.gray[950],
                       }}
                     >
                       +
                     </Text>
                   }
-                  onPress={() => console.log('Primary icon pressed')}
+                  onPress={() => console.log("Primary icon pressed")}
                 />
               </View>
 
@@ -380,7 +394,7 @@ export default function IndexScreen() {
                     <Text
                       style={{
                         fontSize: 20,
-                        fontWeight: '600',
+                        fontWeight: "600",
                         color: palette.gray[950],
                       }}
                     >
@@ -404,7 +418,7 @@ export default function IndexScreen() {
                     <Text
                       style={{
                         fontSize: 20,
-                        fontWeight: '600',
+                        fontWeight: "600",
                         color: palette.gray[950],
                       }}
                     >
@@ -439,14 +453,14 @@ export default function IndexScreen() {
                     <Text
                       style={{
                         fontSize: 20,
-                        fontWeight: '600',
+                        fontWeight: "600",
                         color: palette.white,
                       }}
                     >
                       ↓
                     </Text>
                   }
-                  onPress={() => console.log('Secondary icon pressed')}
+                  onPress={() => console.log("Secondary icon pressed")}
                 />
               </View>
 
@@ -460,7 +474,7 @@ export default function IndexScreen() {
                     <Text
                       style={{
                         fontSize: 20,
-                        fontWeight: '600',
+                        fontWeight: "600",
                         color: palette.white,
                       }}
                     >
@@ -484,7 +498,7 @@ export default function IndexScreen() {
                     <Text
                       style={{
                         fontSize: 20,
-                        fontWeight: '600',
+                        fontWeight: "600",
                         color: palette.white,
                       }}
                     >
@@ -597,7 +611,8 @@ export default function IndexScreen() {
             </View>
 
             <Text variant="caption" color="muted" className="mt-4">
-              Nota: Para degradados reales usa expo-linear-gradient incluido en Expo
+              Nota: Para degradados reales usa expo-linear-gradient incluido en
+              Expo
             </Text>
             <Text variant="caption" color="muted" className="mt-1">
               npx expo install expo-linear-gradient
@@ -607,7 +622,12 @@ export default function IndexScreen() {
               <Text variant="bodySmall" color="secondary">
                 Color primary:
               </Text>
-              <View style={[styles.colorDot, { backgroundColor: palette.blue[500] }]} />
+              <View
+                style={[
+                  styles.colorDot,
+                  { backgroundColor: palette.blue[500] },
+                ]}
+              />
               <Text variant="mono">#3865C0 (blue[500])</Text>
             </View>
 
@@ -615,12 +635,17 @@ export default function IndexScreen() {
               <Text variant="bodySmall" color="secondary">
                 Color pressed:
               </Text>
-              <View style={[styles.colorDot, { backgroundColor: palette.blue[600] }]} />
+              <View
+                style={[
+                  styles.colorDot,
+                  { backgroundColor: palette.blue[600] },
+                ]}
+              />
               <Text variant="mono">#274786 (blue[600])</Text>
             </View>
           </Card.Content>
         </Card>
-       </ScrollView>
+      </ScrollView>
     </Screen>
   );
 }
@@ -630,8 +655,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing[6],
   },
   specRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: spacing[2],
     paddingVertical: spacing[1],
   },
@@ -641,20 +666,20 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   iconRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: spacing[6],
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
   },
   iconSection: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   gradientContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   gradientButton: {
-    width: '100%',
+    width: "100%",
     height: 48,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

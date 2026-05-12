@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { type ViewStyle, StyleSheet } from 'react-native';
+import React, { useState } from "react";
+import { type ViewStyle, StyleSheet } from "react-native";
 
-import { semantic, palette, radius, opacity } from '@/theme';
-import { PressableScale } from './PressableScale';
+import { palette, radius, semantic } from "@/theme";
+import { PressableScale } from "./PressableScale";
 
-export type IconButtonVariant = 'primary' | 'secondary';
+export type IconButtonVariant = "primary" | "secondary";
 
 export interface IconButtonProps {
   variant?: IconButtonVariant;
@@ -18,15 +18,15 @@ const styles = StyleSheet.create({
   base: {
     width: 56,
     height: 56,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: radius.full,
     padding: 4,
   },
 });
 
 export function IconButton({
-  variant = 'primary',
+  variant = "primary",
   disabled = false,
   icon,
   onPress,
@@ -35,7 +35,7 @@ export function IconButton({
   const [isPressed, setIsPressed] = useState(false);
 
   const getBackgroundColor = (): string => {
-    if (variant === 'primary') {
+    if (variant === "primary") {
       if (disabled) {
         return palette.gray[300];
       }
@@ -45,7 +45,7 @@ export function IconButton({
       return palette.white;
     }
 
-    if (variant === 'secondary') {
+    if (variant === "secondary") {
       if (disabled) {
         return semantic.background.tertiary;
       }

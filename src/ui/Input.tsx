@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
-import { TextInput, type TextInputProps, type TextStyle, StyleSheet, type ViewStyle } from 'react-native';
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  TextInput,
+  type TextInputProps,
+  type ViewStyle,
+  type TextStyle,
+  type StyleProp,
+} from "react-native";
 
-import { semantic, palette, radius, typography, opacity } from '@/theme';
+import { opacity, palette, radius, semantic, typography } from "@/theme";
 
 export interface InputProps extends TextInputProps {
   disabled?: boolean;
   hasError?: boolean;
-  style?: ViewStyle;
 }
 
 const styles = StyleSheet.create({
@@ -15,9 +21,8 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: radius.sm,
     backgroundColor: semantic.surface.primary,
-    ...typography.input,
     includeFontPadding: false,
-    textAlignVertical: 'center',
+    textAlignVertical: "center",
   },
   defaultBorder: {
     borderWidth: 1,
@@ -73,11 +78,12 @@ export function Input({
     return `rgba(255,255,255,${opacity[50]})`;
   };
 
-  const inputStyle = [
+  const inputStyle: StyleProp<any> = [
     styles.base,
+    typography.input,
     getBorderStyle(),
     { color: getTextColor() },
-    style as ViewStyle,
+    style,
   ];
 
   return (

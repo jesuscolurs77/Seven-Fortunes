@@ -1,10 +1,19 @@
-import React from 'react';
-import { Text as RNText, StyleSheet, type TextProps, type TextStyle } from 'react-native';
+import React from "react";
+import {
+  Text as RNText,
+  StyleSheet,
+  type TextProps,
+  type TextStyle,
+} from "react-native";
 
-import { typography, semantic, type TextVariant } from '@/theme';
-import { cn } from '@/utils/cn';
+import { semantic, typography, type TextVariant } from "@/theme";
 
-export type TextColorVariant = 'primary' | 'secondary' | 'muted' | 'disabled' | 'inverse';
+export type TextColorVariant =
+  | "primary"
+  | "secondary"
+  | "muted"
+  | "disabled"
+  | "inverse";
 
 export interface TextComponentProps extends TextProps {
   variant?: TextVariant;
@@ -22,8 +31,8 @@ const colorMap: Record<TextColorVariant, string> = {
 };
 
 export function Text({
-  variant = 'body',
-  color = 'primary',
+  variant = "body",
+  color = "primary",
   className,
   style,
   children,
@@ -33,7 +42,11 @@ export function Text({
   const colorStyle = { color: colorMap[color] };
 
   return (
-    <RNText className={className} style={[typoStyle, colorStyle, style as TextStyle]} {...props}>
+    <RNText
+      className={className}
+      style={[typoStyle, colorStyle, style as TextStyle]}
+      {...props}
+    >
       {children}
     </RNText>
   );
@@ -43,9 +56,11 @@ const styles = StyleSheet.create({
   display: typography.display,
   h1: typography.h1,
   h2: typography.h2,
+  subtitle: typography.subtitle,
   h3: typography.h3,
   title: typography.title,
   button: typography.button,
+  input: typography.input,
   body: typography.body,
   bodySmall: typography.bodySmall,
   caption: typography.caption,
