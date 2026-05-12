@@ -1,11 +1,19 @@
 import React, { useMemo } from 'react';
-import { View, Text as RNText, StyleSheet, useColorScheme, ViewProps } from 'react-native';
+import {
+  View,
+  Text as RNText,
+  StyleSheet,
+  useColorScheme,
+  ViewProps,
+  Image,
+  ImageSourcePropType,
+} from 'react-native';
 
 import { palette, spacing } from '@/theme';
 
 export interface GlassTabItemProps {
   index: number;
-  icon: React.ReactNode;
+  icon: React.ReactNode | string | ImageSourcePropType;
   label?: string;
   active: boolean;
   onLayout?: ViewProps['onLayout'];
@@ -15,6 +23,22 @@ export interface GlassTabItemProps {
 const TAB_ITEM_HEIGHT = 56;
 const TAB_ITEM_MIN_WIDTH = 64;
 const TAB_ICON_SIZE = 24;
+const TAB_LABEL_FONT_SIZE = 11;
+
+function isImageSource(
+  icon: React.ReactNode | string | ImageSourcePropType
+): icon is ImageSourcePropType {
+  return (
+    typeof icon === 'number' ||
+    (typeof icon === 'object' && icon !== null && 'uri' in icon)
+  );
+}
+
+function isStringIcon(
+  icon: React.ReactNode | string | ImageSourcePropType
+): icon is string {
+  return typeof icon === 'string';
+}
 
 export function GlassTabItem({
   index,
@@ -46,22 +70,36 @@ export function GlassTabItem({
     return 'rgba(0, 0, 0, 0.4)';
   }, [actualColorScheme]);
 
-  const iconStyle = useMemo(() => {
-    return {
-      color: active ? activeColor : inactiveColor,
-      fontSize: TAB_ICON_SIZE,
-      fontWeight: '600' as const,
-    };
-  }, [active, activeColor, inactiveColor]);
+  const iconColor = active ? activeColor : inactiveColor;
 
-  const labelStyle = useMemo(() => {
-    return {
-      color: active ? activeColor : inactiveColor,
-      fontSize: 11,
-      fontWeight: '500' as const,
-      marginTop: 2,
-    };
-  }, [active, activeColor, inactiveColor]);
+  const renderIconContent = useMemo(() => {
+    if (isStringIcon(icon)) {
+      return (
+        <RNText
+          style={[
+            styles.iconEmoji,
+            { color: iconColor, fontSize: TAB_ICON_SIZE },
+          ]}
+        >
+          {icon}
+        </RNText>
+      );
+    }
+
+    if (isImageSource(icon)) {
+      return (
+        <Image
+          source={icon}
+          style={[
+            styles.iconImage,
+            { tintColor: iconColor },
+          ]}
+        />
+      );
+    }
+
+    return icon;
+  }, [icon, iconColor]);
 
   return (
     <View
@@ -71,15 +109,19 @@ export function GlassTabItem({
       ]}
       onLayout={onLayout}
     >
-      <View style={styles.iconContainer}>
-        {typeof icon === 'string' ? (
-          <RNText style={[styles.iconText, iconStyle]}>{icon}</RNText>
-        ) : (
-          icon
-        )}
+      <View style={styles.iconBox}>
+        {renderIconContent}
       </View>
       {label && (
-        <RNText style={[styles.label, labelStyle]} numberOfLines={1}>
+        <RNText
+          style={[
+            styles.label,
+            { color: iconColor, fontSize: TAB_LABEL_FONT_SIZE },
+          ]}
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          minimumFontScale={0.8}
+        >
           {label}
         </RNText>
       )}
@@ -89,25 +131,41 @@ export function GlassTabItem({
 
 const styles = StyleSheet.create({
   tabItem: {
+    flex: 1,
     minWidth: TAB_ITEM_MIN_WIDTH,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: spacing[3],
     zIndex: 10,
   },
-  iconContainer: {
+  iconBox: {
     width: TAB_ICON_SIZE,
     height: TAB_ICON_SIZE,
+    maxWidth: TAB_ICON_SIZE,
+    maxHeight: TAB_ICON_SIZE,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
+    flexShrink: 0,
   },
-  iconText: {
+  iconImage: {
+    width: TAB_ICON_SIZE,
+    height: TAB_ICON_SIZE,
+    resizeMode: 'contain',
+  },
+  iconEmoji: {
+    width: TAB_ICON_SIZE,
+    height: TAB_ICON_SIZE,
     textAlign: 'center',
     textAlignVertical: 'center',
+    includeFontPadding: false,
+    fontWeight: '600',
   },
   label: {
     textAlign: 'center',
+    marginTop: 2,
+    fontWeight: '500',
+    includeFontPadding: false,
   },
 });
 
-export { TAB_ITEM_HEIGHT, TAB_ITEM_MIN_WIDTH, TAB_ICON_SIZE };
+export { TAB_ITEM_HEIGHT, TAB_ITEM_MIN_WIDTH, TAB_ICON_SIZE, TAB_LABEL_FONT_SIZE };

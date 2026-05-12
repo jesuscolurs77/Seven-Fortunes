@@ -9,6 +9,7 @@ import {
   type LiquidGlassTabItem,
   GlassNavbar,
   GlassBackground,
+  TAB_ICON_SIZE,
 } from '@/ui';
 import {
   palette,
@@ -23,12 +24,14 @@ function TabIcon({ name, active, colorScheme }: { name: string; active: boolean;
   }, [active, colorScheme]);
 
   return (
-    <RNText style={[
-      styles.tabIconText,
-      { color }
-    ]}>
-      {name}
-    </RNText>
+    <View style={styles.tabIconContainer}>
+      <RNText style={[
+        styles.tabIconText,
+        { color, fontSize: TAB_ICON_SIZE }
+      ]}>
+        {name}
+      </RNText>
+    </View>
   );
 }
 
@@ -202,8 +205,20 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
   },
+  tabIconContainer: {
+    width: TAB_ICON_SIZE,
+    height: TAB_ICON_SIZE,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
   tabIconText: {
-    fontSize: 22,
+    width: TAB_ICON_SIZE,
+    height: TAB_ICON_SIZE,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    includeFontPadding: false,
+    fontWeight: '600',
   },
   navIcon: {
     fontSize: 18,

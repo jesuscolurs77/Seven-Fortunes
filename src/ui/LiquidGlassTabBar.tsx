@@ -4,11 +4,12 @@ import {
   StyleSheet,
   useColorScheme,
   View,
+  Platform,
 } from "react-native";
 import { GestureDetector } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 
-import { spacing } from "@/theme";
+import { palette, spacing } from "@/theme";
 import { FloatingGlassCapsule } from "@/ui/FloatingGlassCapsule";
 import {
   GlassTabItem,
@@ -19,6 +20,37 @@ import {
   useLiquidTabAnimation,
   type LiquidTabConfig,
 } from "@/ui/hooks/useLiquidTabAnimation";
+
+let GlassViewDirect: any = null;
+let isGlassEffectAPIAvailableFn: (() => boolean) | null = null;
+let isLiquidGlassAvailableFn: (() => boolean) | null = null;
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+try {
+  const expoGlassEffect = require("expo-glass-effect");
+  GlassViewDirect = expoGlassEffect.GlassView || null;
+  isGlassEffectAPIAvailableFn =
+    expoGlassEffect.isGlassEffectAPIAvailable || null;
+  isLiquidGlassAvailableFn = expoGlassEffect.isLiquidGlassAvailable || null;
+} catch {
+  GlassViewDirect = null;
+}
+
+function checkIsGlassEffectAvailable(): boolean {
+  if (Platform.OS !== "ios") return false;
+  if (!GlassViewDirect) return false;
+  try {
+    const runtime = isGlassEffectAPIAvailableFn
+      ? isGlassEffectAPIAvailableFn()
+      : true;
+    const compile = isLiquidGlassAvailableFn
+      ? isLiquidGlassAvailableFn()
+      : true;
+    return runtime && compile;
+  } catch {
+    return false;
+  }
+}
 
 export interface LiquidGlassTabItem {
   key: string;
@@ -48,26 +80,32 @@ export function LiquidGlassTabBar({
   floating = true,
 }: LiquidGlassTabBarProps) {
   const systemColorScheme = useColorScheme();
+  const [isGlassAvailable, setIsGlassAvailable] = useState(false);
 
-   const [containerWidth, setContainerWidth] = useState(0);
-   const [tabLayouts, setTabLayouts] = useState<
-     { x: number; width: number; height: number }[]
-   >(
-     items.map(() => ({
-       x: 0,
-       width: TAB_ITEM_MIN_WIDTH,
-       height: TAB_ITEM_HEIGHT,
-     })),
-   );
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [tabLayouts, setTabLayouts] = useState<
+    { x: number; width: number; height: number }[]
+  >(
+    items.map(() => ({
+      x: 0,
+      width: TAB_ITEM_MIN_WIDTH,
+      height: TAB_ITEM_HEIGHT,
+    })),
+  );
   const [ready, setReady] = useState(false);
   const [internalActiveIndex, setInternalActiveIndex] =
     useState(propActiveIndex);
 
   const actualColorScheme = useMemo(() => {
     if (propColorScheme && propColorScheme !== "auto") return propColorScheme;
-    if (!systemColorScheme || systemColorScheme === 'unspecified') return "dark";
+    if (!systemColorScheme || systemColorScheme === "unspecified")
+      return "dark";
     return systemColorScheme;
   }, [propColorScheme, systemColorScheme]);
+
+  useEffect(() => {
+    setIsGlassAvailable(checkIsGlassEffectAvailable());
+  }, []);
 
   const activeIndex = useMemo(() => {
     return propActiveIndex !== undefined
@@ -100,9 +138,14 @@ export function LiquidGlassTabBar({
     setContainerWidth(width);
   }, []);
 
-   const handleTabLayout = useCallback(
-     (index: number, event: { nativeEvent: { layout: { x: number; width: number; height: number; y?: number } } }) => {
-       const { x, width, height } = event.nativeEvent.layout;
+  const handleTabLayout = useCallback(
+    (
+      index: number,
+      event: {
+        nativeEvent: { layout: { x: number; width: number; height: number } };
+      },
+    ) => {
+      const { x, width, height } = event.nativeEvent.layout;
 
       setTabLayouts((prev) => {
         const next = [...prev];
@@ -134,16 +177,22 @@ export function LiquidGlassTabBar({
     [items, animation, onTabChange],
   );
 
-   const panGesture = useMemo(() => {
+  const panGesture = useMemo(() => {
     return animation.createTabBarGesture(handleTabSelect);
   }, [animation, handleTabSelect]);
 
   const bgColor = useMemo(() => {
-    if (actualColorScheme === "dark") {
-      return "rgba(0, 0, 0, 0.3)";
+    if (isGlassAvailable) {
+      if (actualColorScheme === "dark") {
+        return "rgba(0, 0, 0, 0.3)";
+      }
+      return "rgba(255, 255, 255, 0.3)";
     }
-    return "rgba(255, 255, 255, 0.3)";
-  }, [actualColorScheme]);
+    if (actualColorScheme === "dark") {
+      return "rgba(30, 30, 40, 0.95)";
+    }
+    return "rgba(255, 255, 255, 0.95)";
+  }, [actualColorScheme, isGlassAvailable]);
 
   const borderColor = useMemo(() => {
     if (actualColorScheme === "dark") {
@@ -178,45 +227,59 @@ export function LiquidGlassTabBar({
     ];
   }, [floating, bgColor, borderColor]);
 
+  const renderTabBarContent = () => (
+    <View style={styles.tabsContainer} onLayout={handleContainerLayout}>
+      {ready && (
+        <View
+          style={{
+            top: capsuleTopOffset,
+            position: "absolute",
+            left: 0,
+            right: 0,
+          }}
+        >
+          <FloatingGlassCapsule
+            animation={{
+              capsuleAnimatedStyle: animation.capsuleAnimatedStyle,
+              highlightAnimatedStyle: animation.highlightAnimatedStyle,
+              blurIntensity: animation.blurIntensity,
+              highlightOpacity: animation.highlightOpacity,
+            }}
+            height={capsuleHeight}
+            colorScheme={actualColorScheme}
+          />
+        </View>
+      )}
+
+      {items.map((item, index) => (
+        <GlassTabItem
+          key={item.key}
+          index={index}
+          icon={item.icon}
+          label={item.label}
+          active={index === activeIndex}
+          onLayout={(event) => handleTabLayout(index, event)}
+          colorScheme={actualColorScheme}
+        />
+      ))}
+    </View>
+  );
+
+  if (!isGlassAvailable) {
+    return (
+      <View style={styles.container}>
+        <GestureDetector gesture={panGesture}>
+          <View style={tabBarStyle}>{renderTabBarContent()}</View>
+        </GestureDetector>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <GestureDetector gesture={panGesture}>
         <Animated.View style={tabBarStyle}>
-          <View style={styles.tabsContainer} onLayout={handleContainerLayout}>
-            {ready && (
-              <View
-                style={{
-                  top: capsuleTopOffset,
-                  position: "absolute",
-                  left: 0,
-                  right: 0,
-                }}
-              >
-                <FloatingGlassCapsule
-                  animation={{
-                    capsuleAnimatedStyle: animation.capsuleAnimatedStyle,
-                    highlightAnimatedStyle: animation.highlightAnimatedStyle,
-                    blurIntensity: animation.blurIntensity,
-                    highlightOpacity: animation.highlightOpacity,
-                  }}
-                  height={capsuleHeight}
-                  colorScheme={actualColorScheme}
-                />
-              </View>
-            )}
-
-             {items.map((item, index) => (
-              <GlassTabItem
-                key={item.key}
-                index={index}
-                icon={item.icon}
-                label={item.label}
-                active={index === activeIndex}
-                onLayout={(event) => handleTabLayout(index, event)}
-                colorScheme={actualColorScheme}
-              />
-            ))}
-          </View>
+          {renderTabBarContent()}
         </Animated.View>
       </GestureDetector>
     </View>
@@ -248,6 +311,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: TAB_BAR_PADDING_HORIZONTAL,
     position: "relative",
     height: TAB_ITEM_HEIGHT,
+    overflow: "hidden",
   },
 });
 
