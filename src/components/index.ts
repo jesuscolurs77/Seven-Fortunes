@@ -120,6 +120,27 @@ export {
 
 // Feedback
 export {
+  ToastContent,
+  type ToastContentProps,
+  type ToastType,
+} from './feedback';
+export {
+  HUD,
+  type HUDRef,
+} from './feedback';
+export {
+  SnackbarContent,
+  type SnackbarContentProps,
+} from './feedback';
+export {
+  InlineFeedback,
+  type InlineFeedbackProps,
+} from './feedback';
+export {
+  FeedbackProvider,
+  useFeedbackContext,
+} from './feedback';
+export {
   FallbackCornerBorders,
   FallbackGlassBackground,
   FallbackSubtleInnerGlow,

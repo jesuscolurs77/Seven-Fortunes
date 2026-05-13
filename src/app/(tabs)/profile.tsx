@@ -1,191 +1,173 @@
-import { useRouter } from "expo-router";
-import React from "react";
-import { Text as RNText, ScrollView, StyleSheet, View } from "react-native";
+import React, { useState } from "react";
+import {
+  Platform,
+  ScrollView,
+  Text as RNText,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import { GlassButton, GlassCard, Text } from "@/components";
-import { palette, spacing } from "@/theme";
+import * as Clipboard from "expo-clipboard";
+
+import { useFeedback } from "@/hooks";
+import { Icon } from "@/icons";
+import { fontFamily, fontSize, fontWeight, palette, spacing } from "@/theme";
+import { ProfileButton } from "@/components/buttons";
+
+const MAIN_PADDING_H = Platform.select({
+  ios: spacing[4],
+  android: spacing[2],
+}) as number;
 
 export default function ProfileScreen() {
-  const router = useRouter();
+  const feedback = useFeedback();
+  const [notifications, setNotifications] = useState(true);
+  const [biometrics, setBiometrics] = useState(false);
+  const name = "Maria Lafourcade";
+  const username = "marialafourcade";
+  const initial = name.charAt(0).toUpperCase();
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.contentContainer}
-    >
-      <View style={styles.profileHeader}>
-        <View style={styles.avatar}>
-          <RNText style={styles.avatarText}>JS</RNText>
+    <View style={styles.parent}>
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+      <View style={styles.inner}>
+        <View style={styles.profileSection}>
+          <View style={styles.avatar}>
+            <RNText style={styles.avatarInitial}>{initial}</RNText>
+          </View>
+          <View style={styles.container}>
+            <RNText style={styles.name}>{name}</RNText>
+            <TouchableOpacity
+              style={styles.usernameRow}
+              onPress={async () => {
+                const value = `@${username}`;
+                await Clipboard.setStringAsync(value);
+                const display =
+                  value.length > 28 ? value.slice(0, 25) + "..." : value;
+                feedback.success({ title: `${display} copied`, haptic: true });
+              }}
+              activeOpacity={0.7}
+            >
+              <RNText style={styles.username}>@{username}</RNText>
+              <Icon
+                name="copy"
+                color={palette.gray[100]}
+                width={16}
+                height={16}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-        <Text variant="h4" style={{ marginTop: spacing[3] }}>
-          John Smith
-        </Text>
-        <Text
-          variant="bodySmall"
-          color="muted"
-          style={{ marginTop: spacing[1] }}
-        >
-          john.smith@email.com
-        </Text>
-      </View>
 
-      <View style={styles.section}>
-        <GlassCard>
-          <GlassCard.Content>
-            {[
-              { icon: "⚙️", label: "Settings", desc: "App preferences" },
-              { icon: "🔒", label: "Security", desc: "Password, 2FA" },
-              { icon: "💳", label: "Payment Methods", desc: "Manage cards" },
-              {
-                icon: "📊",
-                label: "Transaction History",
-                desc: "View all transactions",
-              },
-              { icon: "❓", label: "Help & Support", desc: "Get assistance" },
-            ].map((item, index) => (
-              <View
-                key={index}
-                style={[styles.menuItem, index < 4 && styles.menuItemBorder]}
-              >
-                <View style={styles.menuIcon}>
-                  <RNText style={styles.menuIconText}>{item.icon}</RNText>
-                </View>
-                <View style={styles.menuInfo}>
-                  <Text variant="body">{item.label}</Text>
-                  <Text variant="caption" color="muted">
-                    {item.desc}
-                  </Text>
-                </View>
-                <View style={styles.menuArrow}>
-                  <RNText style={styles.menuArrowText}>›</RNText>
-                </View>
-              </View>
-            ))}
-          </GlassCard.Content>
-        </GlassCard>
+        <View style={styles.buttonsSection}>
+          <ProfileButton
+            icon="user"
+            label="Información personal"
+            onPress={() => feedback.info({ title: "Información personal" })}
+          />
+          <ProfileButton
+            icon="help"
+            label="Centro de ayuda"
+            onPress={() => feedback.info({ title: "Centro de ayuda" })}
+          />
+          <ProfileButton
+            icon="logo"
+            label="Configuración de fIPE"
+            onPress={() => feedback.info({ title: "Configuración de fIPE" })}
+          />
+          <ProfileButton
+            icon="notification"
+            label="Permitir notificaciones"
+            switchProps={{ value: notifications, onValueChange: setNotifications }}
+          />
+          <ProfileButton
+            icon="security"
+            label="Segurity"
+            onPress={() => feedback.info({ title: "Segurity" })}
+          />
+          <ProfileButton
+            icon="logout"
+            label="Cerrar sesión"
+            destructive
+            onPress={() => feedback.info({ title: "Cerrar sesión" })}
+          />
+        </View>
       </View>
-
-      <View style={styles.section}>
-        <GlassCard>
-          <GlassCard.Content>
-            <View style={styles.statsRow}>
-              <View style={styles.stat}>
-                <RNText style={styles.statValue}>156</RNText>
-                <Text variant="caption" color="muted">
-                  Transactions
-                </Text>
-              </View>
-              <View style={styles.statDivider} />
-              <View style={styles.stat}>
-                <RNText style={styles.statValue}>12</RNText>
-                <Text variant="caption" color="muted">
-                  Months Active
-                </Text>
-              </View>
-              <View style={styles.statDivider} />
-              <View style={styles.stat}>
-                <RNText style={styles.statValue}>⭐ 4.9</RNText>
-                <Text variant="caption" color="muted">
-                  Rating
-                </Text>
-              </View>
-            </View>
-          </GlassCard.Content>
-        </GlassCard>
-      </View>
-
-      <View style={styles.section}>
-        <GlassButton
-          icon={<RNText style={styles.buttonIcon}>🚪</RNText>}
-          label="Sign Out"
-          onPress={() => router.push("/(tabs)")}
-        />
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  parent: {
     flex: 1,
+    paddingHorizontal: MAIN_PADDING_H,
   },
-  contentContainer: {
-    padding: spacing[4],
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "center",
   },
-  profileHeader: {
+  inner: {
+    display: "flex",
+    flexDirection: "column",
     alignItems: "center",
-    paddingVertical: spacing[6],
+    gap: 20,
+    alignSelf: "stretch",
+  },
+  profileSection: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 20,
+    alignSelf: "stretch",
   },
   avatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: palette.white,
     backgroundColor: palette.blue[500],
     alignItems: "center",
     justifyContent: "center",
   },
-  avatarText: {
-    fontSize: 28,
-    fontWeight: "600",
+  avatarInitial: {
     color: palette.white,
+    fontFamily: fontFamily.display,
+    fontSize: 40,
+    fontWeight: fontWeight.h1,
   },
-  section: {
-    marginBottom: spacing[6],
-  },
-  menuItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: spacing[3],
-  },
-  menuItemBorder: {
-    borderBottomWidth: 1,
-    borderBottomColor: "rgba(255,255,255,0.1)",
-  },
-  menuIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "rgba(255,255,255,0.1)",
+  container: {
     alignItems: "center",
     justifyContent: "center",
+    gap: 4,
   },
-  menuIconText: {
-    fontSize: 20,
+  name: {
+    color: palette.gray[100],
+    fontFamily: fontFamily.display,
+    fontSize: fontSize.sectionTitle,
+    fontWeight: fontWeight.pageTitle,
   },
-  menuInfo: {
-    flex: 1,
-    marginLeft: spacing[3],
-  },
-  menuArrow: {
-    paddingHorizontal: spacing[2],
-  },
-  menuArrowText: {
-    fontSize: 24,
-    color: "rgba(255,255,255,0.4)",
-  },
-  statsRow: {
+  usernameRow: {
+    display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    gap: 4,
   },
-  stat: {
-    flex: 1,
-    alignItems: "center",
+  username: {
+    color: palette.gray[100],
+    fontFamily: fontFamily.display,
+    fontSize: fontSize.captionLarge,
+    fontWeight: fontWeight.captionLarge,
   },
-  statValue: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: palette.white,
-    marginBottom: spacing[1],
-  },
-  statDivider: {
-    width: 1,
-    height: 40,
-    backgroundColor: "rgba(255,255,255,0.1)",
-  },
-  buttonIcon: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: palette.white,
+  buttonsSection: {
+    alignSelf: "stretch",
+    borderRadius: 16,
+    overflow: "hidden",
+    borderTopWidth: 1,
+    borderTopColor: palette.gray[800],
+    marginTop: 28,
   },
 });
