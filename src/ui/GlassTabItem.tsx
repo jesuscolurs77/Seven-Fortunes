@@ -9,7 +9,7 @@ import {
   ImageSourcePropType,
 } from 'react-native';
 
-import { palette, spacing } from '@/theme';
+import { palette, spacing, fontFamily } from '@/theme';
 
 export interface GlassTabItemProps {
   index: number;
@@ -23,7 +23,7 @@ export interface GlassTabItemProps {
 const TAB_ITEM_HEIGHT = 56;
 const TAB_ITEM_MIN_WIDTH = 64;
 const TAB_ICON_SIZE = 24;
-const TAB_LABEL_FONT_SIZE = 11;
+const TAB_LABEL_FONT_SIZE = 10;
 
 function isImageSource(
   icon: React.ReactNode | string | ImageSourcePropType
@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 2,
     fontWeight: '500',
+    fontFamily: fontFamily.display,
     includeFontPadding: false,
   },
 });

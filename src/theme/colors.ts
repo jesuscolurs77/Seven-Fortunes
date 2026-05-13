@@ -43,9 +43,10 @@ export const semantic = {
     overlay: 'rgba(0,0,0,0.5)',
     pressed: 'rgba(255,255,255,0.10)',
   },
-  text: {
+   text: {
     primary: palette.white,
-    secondary: palette.gray[300],
+    secondary: palette.gray[200],
+    tertiary: palette.gray[300],
     muted: palette.gray[500],
     disabled: palette.gray[700],
     inverse: palette.gray[950],

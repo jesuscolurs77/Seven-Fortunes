@@ -22,7 +22,7 @@ try {
   GlassViewComponent = expoGlassEffect.GlassView || null;
   isGlassEffectAPIAvailableFn = expoGlassEffect.isGlassEffectAPIAvailable || null;
   isLiquidGlassAvailableFn = expoGlassEffect.isLiquidGlassAvailable || null;
-} catch (e) {
+} catch {
   GlassViewComponent = null;
 }
 
@@ -49,7 +49,7 @@ export function GlassCard({
       const runtimeAvailable = isGlassEffectAPIAvailableFn ? isGlassEffectAPIAvailableFn() : true;
       const compileAvailable = isLiquidGlassAvailableFn ? isLiquidGlassAvailableFn() : true;
       setUseNativeGlass(runtimeAvailable && compileAvailable);
-    } catch (e) {
+    } catch {
       setUseNativeGlass(false);
     }
   }, []);

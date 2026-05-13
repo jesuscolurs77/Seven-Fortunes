@@ -19,12 +19,26 @@ export const typography: Record<TextVariant, TypographyStyle> = {
     letterSpacing: letterSpacing.display,
     fontWeight: fontWeight.display,
   },
+  pageTitle: {
+    fontFamily: fontFamily.display,
+    fontSize: fontSize.pageTitle,
+    lineHeight: lineHeight.pageTitle,
+    letterSpacing: letterSpacing.pageTitle,
+    fontWeight: fontWeight.pageTitle,
+  },
   h1: {
     fontFamily: fontFamily.display,
     fontSize: fontSize.h1,
     lineHeight: lineHeight.h1,
     letterSpacing: letterSpacing.h1,
     fontWeight: fontWeight.h1,
+  },
+  sectionTitle: {
+    fontFamily: fontFamily.display,
+    fontSize: fontSize.sectionTitle,
+    lineHeight: lineHeight.sectionTitle,
+    letterSpacing: letterSpacing.sectionTitle,
+    fontWeight: fontWeight.sectionTitle,
   },
   h2: {
     fontFamily: fontFamily.heading,
@@ -39,6 +53,13 @@ export const typography: Record<TextVariant, TypographyStyle> = {
     lineHeight: lineHeight.subtitle,
     letterSpacing: letterSpacing.subtitle,
     fontWeight: fontWeight.subtitle,
+  },
+  subtitleLarge: {
+    fontFamily: fontFamily.display,
+    fontSize: fontSize.subtitleLarge,
+    lineHeight: lineHeight.subtitleLarge,
+    letterSpacing: letterSpacing.subtitleLarge,
+    fontWeight: fontWeight.subtitleLarge,
   },
   h3: {
     fontFamily: fontFamily.heading,
@@ -75,6 +96,13 @@ export const typography: Record<TextVariant, TypographyStyle> = {
     letterSpacing: letterSpacing.input,
     fontWeight: fontWeight.input,
   },
+  bodyLarge: {
+    fontFamily: fontFamily.display,
+    fontSize: fontSize.bodyLarge,
+    lineHeight: lineHeight.bodyLarge,
+    letterSpacing: letterSpacing.bodyLarge,
+    fontWeight: fontWeight.bodyLarge,
+  },
   h5: {
     fontFamily: fontFamily.heading,
     fontSize: fontSize.h5,
@@ -88,6 +116,13 @@ export const typography: Record<TextVariant, TypographyStyle> = {
     lineHeight: lineHeight.body,
     letterSpacing: letterSpacing.body,
     fontWeight: fontWeight.body,
+  },
+  captionLarge: {
+    fontFamily: fontFamily.display,
+    fontSize: fontSize.captionLarge,
+    lineHeight: lineHeight.captionLarge,
+    letterSpacing: letterSpacing.captionLarge,
+    fontWeight: fontWeight.captionLarge,
   },
   h6: {
     fontFamily: fontFamily.heading,

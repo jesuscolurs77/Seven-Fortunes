@@ -16,13 +16,13 @@ let GlassViewComponent: any = null;
 let isGlassEffectAPIAvailableFn: (() => boolean) | null = null;
 let isLiquidGlassAvailableFn: (() => boolean) | null = null;
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const expoGlassEffect = require('expo-glass-effect');
   GlassViewComponent = expoGlassEffect.GlassView || null;
   isGlassEffectAPIAvailableFn = expoGlassEffect.isGlassEffectAPIAvailable || null;
   isLiquidGlassAvailableFn = expoGlassEffect.isLiquidGlassAvailable || null;
-} catch (e) {
+} catch {
   GlassViewComponent = null;
 }
 
@@ -52,7 +52,7 @@ export function GlassBottomBar({ items, style, children }: GlassBottomBarProps) 
       const runtimeAvailable = isGlassEffectAPIAvailableFn ? isGlassEffectAPIAvailableFn() : true;
       const compileAvailable = isLiquidGlassAvailableFn ? isLiquidGlassAvailableFn() : true;
       setUseNativeGlass(runtimeAvailable && compileAvailable);
-    } catch (e) {
+    } catch {
       setUseNativeGlass(false);
     }
   }, []);
