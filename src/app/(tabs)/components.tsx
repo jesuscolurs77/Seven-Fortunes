@@ -31,7 +31,7 @@ import { palette, radius, semantic, spacing } from "@/theme";
    SkeletonCircle,
     HorizontalScroll,
    type HorizontalScrollItem,
- } from "@/ui";
+ } from "@/components";
 
 let GlassViewDirect: any = null;
 let isGlassEffectAPIAvailableFn: (() => boolean) | null = null;

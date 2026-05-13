@@ -11,7 +11,7 @@ import {
   GlassNavbar,
   GlassBackground,
   TAB_ICON_SIZE,
-} from '@/ui';
+} from '@/components';
 import {
   palette,
 } from '@/theme';

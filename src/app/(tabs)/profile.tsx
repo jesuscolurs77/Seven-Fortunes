@@ -3,7 +3,7 @@ import { View, ScrollView, StyleSheet, Text as RNText } from 'react-native';
 import { useRouter } from 'expo-router';
 
 import { spacing, palette } from '@/theme';
-import { GlassCard, GlassButton, Text, IconButton } from '@/ui';
+import { GlassCard, GlassButton, Text, IconButton } from '@/components';
 
 export default function ProfileScreen() {
   const router = useRouter();
