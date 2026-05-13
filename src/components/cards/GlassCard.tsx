@@ -1,17 +1,9 @@
-import React from 'react';
-import { View, StyleSheet, type ViewStyle, type ViewProps } from 'react-native';
+import React from "react";
+import { StyleSheet, View, type ViewProps, type ViewStyle } from "react-native";
 
-import {
-  glassTheme,
-  radius,
-  spacing,
-  radiusUsage,
-} from '@/theme';
-import {
-  FallbackCornerBorders,
-  FallbackSubtleInnerGlow,
-} from '@/components/feedback/FallbackCornerBorders';
-import { GlassViewComponent, useIsGlassAvailable } from '@/components/common';
+import { GlassViewComponent, useIsGlassAvailable } from "@/components/common";
+import { FallbackSubtleInnerGlow } from "@/components/feedback/FallbackCornerBorders";
+import { glassTheme, radiusUsage, spacing } from "@/theme";
 
 export interface GlassCardProps extends ViewProps {
   children: React.ReactNode;
@@ -27,10 +19,7 @@ export function GlassCard({
 }: GlassCardProps) {
   const isGlassAvailable = useIsGlassAvailable();
 
-  const containerStyle: ViewStyle[] = [
-    styles.base,
-    ...(style ? [style] : []),
-  ];
+  const containerStyle: ViewStyle[] = [styles.base, ...(style ? [style] : [])];
 
   return (
     <View style={containerStyle} {...props}>
@@ -48,12 +37,6 @@ export function GlassCard({
           <View style={[StyleSheet.absoluteFill, styles.fallbackBorder]} />
           <View style={[StyleSheet.absoluteFill, styles.fallbackTopShine]} />
           <FallbackSubtleInnerGlow />
-          <FallbackCornerBorders
-            variant="card"
-            borderWidth={2.5}
-            borderColor="rgba(255, 255, 255, 0.65)"
-            cornerSize={24}
-          />
         </>
       )}
       <View style={styles.content}>{children}</View>
@@ -64,50 +47,78 @@ export function GlassCard({
 const styles = StyleSheet.create({
   base: {
     borderRadius: radiusUsage.card,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   content: {
     zIndex: 1,
   },
   fallbackBg: {
-    backgroundColor: 'rgba(255, 255, 255, 0.18)',
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
   },
   fallbackBorder: {
     borderWidth: 1.5,
-    borderColor: 'rgba(255, 255, 255, 0.30)',
+    borderColor: "rgba(255, 255, 255, 0.25)",
     borderRadius: radiusUsage.card,
   },
   fallbackTopShine: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     height: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.35)',
+    backgroundColor: "rgba(255, 255, 255, 0.20)",
     borderTopLeftRadius: radiusUsage.card,
     borderTopRightRadius: radiusUsage.card,
   },
 });
 
-GlassCard.Header = function GlassCardHeader({ children, style, ...props }: ViewProps) {
+GlassCard.Header = function GlassCardHeader({
+  children,
+  style,
+  ...props
+}: ViewProps) {
   return (
-    <View style={[{ padding: spacing[5], paddingBottom: spacing[3] }, style]} {...props}>
+    <View
+      style={[{ padding: spacing[5], paddingBottom: spacing[3] }, style]}
+      {...props}
+    >
       {children}
     </View>
   );
 };
 
-GlassCard.Content = function GlassCardContent({ children, style, ...props }: ViewProps) {
+GlassCard.Content = function GlassCardContent({
+  children,
+  style,
+  ...props
+}: ViewProps) {
   return (
-    <View style={[{ padding: spacing[5], paddingTop: spacing[2], paddingBottom: spacing[2] }, style]} {...props}>
+    <View
+      style={[
+        {
+          padding: spacing[5],
+          paddingTop: spacing[2],
+          paddingBottom: spacing[2],
+        },
+        style,
+      ]}
+      {...props}
+    >
       {children}
     </View>
   );
 };
 
-GlassCard.Footer = function GlassCardFooter({ children, style, ...props }: ViewProps) {
+GlassCard.Footer = function GlassCardFooter({
+  children,
+  style,
+  ...props
+}: ViewProps) {
   return (
-    <View style={[{ padding: spacing[5], paddingTop: spacing[3] }, style]} {...props}>
+    <View
+      style={[{ padding: spacing[5], paddingTop: spacing[3] }, style]}
+      {...props}
+    >
       {children}
     </View>
   );

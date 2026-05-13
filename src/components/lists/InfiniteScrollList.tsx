@@ -8,6 +8,7 @@ import {
   type FlatListProps,
   type ListRenderItem,
 } from 'react-native';
+import { SvgXml } from 'react-native-svg';
 
 import { palette, radius, spacing, semantic } from '@/theme';
 import { Skeleton, SkeletonText, SkeletonCircle } from '@/components/loaders/Skeleton';
@@ -25,20 +26,28 @@ export interface InfiniteScrollListProps<T> extends Omit<FlatListProps<T>, 'data
   emptyText?: string;
   loadingSkeletonCount?: number;
   showDividers?: boolean;
+  renderSkeletonItem?: () => React.ReactNode;
 }
 
 const DEFAULT_SKELETON_COUNT = 5;
 
+const skeletonDotXml = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <rect x="6.35352" y="5.64648" width="12" height="12" rx="6" fill="white" fill-opacity="0.15"/>
+</svg>`;
+
 function DefaultSkeletonItem() {
   return (
     <View style={styles.skeletonItem}>
-      <View style={styles.skeletonRow}>
-        <SkeletonCircle size={48} />
-        <View style={styles.skeletonContent}>
-          <Skeleton height={16} width="60%" />
-          <View style={styles.skeletonSpacer} />
-          <Skeleton height={12} width="80%" />
-        </View>
+      <View style={styles.skeletonIconBox}>
+        <SvgXml xml={skeletonDotXml} />
+      </View>
+      <View style={styles.skeletonMiddle}>
+        <View style={styles.skeletonBar} />
+        <View style={styles.skeletonBarSmall} />
+      </View>
+      <View style={styles.skeletonRight}>
+        <View style={styles.skeletonDateBar} />
+        <View style={styles.skeletonAmountBar} />
       </View>
     </View>
   );
@@ -73,6 +82,7 @@ export function InfiniteScrollList<T>({
   emptyText = 'No hay elementos que mostrar',
   loadingSkeletonCount = DEFAULT_SKELETON_COUNT,
   showDividers = false,
+  renderSkeletonItem,
   style,
   contentContainerStyle,
   ...props
@@ -130,11 +140,12 @@ export function InfiniteScrollList<T>({
   }, [loading, emptyText]);
 
   if (loading && data.length === 0) {
+    const SkeletonItem = renderSkeletonItem || DefaultSkeletonItem;
     return (
       <View style={[styles.container, style]}>
         {Array.from({ length: loadingSkeletonCount }).map((_, index) => (
           <View key={index}>
-            <DefaultSkeletonItem />
+            <SkeletonItem />
             {showDividers && index < loadingSkeletonCount - 1 && <View style={styles.divider} />}
           </View>
         ))}
@@ -187,20 +198,59 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   skeletonItem: {
-    paddingVertical: spacing[3],
-    paddingHorizontal: spacing[4],
-  },
-  skeletonRow: {
-    flexDirection: 'row',
+    display: 'flex',
+    paddingVertical: 16,
     alignItems: 'center',
-    gap: spacing[3],
+    gap: 12,
+    alignSelf: 'stretch',
+    flexDirection: 'row',
   },
-  skeletonContent: {
+  skeletonIconBox: {
+    display: 'flex',
+    width: 42,
+    height: 42,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 16,
+    backgroundColor: palette.gray[900],
+  },
+  skeletonMiddle: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: 12,
     flex: 1,
-    gap: spacing[1],
+    flexDirection: 'column',
   },
-  skeletonSpacer: {
-    height: 4,
+  skeletonBar: {
+    width: 128,
+    height: 14,
+    borderRadius: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+  },
+  skeletonBarSmall: {
+    width: 80,
+    height: 12,
+    borderRadius: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+  },
+  skeletonRight: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    gap: 4,
+    flex: 1,
+  },
+  skeletonDateBar: {
+    width: 68,
+    height: 12,
+    borderRadius: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+  },
+  skeletonAmountBar: {
+    width: 48,
+    height: 14,
+    borderRadius: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
   },
   divider: {
     height: 1,

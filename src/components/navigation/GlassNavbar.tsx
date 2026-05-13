@@ -5,9 +5,12 @@ import {
   layout,
   spacing,
   palette,
-  typography,
+  fontFamily,
+  fontSize,
+  fontWeight,
+  lineHeight,
 } from '@/theme';
-import { GlassButton } from '@/components';
+import { GlassButton } from '@/components/buttons';
 
 export interface GlassNavbarProps {
   title?: string;
@@ -130,11 +133,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing[2],
   },
   title: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: fontSize.h4,
+    fontWeight: fontWeight.button,
     color: palette.gray[100],
-    fontFamily: 'NeueHaasGroteskDisplayPro',
-    lineHeight: 22,
+    fontFamily: fontFamily.display,
+    lineHeight: lineHeight.h4,
     includeFontPadding: false,
     textAlign: 'center',
   },

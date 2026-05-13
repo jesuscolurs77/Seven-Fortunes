@@ -1,7 +1,14 @@
+import { Platform } from "react-native";
+
+const androidScale = Platform.select({
+  android: 3,
+  default: 0,
+}) as number;
+
 export const fontSize = {
-  display: 48,
-  pageTitle: 28,
-  h1: 36,
+  display: Platform.select({ android: 44, default: 48 }) as number,
+  pageTitle: Platform.select({ android: 26, default: 28 }) as number,
+  h1: Platform.select({ android: 34, default: 36 }) as number,
   sectionTitle: 24,
   h2: 24,
   subtitle: 20,
@@ -10,9 +17,9 @@ export const fontSize = {
   h4: 18,
   title: 17,
   button: 18,
-  input: 16,
-  bodyLarge: 16,
-  h5: 16,
+  input: 16 - androidScale,
+  bodyLarge: 16 - androidScale,
+  h5: 16 - androidScale,
   body: 15,
   h6: 15,
   captionLarge: 14,

@@ -9,7 +9,7 @@ import {
   ImageSourcePropType,
 } from 'react-native';
 
-import { palette, spacing, fontFamily } from '@/theme';
+import { palette, spacing, fontFamily, fontWeight } from '@/theme';
 
 export interface GlassTabItemProps {
   index: number;
@@ -158,12 +158,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textAlignVertical: 'center',
     includeFontPadding: false,
-    fontWeight: '600',
+    fontWeight: fontWeight.button,
   },
   label: {
     textAlign: 'center',
     marginTop: 2,
-    fontWeight: '500',
+    fontWeight: fontWeight.bodyLarge,
     fontFamily: fontFamily.display,
     includeFontPadding: false,
   },
