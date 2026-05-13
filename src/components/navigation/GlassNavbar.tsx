@@ -2,56 +2,96 @@ import React from 'react';
 import { View, StyleSheet, type ViewStyle, Text as RNText } from 'react-native';
 
 import {
-  glassTheme,
-  glassFallbacks,
   layout,
   spacing,
   palette,
   typography,
 } from '@/theme';
-import { GlassViewComponent, useIsGlassAvailable } from '@/components/common';
+import { GlassButton } from '@/components';
 
 export interface GlassNavbarProps {
   title?: string;
   leftContent?: React.ReactNode;
   rightContent?: React.ReactNode;
+  leftIcon?: string;
+  rightIcon?: string;
+  onLeftPress?: () => void;
+  onRightPress?: () => void;
+  transparent?: boolean;
+  bgColor?: string;
   style?: ViewStyle;
 }
 
-export function GlassNavbar({ title, leftContent, rightContent, style }: GlassNavbarProps) {
-  const isGlassAvailable = useIsGlassAvailable();
+export function GlassNavbar({
+  title,
+  leftContent,
+  rightContent,
+  leftIcon,
+  rightIcon,
+  onLeftPress,
+  onRightPress,
+  transparent = false,
+  bgColor,
+  style,
+}: GlassNavbarProps) {
 
   const containerStyle: ViewStyle[] = [
     styles.container,
     ...(style ? [style] : []),
   ];
 
+  const renderLeftButton = () => {
+    if (leftContent) {
+      return leftContent;
+    }
+    if (leftIcon) {
+      return (
+        <GlassButton
+          iconName={leftIcon}
+          onPress={onLeftPress}
+        />
+      );
+    }
+    return null;
+  };
+
+  const renderRightButton = () => {
+    if (rightContent) {
+      return rightContent;
+    }
+    if (rightIcon) {
+      return (
+        <GlassButton
+          iconName={rightIcon}
+          onPress={onRightPress}
+        />
+      );
+    }
+    return null;
+  };
+
   return (
     <View style={containerStyle}>
-      {isGlassAvailable && GlassViewComponent ? (
-        <GlassViewComponent
-          style={StyleSheet.absoluteFill}
-          glassEffectStyle={glassTheme.variants.bar.effectStyle}
-          tintColor={glassTheme.variants.bar.tintColor}
-          colorScheme="dark"
-          isInteractive={true}
-        />
-      ) : (
-        <View style={[StyleSheet.absoluteFill, glassFallbacks.bar]} />
+      {!transparent && (
+        <View style={[
+          StyleSheet.absoluteFill, 
+          styles.glassFallback,
+          bgColor ? { backgroundColor: bgColor, borderBottomWidth: 0 } : {}
+        ]} />
       )}
       <View style={styles.inner}>
-        <View style={styles.leftSection}>
-          {leftContent}
+        <View style={styles.sideSection}>
+          {renderLeftButton()}
         </View>
-        {title && (
-          <View style={styles.titleSection}>
+        <View style={styles.titleSection}>
+          {title && (
             <RNText style={styles.title} numberOfLines={1}>
               {title}
             </RNText>
-          </View>
-        )}
-        <View style={styles.rightSection}>
-          {rightContent}
+          )}
+        </View>
+        <View style={[styles.sideSection, styles.rightSide]}>
+          {renderRightButton()}
         </View>
       </View>
     </View>
@@ -61,8 +101,12 @@ export function GlassNavbar({ title, leftContent, rightContent, style }: GlassNa
 const styles = StyleSheet.create({
   container: {
     height: layout.headerHeight,
-    overflow: 'hidden',
     width: '100%',
+  },
+  glassFallback: {
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255, 255, 255, 0.08)',
   },
   inner: {
     flex: 1,
@@ -71,22 +115,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing[4],
     zIndex: 1,
   },
-  leftSection: {
-    width: 44,
+  sideSection: {
+    width: 42,
     alignItems: 'flex-start',
+    justifyContent: 'center',
+  },
+  rightSide: {
+    alignItems: 'flex-end',
   },
   titleSection: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  rightSection: {
-    width: 44,
-    alignItems: 'flex-end',
+    paddingHorizontal: spacing[2],
   },
   title: {
-    ...typography.title,
-    color: palette.white,
+    fontSize: 18,
     fontWeight: '600',
+    color: palette.gray[100],
+    fontFamily: 'NeueHaasGroteskDisplayPro',
+    lineHeight: 22,
+    includeFontPadding: false,
+    textAlign: 'center',
   },
 });

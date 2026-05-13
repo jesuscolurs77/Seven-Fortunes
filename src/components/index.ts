@@ -3,7 +3,7 @@ export {
   GlassViewComponent,
   GlassContainerComponent,
   useIsGlassAvailable,
-  glassModuleLoaded,
+  isGlassModuleLoaded,
 } from './common';
 export { PressableScale, type PressableScaleProps } from './common/PressableScale';
 
@@ -92,7 +92,12 @@ export {
 
 // Layout
 export { Screen, type ScreenProps } from './layout';
-export { GlassBackground, type GlassBackgroundProps } from './layout';
+export { 
+  GlassBackground, 
+  type GlassBackgroundProps,
+  ImageBackgroundWrapper,
+  type ImageBackgroundWrapperProps,
+} from './layout';
 
 // Loaders
 export {

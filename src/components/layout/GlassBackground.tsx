@@ -1,7 +1,29 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ImageBackground, ImageSourcePropType } from 'react-native';
 
 import { palette, semantic } from '@/theme';
+
+export interface ImageBackgroundWrapperProps {
+  children: React.ReactNode;
+  source?: ImageSourcePropType;
+}
+
+const DEFAULT_BACKGROUND = require('../../img/Background_home.png');
+
+export function ImageBackgroundWrapper({ 
+  children, 
+  source = DEFAULT_BACKGROUND 
+}: ImageBackgroundWrapperProps) {
+  return (
+    <ImageBackground
+      source={source}
+      style={styles.container}
+      resizeMode="cover"
+    >
+      <View style={styles.content}>{children}</View>
+    </ImageBackground>
+  );
+}
 
 export interface GlassBackgroundProps {
   children: React.ReactNode;

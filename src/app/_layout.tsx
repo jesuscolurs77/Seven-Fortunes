@@ -2,6 +2,7 @@ import '@/global.css';
 
 import { Stack } from 'expo-router';
 import React from 'react';
+import { Platform } from 'react-native';
 
 import { AppProvider } from '@/providers';
 
@@ -12,6 +13,7 @@ export default function RootLayout() {
         screenOptions={{
           headerShown: false,
           contentStyle: { backgroundColor: 'transparent' },
+          animation: Platform.OS === 'android' ? 'fade' : 'default',
         }}
       />
     </AppProvider>

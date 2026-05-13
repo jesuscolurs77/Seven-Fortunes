@@ -2,5 +2,5 @@ export {
   GlassViewComponent,
   GlassContainerComponent,
   useIsGlassAvailable,
-  glassModuleLoaded,
+  isGlassModuleLoaded,
 } from './glass';
