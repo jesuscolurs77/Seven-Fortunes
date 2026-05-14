@@ -1,17 +1,12 @@
 import { useRouter } from "expo-router";
-import React, { useState, useMemo, useEffect } from 'react';
-import { BackHandler, ScrollView, StyleSheet, View } from 'react-native';
+import React, { useEffect, useMemo, useState } from "react";
+import { BackHandler, ScrollView, StyleSheet, View } from "react-native";
 
-import {
-  Button,
-  Select,
-  Summary,
-  Text,
-} from '@/components';
-import { BankPreviewTrigger } from '@/components/selects/BankSelect';
-import { InputAmount } from '@/components/inputs/InputAmount';
-import { CARD_OPTIONS } from '@/constants/banks';
-import { palette, spacing } from '@/theme';
+import { Button, Select, Summary, Text } from "@/components";
+import { InputAmount } from "@/components/inputs/InputAmount";
+import { BankPreviewTrigger } from "@/components/selects/BankSelect";
+import { CARD_OPTIONS } from "@/constants/banks";
+import { palette, spacing } from "@/theme";
 
 const FEE_RATE = 0.025;
 const MIN_AMOUNT = 10;
@@ -19,18 +14,20 @@ const MAX_AMOUNT = 10000;
 
 export default function AddFundsScreen() {
   const router = useRouter();
-  const [amount, setAmount] = useState('');
-  const [selectedCard, setSelectedCard] = useState<string>('');
+  const [amount, setAmount] = useState("");
+  const [selectedCard, setSelectedCard] = useState<string>("");
 
   const numericAmount = useMemo(() => {
     return parseInt(amount, 10) || 0;
   }, [amount]);
 
   const amountError = useMemo(() => {
-    if (numericAmount <= 0) return '';
-    if (numericAmount < MIN_AMOUNT) return `Minimum amount is $${MIN_AMOUNT}.00`;
-    if (numericAmount > MAX_AMOUNT) return `Maximum amount is $${MAX_AMOUNT.toLocaleString()}.00`;
-    return '';
+    if (numericAmount <= 0) return "";
+    if (numericAmount < MIN_AMOUNT)
+      return `Minimum amount is $${MIN_AMOUNT}.00`;
+    if (numericAmount > MAX_AMOUNT)
+      return `Maximum amount is $${MAX_AMOUNT.toLocaleString()}.00`;
+    return "";
   }, [numericAmount]);
 
   const hasAmountError = amountError.length > 0;
@@ -43,10 +40,14 @@ export default function AddFundsScreen() {
     return numericAmount + fee;
   }, [numericAmount, fee]);
 
-  const isButtonDisabled = numericAmount <= 0 || hasAmountError || !selectedCard;
+  const isButtonDisabled =
+    numericAmount <= 0 || hasAmountError || !selectedCard;
 
   useEffect(() => {
-    const subscription = BackHandler.addEventListener("hardwareBackPress", () => true);
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => true,
+    );
     return () => subscription.remove();
   }, []);
 
@@ -58,14 +59,18 @@ export default function AddFundsScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <InputAmount
-          label="Amount"
+          label="Amount (USD)"
           onChangeText={setAmount}
           hasError={hasAmountError}
           errorMessage={amountError}
         />
 
         <View style={styles.section}>
-          <Text variant="bodyLarge" color="secondary" style={styles.sectionLabel}>
+          <Text
+            variant="bodyLarge"
+            color="secondary"
+            style={styles.sectionLabel}
+          >
             Source
           </Text>
           <Select
@@ -88,9 +93,12 @@ export default function AddFundsScreen() {
         <Summary
           title="Transaction Details"
           items={[
-            { label: 'Fee', value: `$${fee.toFixed(2)}` },
-            { label: 'Processing time', value: 'Instant' },
-            { label: 'Total Charged', value: `$${totalCharged.toFixed(2)} USD` },
+            { label: "Fee", value: `$${fee.toFixed(2)}` },
+            { label: "Processing time", value: "Instant" },
+            {
+              label: "Total Charged",
+              value: `$${totalCharged.toFixed(2)} USD`,
+            },
           ]}
         />
       </ScrollView>
@@ -122,10 +130,10 @@ const styles = StyleSheet.create({
     gap: spacing[6],
   },
   bottomSection: {
-    flexDirection: 'column',
-    alignItems: 'center',
+    flexDirection: "column",
+    alignItems: "center",
     gap: 8,
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
     paddingHorizontal: 24,
     paddingBottom: 42,
   },

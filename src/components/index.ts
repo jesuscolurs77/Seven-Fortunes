@@ -126,6 +126,13 @@ export {
   type LottieAnimationSource,
 } from './media';
 
+// Contacts
+export {
+  ContactList,
+  type Contact,
+  type ContactListProps,
+} from './contacts';
+
 // Feedback
 export {
   ToastContent,

@@ -194,6 +194,7 @@ export default function HomeScreen() {
           <IconButton
             variant="secondary"
             icon={<Icon name="send" color={palette.white} />}
+            onPress={() => router.push("/(full)/select-contact")}
           />
           <Text variant="bodyLarge" color="primary">
             Send
