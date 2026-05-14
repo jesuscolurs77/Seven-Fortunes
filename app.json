@@ -6,7 +6,8 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "sevenfortunes",
-    "userInterfaceStyle": "automatic",
+    "backgroundColor": "#1A1B24",
+    "userInterfaceStyle": "dark",
     "ios": {
       "icon": "./assets/expo.icon"
     },

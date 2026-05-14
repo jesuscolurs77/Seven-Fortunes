@@ -118,6 +118,13 @@ export {
   type HorizontalScrollProps,
 } from './lists';
 
+// Media
+export {
+  LottieAnimation,
+  type LottieAnimationProps,
+  type LottieAnimationSource,
+} from './media';
+
 // Feedback
 export {
   ToastContent,

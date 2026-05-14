@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Platform,
   View,
   StyleSheet,
   TextInput,
@@ -71,6 +72,7 @@ export function PasswordInput({
     styles.input,
     typography.input,
     { color: getTextColor() },
+    Platform.OS === 'ios' && { lineHeight: undefined },
     style,
   ];
 
@@ -113,13 +115,16 @@ const styles = StyleSheet.create({
     backgroundColor: semantic.surface.primary,
     flexDirection: 'row',
     alignItems: 'center',
+    alignSelf: 'stretch',
   },
   input: {
     flex: 1,
     height: '100%',
+    padding: 0,
     paddingHorizontal: 12,
-    includeFontPadding: false,
+    paddingVertical: 0,
     textAlignVertical: 'center',
+    includeFontPadding: false,
   },
   eyeButton: {
     width: 48,

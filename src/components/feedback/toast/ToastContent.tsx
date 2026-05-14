@@ -40,35 +40,35 @@ export function ToastContent({ title, description, type, icon, action, style }: 
       layout={LinearTransition.duration(200)}
       style={[styles.container, style]}
     >
-      <View style={[styles.iconBox, { backgroundColor: config.bg }]}>
-        <Animated.Text style={[styles.icon, { color: config.color }]}>
-          {icon ?? config.icon}
-        </Animated.Text>
-      </View>
-      <View style={styles.textContainer}>
-        <Animated.Text style={[styles.title, { color: semantic.text.primary }]}>
-          {title}
-        </Animated.Text>
-        {description && (
-          <Animated.Text style={[styles.description, { color: semantic.text.secondary }]}>
-            {description}
+      <View style={styles.group}>
+        <View style={[styles.iconBox, { backgroundColor: config.bg }]}>
+          <Animated.Text style={[styles.icon, { color: config.color }]}>
+            {icon ?? config.icon}
+          </Animated.Text>
+        </View>
+        <View style={styles.textContainer}>
+          <Animated.Text style={[styles.title, { color: semantic.text.primary }]}>
+            {title}
+          </Animated.Text>
+          {description && (
+            <Animated.Text style={[styles.description, { color: semantic.text.secondary }]}>
+              {description}
+            </Animated.Text>
+          )}
+        </View>
+        {action && (
+          <Animated.Text style={styles.action} onPress={action.onPress}>
+            {action.label}
           </Animated.Text>
         )}
       </View>
-      {action && (
-        <Animated.Text style={styles.action} onPress={action.onPress}>
-          {action.label}
-        </Animated.Text>
-      )}
     </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing[3],
     paddingVertical: spacing[3],
     paddingHorizontal: spacing[4],
     borderRadius: radius.lg,
@@ -84,6 +84,11 @@ const styles = StyleSheet.create({
     maxWidth: 400,
     alignSelf: 'center',
   },
+  group: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing[3],
+  },
   iconBox: {
     width: 32,
     height: 32,
@@ -96,7 +101,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   textContainer: {
-    flex: 1,
     gap: 2,
   },
   title: {

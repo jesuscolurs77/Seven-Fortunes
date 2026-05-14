@@ -107,8 +107,8 @@ export default function HomeScreen() {
           <RNText style={styles.transactionDescription}>{item.description}</RNText>
         </View>
         <View style={styles.transactionRight}>
-          <RNText style={styles.transactionDate}>{item.date}</RNText>
-          <RNText style={styles.transactionAmount}>+{item.amount}</RNText>
+          <RNText style={styles.transactionDate} numberOfLines={1}>{item.date}</RNText>
+          <RNText style={styles.transactionAmount} numberOfLines={1}>+{item.amount}</RNText>
         </View>
       </TouchableOpacity>
     ),
@@ -151,6 +151,7 @@ export default function HomeScreen() {
           <IconButton
             variant="primary"
             icon={<Icon name="add" color={palette.gray[950]} />}
+            onPress={() => router.push("/(full)/add-funds")}
           />
           <Text variant="bodyLarge" color="primary">
             Add money
@@ -285,7 +286,6 @@ const styles = StyleSheet.create({
   transactionRow: {
     display: "flex",
     paddingVertical: spacing[4],
-    paddingRight: spacing[4],
     alignItems: "center",
     gap: 12,
     alignSelf: "stretch",
@@ -331,6 +331,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "flex-end",
     gap: 4,
+    flexShrink: 1,
   },
   transactionDate: {
     color: palette.gray[300],

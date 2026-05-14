@@ -191,7 +191,10 @@ export function Button({
         <>
           {leftIcon}
           {children && (
-            <RNText style={[styles.buttonText, { color: textColor }]}>
+            <RNText
+              style={[styles.buttonText, { color: textColor }]}
+              numberOfLines={1}
+            >
               {children}
             </RNText>
           )}

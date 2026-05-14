@@ -8,3 +8,6 @@ export type {
   ToastId,
   HUDConfig,
 } from './feedback';
+
+export { authService } from './auth';
+export type { AuthUser } from './auth';

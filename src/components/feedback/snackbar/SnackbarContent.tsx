@@ -21,8 +21,8 @@ export function SnackbarContent({ title, description, action, style }: SnackbarC
       exiting={FadeOutDown.duration(200)}
       style={[styles.container, style]}
     >
-      <View style={styles.content}>
-        <View style={styles.indicator} />
+      <View style={styles.indicator} />
+      <View style={styles.group}>
         <View style={styles.textContainer}>
           <Animated.Text style={styles.title}>{title}</Animated.Text>
           {description && (
@@ -41,6 +41,8 @@ export function SnackbarContent({ title, description, action, style }: SnackbarC
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginHorizontal: spacing[4],
     marginBottom: spacing[4],
     borderRadius: radius.md,
@@ -53,21 +55,21 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 6,
   },
-  content: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing[3],
-    paddingVertical: spacing[3],
-    paddingHorizontal: spacing[4],
-  },
   indicator: {
     width: 4,
     height: 32,
     borderRadius: radius.full,
     backgroundColor: semantic.error.default,
   },
-  textContainer: {
+  group: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing[3],
+    paddingVertical: spacing[3],
+    paddingHorizontal: spacing[4],
     flex: 1,
+  },
+  textContainer: {
     gap: 2,
   },
   title: {

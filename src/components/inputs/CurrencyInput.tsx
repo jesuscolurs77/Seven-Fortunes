@@ -217,6 +217,8 @@ const styles = StyleSheet.create({
     height: 48,
     fontSize: 16,
     fontWeight: '500',
+    padding: 0,
+    paddingVertical: 0,
     includeFontPadding: false,
     textAlignVertical: 'center',
   },

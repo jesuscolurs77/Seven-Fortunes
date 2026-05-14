@@ -18,6 +18,7 @@ export interface SelectTriggerProps {
   selectedImage?: ImageSourcePropType;
   disabled?: boolean;
   isFocused?: boolean;
+  hasError?: boolean;
   onPress: () => void;
 }
 
@@ -33,6 +34,7 @@ export function SelectTrigger({
   selectedImage,
   disabled = false,
   isFocused = false,
+  hasError = false,
   onPress,
 }: SelectTriggerProps) {
   const [isPressed, setIsPressed] = useState(false);
@@ -59,6 +61,12 @@ export function SelectTrigger({
       return {
         borderWidth: 1,
         borderColor: semantic.border.input,
+      };
+    }
+    if (hasError) {
+      return {
+        borderWidth: 1,
+        borderColor: semantic.error.default,
       };
     }
     if (isFocused || isPressed) {

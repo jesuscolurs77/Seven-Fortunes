@@ -9,9 +9,11 @@ import {
 } from "react-native";
 
 import * as Clipboard from "expo-clipboard";
+import { useRouter } from "expo-router";
 
 import { useFeedback } from "@/hooks";
 import { Icon } from "@/icons";
+import { useAuth } from "@/providers/AuthProvider";
 import { fontFamily, fontSize, fontWeight, palette, spacing } from "@/theme";
 import { ProfileButton } from "@/components/buttons";
 
@@ -21,7 +23,9 @@ const MAIN_PADDING_H = Platform.select({
 }) as number;
 
 export default function ProfileScreen() {
+  const router = useRouter();
   const feedback = useFeedback();
+  const { logout } = useAuth();
   const [notifications, setNotifications] = useState(true);
   const [biometrics, setBiometrics] = useState(false);
   const name = "Maria Lafourcade";
@@ -90,7 +94,7 @@ export default function ProfileScreen() {
             icon="logout"
             label="Cerrar sesión"
             destructive
-            onPress={() => feedback.info({ title: "Cerrar sesión" })}
+            onPress={() => logout()}
           />
         </View>
       </View>

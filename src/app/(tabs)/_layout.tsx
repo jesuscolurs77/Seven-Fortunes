@@ -1,11 +1,9 @@
-import { Tabs, usePathname, useRouter } from "expo-router";
+import { Redirect, Tabs, usePathname, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useCallback, useMemo } from "react";
 import {
   ImageBackground,
   LayoutAnimation,
-  Platform,
-  Text as RNText,
   StyleSheet,
   useColorScheme,
   View,
@@ -18,22 +16,23 @@ import {
   TAB_ICON_SIZE,
   type LiquidGlassTabItem,
 } from "@/components";
+import { useAuth } from "@/providers/AuthProvider";
 import { palette } from "@/theme";
-import { TAB_KEYS, TAB_ROUTES, TAB_TITLES } from "./constants";
-import { AddMoneyIcon, HomeIcon, ProfileIcon } from "./icons";
+import { TAB_KEYS, TAB_ROUTES, TAB_TITLES } from "@/tab-constants/constants";
+import { AddMoneyIcon, HomeIcon, ProfileIcon } from "@/icons/tab-icons";
 
 const HOME_BG = require("../../img/Background_home.png");
 
-const layoutAnimationPreset = Platform.select({
-  ios: LayoutAnimation.Presets.easeInEaseOut,
-  android: LayoutAnimation.Presets.spring,
-  default: LayoutAnimation.Presets.easeInEaseOut,
-});
+const layoutAnimationPreset = LayoutAnimation.Presets.easeInEaseOut;
 
 export default function TabLayout() {
+  const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const systemColorScheme = useColorScheme();
+
+  if (isLoading) return null;
+  if (!isAuthenticated) return <Redirect href="/(noAuth)/login" />;
   const colorScheme: "light" | "dark" =
     !systemColorScheme || systemColorScheme === "unspecified"
       ? "dark"
@@ -78,28 +77,10 @@ export default function TabLayout() {
         ),
       },
       {
-        key: "components",
-        label: "Components",
-        icon: (
-          <RNText
-            style={[
-              styles.tabIconText,
-              {
-                color:
-                  activeIndex === 2 ? palette.white : "rgba(255,255,255,0.5)",
-                fontSize: TAB_ICON_SIZE,
-              },
-            ]}
-          >
-            🧩
-          </RNText>
-        ),
-      },
-      {
         key: "profile",
         label: "Profile",
         icon: (
-          <ProfileIcon active={activeIndex === 3} colorScheme={colorScheme} />
+          <ProfileIcon active={activeIndex === 2} colorScheme={colorScheme} />
         ),
       },
     ];
@@ -124,7 +105,7 @@ export default function TabLayout() {
   const getTitle = TAB_TITLES[TAB_KEYS[activeIndex]] ?? "Home";
 
   const isHome = activeIndex === 0;
-  const showBackground = isHome || activeIndex === 1 || activeIndex === 2;
+  const showBackground = isHome || activeIndex === 1;
 
   return (
     <View style={styles.root}>
@@ -143,10 +124,11 @@ export default function TabLayout() {
         <GlassNavbar
           title={!isHome ? getTitle : undefined}
           leftIcon={
-            isHome ? "qr" : activeIndex === 3 ? "arrow-left" : undefined
+            isHome ? "qr" : activeIndex === 2 ? "arrow-left" : undefined
           }
           rightIcon={isHome ? "clock" : undefined}
-          onLeftPress={activeIndex === 3 ? () => router.back() : undefined}
+          onLeftPress={activeIndex === 2 ? () => router.back() : undefined}
+          onRightPress={isHome ? () => router.push("/(full)/components") : undefined}
           transparent={true}
         />
 
@@ -174,14 +156,6 @@ export default function TabLayout() {
               name="add-money"
               options={{
                 title: "Add Money",
-                tabBarShowLabel: false,
-                tabBarIcon: () => null,
-              }}
-            />
-            <Tabs.Screen
-              name="components"
-              options={{
-                title: "Components",
                 tabBarShowLabel: false,
                 tabBarIcon: () => null,
               }}
@@ -232,13 +206,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
-  },
-  tabIconText: {
-    width: TAB_ICON_SIZE,
-    height: TAB_ICON_SIZE,
-    textAlign: "center",
-    textAlignVertical: "center",
-    includeFontPadding: false,
-    fontWeight: "600",
   },
 });

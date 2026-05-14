@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
+  Platform,
   StyleSheet,
   TextInput,
+  type StyleProp,
   type TextInputProps,
   type ViewStyle,
-  type StyleProp,
-} from 'react-native';
+} from "react-native";
 
-import { opacity, palette, radius, semantic, typography } from '@/theme';
+import { opacity, palette, radius, semantic, typography } from "@/theme";
 
 export interface InputProps extends TextInputProps {
   disabled?: boolean;
@@ -17,11 +18,14 @@ export interface InputProps extends TextInputProps {
 const styles = StyleSheet.create({
   base: {
     height: 48,
-    padding: 12,
+    padding: 0,
+    paddingHorizontal: 12,
+    paddingVertical: 0,
     borderRadius: radius.sm,
     backgroundColor: semantic.surface.primary,
-    includeFontPadding: false,
     textAlignVertical: 'center',
+    includeFontPadding: false,
+    alignSelf: 'stretch',
   },
   defaultBorder: {
     borderWidth: 1,
@@ -32,7 +36,7 @@ const styles = StyleSheet.create({
     borderColor: semantic.border.input,
   },
   focusedBorder: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: semantic.border.focus,
   },
   errorBorder: {
@@ -82,6 +86,7 @@ export function Input({
     typography.input,
     getBorderStyle(),
     { color: getTextColor() },
+    Platform.OS === 'ios' && { lineHeight: undefined },
     style,
   ];
 

@@ -14,6 +14,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { palette, radius, spacing, semantic } from '@/theme';
+import { Icon } from '@/icons';
 import {
   SelectTrigger,
 } from '@/components/selects/SelectTrigger';
@@ -28,6 +29,7 @@ export interface SelectProps {
   value?: string;
   onChange?: (value: string, option: SelectOption) => void;
   disabled?: boolean;
+  hasError?: boolean;
   onOpen?: () => void;
   onClose?: () => void;
   showSearch?: boolean;
@@ -39,7 +41,9 @@ const SEARCH_HEIGHT = 48;
 const BOTTOM_SHEET_MARGIN = 12;
 
 const SearchIcon = () => (
-  <RNText style={styles.searchIcon}>🔍</RNText>
+  <View style={styles.searchIcon}>
+    <Icon name="search" width={20} height={20} />
+  </View>
 );
 
 export function Select({
@@ -48,6 +52,7 @@ export function Select({
   value,
   onChange,
   disabled = false,
+  hasError = false,
   onOpen,
   onClose,
   showSearch = true,
@@ -132,6 +137,7 @@ export function Select({
           selectedImage={selectedOption?.image}
           disabled={disabled}
           isFocused={isOpen}
+          hasError={hasError}
           onPress={handleOpen}
         />
 
@@ -214,6 +220,7 @@ export function Select({
         selectedImage={selectedOption?.image}
         disabled={disabled}
         isFocused={isOpen}
+        hasError={hasError}
         onPress={handleOpen}
       />
 
@@ -346,7 +353,6 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.15)',
   },
   searchIcon: {
-    fontSize: 20,
     marginRight: spacing[2],
   },
   searchInput: {

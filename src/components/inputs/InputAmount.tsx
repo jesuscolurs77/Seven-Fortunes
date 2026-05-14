@@ -1,0 +1,119 @@
+import React, { useCallback, useState } from 'react';
+import {
+  StyleSheet,
+  Text as RNText,
+  TextInput,
+  View,
+  type TextInputProps,
+} from 'react-native';
+
+import { palette } from '@/theme';
+
+export interface InputAmountProps extends Omit<TextInputProps, 'style'> {
+  label?: string;
+  hint?: string;
+  prefix?: string;
+}
+
+function formatThousands(value: string): string {
+  const digits = value.replace(/\D/g, '');
+  if (!digits) return '';
+  return digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+export function InputAmount({
+  label = 'Amount (USD)',
+  hint = 'Min. $10.00 - Max. $10,000.00',
+  prefix = '$',
+  onChangeText,
+  placeholder,
+  ...props
+}: InputAmountProps) {
+  const [isFocused, setIsFocused] = useState(false);
+  const [displayText, setDisplayText] = useState('');
+
+  const handleChangeText = useCallback(
+    (text: string) => {
+      const raw = text.replace(/\D/g, '');
+      setDisplayText(formatThousands(raw));
+      onChangeText?.(raw);
+    },
+    [onChangeText],
+  );
+
+  return (
+    <View style={styles.container}>
+      <RNText style={styles.label}>{label}</RNText>
+      <View style={[styles.inputRow, isFocused && styles.inputRowFocused]}>
+        <RNText style={styles.prefix}>{prefix}</RNText>
+        <TextInput
+          style={styles.input}
+          value={displayText}
+          onChangeText={handleChangeText}
+          placeholder={placeholder || '0.00'}
+          placeholderTextColor="rgba(255,255,255,0.30)"
+          keyboardType="decimal-pad"
+          keyboardAppearance="dark"
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          {...props}
+        />
+      </View>
+      <RNText style={styles.hint}>{hint}</RNText>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 8,
+    alignSelf: 'stretch',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.05)',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+  },
+  label: {
+    color: palette.white,
+    fontFamily: 'NeueHaasGroteskDisplayPro',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  inputRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    alignSelf: 'stretch',
+    borderBottomWidth: 1,
+    borderBottomColor: palette.gray[800],
+    paddingBottom: 8,
+  },
+  inputRowFocused: {
+    borderBottomColor: palette.blue[500],
+  },
+  prefix: {
+    color: palette.white,
+    fontFamily: 'NeueHaasGroteskDisplayPro',
+    fontSize: 46,
+    fontWeight: '500',
+  },
+  input: {
+    flex: 1,
+    color: palette.white,
+    fontFamily: 'NeueHaasGroteskDisplayPro',
+    fontSize: 46,
+    fontWeight: '500',
+    padding: 0,
+    includeFontPadding: false,
+    textAlignVertical: 'center',
+  },
+  hint: {
+    color: palette.gray[200],
+    fontFamily: 'NeueHaasGroteskDisplayPro',
+    fontSize: 14,
+    fontWeight: '400',
+  },
+});
