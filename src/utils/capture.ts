@@ -3,7 +3,7 @@ import * as Sharing from 'expo-sharing';
 import type { View } from 'react-native';
 
 export async function captureAndShare(
-  viewRef: React.RefObject<View>,
+  viewRef: React.RefObject<View | null>,
   options?: { title?: string; fileName?: string }
 ) {
   try {
