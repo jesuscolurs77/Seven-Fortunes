@@ -1,7 +1,7 @@
 import { Platform } from "react-native";
 
 const androidScale = Platform.select({
-  android: 3,
+  android: 2,
   default: 0,
 }) as number;
 

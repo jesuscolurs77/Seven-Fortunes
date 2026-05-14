@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import {
+  Platform,
   StyleSheet,
   Text as RNText,
   TextInput,
@@ -8,6 +9,8 @@ import {
 } from 'react-native';
 
 import { palette } from '@/theme';
+
+const AMOUNT_FONT_SIZE = 46;
 
 export interface InputAmountProps extends Omit<TextInputProps, 'style'> {
   label?: string;
@@ -103,18 +106,28 @@ const styles = StyleSheet.create({
   prefix: {
     color: palette.white,
     fontFamily: 'NeueHaasGroteskDisplayPro',
-    fontSize: 46,
+    fontSize: AMOUNT_FONT_SIZE,
+    lineHeight: AMOUNT_FONT_SIZE,
     fontWeight: '500',
+    includeFontPadding: false,
+    textAlignVertical: 'center',
   },
   input: {
     flex: 1,
     color: palette.white,
     fontFamily: 'NeueHaasGroteskDisplayPro',
-    fontSize: 46,
+    fontSize: AMOUNT_FONT_SIZE,
     fontWeight: '500',
     padding: 0,
+    margin: 0,
     includeFontPadding: false,
     textAlignVertical: 'center',
+    ...Platform.select({
+      android: {
+        lineHeight: AMOUNT_FONT_SIZE,
+        height: AMOUNT_FONT_SIZE + 4,
+      },
+    }),
   },
   hint: {
     color: palette.gray[200],

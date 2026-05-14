@@ -42,7 +42,7 @@ export default function AccountReadyScreen() {
         </View>
 
         <View style={styles.bottomSection}>
-          <Button variant="primary" size="lg" onPress={() => handleAuthNavigate("/(tabs)/add-money")}>
+          <Button variant="primary" size="lg" onPress={() => handleAuthNavigate("/(full)/add-funds")}>
             Add funds
           </Button>
           <Button variant="secondary" size="lg" onPress={() => handleAuthNavigate("/(tabs)")}>

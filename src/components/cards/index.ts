@@ -7,3 +7,4 @@ export {
   type CardFooterProps,
 } from './Card';
 export { GlassCard, type GlassCardProps } from './GlassCard';
+export { Summary, type SummaryProps, type SummaryItem } from './Summary';

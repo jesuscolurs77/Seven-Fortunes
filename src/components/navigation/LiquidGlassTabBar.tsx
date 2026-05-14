@@ -92,15 +92,20 @@ export function LiquidGlassTabBar({
 
   const animation = useLiquidTabAnimation(tabConfig);
 
+  const animateToIndexRef = React.useRef(animation.animateToIndex);
+  useEffect(() => {
+    animateToIndexRef.current = animation.animateToIndex;
+  }, [animation.animateToIndex]);
+
   useEffect(() => {
     if (ready && containerWidth > 0) {
-      animation.animateToIndex(activeIndex);
+      animateToIndexRef.current(activeIndex);
     }
-  }, [activeIndex, ready, containerWidth, animation]);
+  }, [activeIndex, ready, containerWidth]);
 
   const handleContainerLayout = useCallback((event: LayoutChangeEvent) => {
     const { width } = event.nativeEvent.layout;
-    setContainerWidth(width);
+    setContainerWidth((prev) => (Math.abs(prev - width) < 0.5 ? prev : width));
   }, []);
 
   const handleTabLayout = useCallback(
@@ -113,6 +118,24 @@ export function LiquidGlassTabBar({
       const { x, width, height } = event.nativeEvent.layout;
 
       setTabLayouts((prev) => {
+        const current = prev[index];
+        const isSame =
+          current &&
+          Math.abs(current.x - x) < 0.5 &&
+          Math.abs(current.width - width) < 0.5 &&
+          Math.abs(current.height - height) < 0.5;
+
+        if (isSame) {
+          if (!ready && prev.every((t) => t.width > 0)) {
+            setReady(true);
+          }
+          return prev;
+        }
+
+        if (ready) {
+          return prev;
+        }
+
         const next = [...prev];
         next[index] = { x, width, height };
 
@@ -211,6 +234,7 @@ export function LiquidGlassTabBar({
               highlightOpacity: animation.highlightOpacity,
             }}
             height={capsuleHeight}
+            colorScheme={actualColorScheme}
           />
         </View>
       )}

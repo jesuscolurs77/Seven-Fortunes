@@ -12,28 +12,38 @@ const TITLES: Record<string, string> = {
   "add-funds": "Add Funds",
   "funds-processing": "",
   "funds-confirmation": "",
+  "movement-history": "My movements",
+  "transaction-detail": "Transaction Details",
 };
 
 const NO_NAVBAR_ROUTES = new Set(["funds-processing", "funds-confirmation"]);
+
+const BACK_TO_TABS = new Set(["add-funds"]);
 
 export default function FullScreenLayout() {
   const router = useRouter();
   const segments = useSegments();
   const currentRoute = segments[segments.length - 1] ?? "components";
   const hideNavbar = NO_NAVBAR_ROUTES.has(currentRoute);
+  const backToTabs = BACK_TO_TABS.has(currentRoute);
+
+  const handleBack = () => {
+    if (backToTabs) {
+      router.replace("/(tabs)");
+    } else {
+      router.back();
+    }
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: palette.gray[950] }}>
       <StatusBar style="light" backgroundColor="transparent" translucent />
-      <SafeAreaView
-        style={{ flex: 1 }}
-        edges={["top", "left", "right"]}
-      >
+      <SafeAreaView style={{ flex: 1 }} edges={["top", "left", "right"]}>
         {!hideNavbar && (
           <GlassNavbar
             title={TITLES[currentRoute] ?? "Components"}
             leftIcon="arrow-left"
-            onLeftPress={() => router.back()}
+            onLeftPress={handleBack}
             transparent
           />
         )}
@@ -43,7 +53,12 @@ export default function FullScreenLayout() {
             contentStyle: { backgroundColor: "transparent" },
             animation: "slide_from_right",
           }}
-        />
+        >
+          <Stack.Screen
+            name="add-funds"
+            options={{ gestureEnabled: false, fullScreenGestureEnabled: false }}
+          />
+        </Stack>
       </SafeAreaView>
     </View>
   );

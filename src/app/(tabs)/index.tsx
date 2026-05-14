@@ -12,6 +12,7 @@ import { useRouter } from "expo-router";
 import { IconButton, InfiniteScrollList, Skeleton, Text } from "@/components";
 import { Icon } from "@/icons";
 import { fontFamily, fontSize, fontWeight, palette, spacing } from "@/theme";
+import { formatCurrency } from "@/utils";
 
 const USDC_IMAGE = require("../../img/USDC.png");
 
@@ -24,7 +25,7 @@ interface Transaction {
   id: string;
   title: string;
   description: string;
-  amount: string;
+  amount: number;
   date: string;
   type: "send" | "receive" | "exchange" | "add";
 }
@@ -34,7 +35,7 @@ const MOCK_TRANSACTIONS: Transaction[] = [
     id: "1",
     title: "Coffee Shop",
     description: "Cafe Americano",
-    amount: "$4.99",
+    amount: 4.99,
     date: "Ene 3, 2026",
     type: "send",
   },
@@ -42,7 +43,7 @@ const MOCK_TRANSACTIONS: Transaction[] = [
     id: "2",
     title: "App Store",
     description: "Suscripción mensual",
-    amount: "$9.99",
+    amount: 9.99,
     date: "Ene 2, 2026",
     type: "send",
   },
@@ -50,7 +51,7 @@ const MOCK_TRANSACTIONS: Transaction[] = [
     id: "3",
     title: "Transferencia",
     description: "De: Juan Pérez",
-    amount: "$1,000.00",
+    amount: 1000,
     date: "Ene 1, 2026",
     type: "receive",
   },
@@ -58,7 +59,7 @@ const MOCK_TRANSACTIONS: Transaction[] = [
     id: "4",
     title: "Uber Ride",
     description: "Viaje centro",
-    amount: "$12.50",
+    amount: 12.5,
     date: "Dic 30, 2025",
     type: "send",
   },
@@ -66,7 +67,7 @@ const MOCK_TRANSACTIONS: Transaction[] = [
     id: "5",
     title: "Depósito Nómina",
     description: "Pago mensual",
-    amount: "$3,500.00",
+    amount: 3500,
     date: "Dic 28, 2025",
     type: "receive",
   },
@@ -97,7 +98,13 @@ export default function HomeScreen() {
         <View style={styles.transactionIconWrapper}>
           <View style={styles.transactionIconBox}>
             <Icon
-              name={item.type === "send" ? "send" : item.type === "receive" ? "receive" : item.type === "exchange" ? "exchange" : "add"}
+              name={
+                item.type === "receive" || item.type === "add"
+                  ? "reload"
+                  : item.type === "send"
+                    ? "send"
+                    : "exchange"
+              }
               color={palette.gray[300]}
             />
           </View>
@@ -108,7 +115,15 @@ export default function HomeScreen() {
         </View>
         <View style={styles.transactionRight}>
           <RNText style={styles.transactionDate} numberOfLines={1}>{item.date}</RNText>
-          <RNText style={styles.transactionAmount} numberOfLines={1}>+{item.amount}</RNText>
+          {item.type === 'receive' || item.type === 'add' ? (
+            <RNText style={styles.transactionAmount} numberOfLines={1}>
+              {formatCurrency(item.amount, 'USD')}
+            </RNText>
+          ) : (
+            <RNText style={styles.transactionAmountOut} numberOfLines={1}>
+              -{formatCurrency(item.amount, 'USD')}
+            </RNText>
+          )}
         </View>
       </TouchableOpacity>
     ),
@@ -132,7 +147,7 @@ export default function HomeScreen() {
             <Skeleton width={160} height={48} borderRadius={8} />
           ) : (
             <RNText style={styles.balanceText}>
-              {showBalance ? "$ 500" : "$ ****"}
+              {showBalance ? formatCurrency(500, 'USDC') : "$ ****"}
             </RNText>
           )}
           <View style={styles.eyeRow}>
@@ -212,7 +227,6 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
     paddingHorizontal: MAIN_PADDING_H,
-    overflow: "hidden",
   },
   container: {
     display: "flex",
@@ -245,12 +259,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: spacing[2],
+    height: 48,
   },
   balanceText: {
     color: palette.white,
     fontFamily: fontFamily.display,
     fontSize: 42,
+    lineHeight: 48,
     fontWeight: fontWeight.h1,
+    includeFontPadding: false,
   },
   actionsRow: {
     display: "flex",
@@ -342,8 +359,14 @@ const styles = StyleSheet.create({
   },
   transactionAmount: {
     color: palette.white,
-    fontFamily: fontFamily.display,
-    fontSize: fontSize.bodyLarge,
-    fontWeight: fontWeight.button,
+    fontFamily: 'NeueHaasGroteskDisplayPro',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  transactionAmountOut: {
+    color: '#D76255',
+    fontFamily: 'NeueHaasGroteskDisplayPro',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });

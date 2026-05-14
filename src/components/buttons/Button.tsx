@@ -90,7 +90,7 @@ const secondaryStyles = {
 
 export function Button({
   variant = 'primary',
-  size = 'md',
+  size = 'lg',
   disabled = false,
   loading = false,
   className,

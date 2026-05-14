@@ -3,7 +3,6 @@ import { StatusBar } from "expo-status-bar";
 import React, { useCallback, useMemo } from "react";
 import {
   ImageBackground,
-  LayoutAnimation,
   StyleSheet,
   useColorScheme,
   View,
@@ -23,16 +22,12 @@ import { AddMoneyIcon, HomeIcon, ProfileIcon } from "@/icons/tab-icons";
 
 const HOME_BG = require("../../img/Background_home.png");
 
-const layoutAnimationPreset = LayoutAnimation.Presets.easeInEaseOut;
-
 export default function TabLayout() {
   const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const systemColorScheme = useColorScheme();
 
-  if (isLoading) return null;
-  if (!isAuthenticated) return <Redirect href="/(noAuth)/login" />;
   const colorScheme: "light" | "dark" =
     !systemColorScheme || systemColorScheme === "unspecified"
       ? "dark"
@@ -87,11 +82,9 @@ export default function TabLayout() {
   }, [activeIndex, colorScheme]);
 
   const handleTabChange = useCallback(
-    (index: number, key: string) => {
+    (_index: number, key: string) => {
       const route = TAB_ROUTES[key];
       if (!route) return;
-
-      LayoutAnimation.configureNext(layoutAnimationPreset);
 
       try {
         router.navigate(route as any);
@@ -101,6 +94,9 @@ export default function TabLayout() {
     },
     [router],
   );
+
+  if (isLoading) return null;
+  if (!isAuthenticated) return <Redirect href="/(noAuth)/login" />;
 
   const getTitle = TAB_TITLES[TAB_KEYS[activeIndex]] ?? "Home";
 
@@ -128,7 +124,7 @@ export default function TabLayout() {
           }
           rightIcon={isHome ? "clock" : undefined}
           onLeftPress={activeIndex === 2 ? () => router.back() : undefined}
-          onRightPress={isHome ? () => router.push("/(full)/components") : undefined}
+          onRightPress={isHome ? () => router.push("/(full)/movement-history") : undefined}
           transparent={true}
         />
 

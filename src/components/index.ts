@@ -53,6 +53,7 @@ export {
   type CardFooterProps,
 } from './cards';
 export { GlassCard, type GlassCardProps } from './cards';
+export { Summary, type SummaryProps, type SummaryItem } from './cards';
 
 // Modals
 export { GlassModal, type GlassModalProps } from './modals';

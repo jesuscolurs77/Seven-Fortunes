@@ -202,4 +202,11 @@ export const ICON_REGISTRY: Record<string, IconData> = {
     defaultWidth: 24,
     defaultHeight: 24,
   },
+  'reload': {
+    svg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M8.3426 14.243L16.9495 5.63605L18.3637 7.05026L9.75681 15.6572L17.3427 15.6572L17.3427 17.6569L6.3429 17.6569L6.3429 6.65711L8.3426 6.65711L8.3426 14.243Z" fill="{{color}}" fill-opacity="{{opacity}}"/>
+</svg>`,
+    defaultWidth: 24,
+    defaultHeight: 24,
+  },
 };

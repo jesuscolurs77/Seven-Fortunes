@@ -11,9 +11,9 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import { Button, Text } from "@/components";
+import { Button, Summary, Text } from "@/components";
 import { Icon } from "@/icons";
-import { fontFamily, palette, semantic, spacing } from "@/theme";
+import { fontFamily, palette, semantic } from "@/theme";
 import { captureAndShare } from "@/utils";
 
 const FEE_RATE = 0.025;
@@ -82,40 +82,17 @@ export default function FundsConfirmationScreen() {
           </Animated.View>
         </View>
 
-        <Animated.View
-          entering={FadeIn.delay(1800).duration(500)}
-          style={styles.detailsSection}
-        >
-          <Text
-            variant="bodyLarge"
-            color="secondary"
-            style={styles.detailsLabel}
-          >
-            Transaction Details
-          </Text>
-
-          <View style={styles.summaryContainer}>
-            <View style={styles.summaryRow}>
-              <Text variant="body" color="secondary">
-                Fee
-              </Text>
-              <Text variant="body">${fee.toFixed(2)}</Text>
-            </View>
-            <View style={styles.summaryDivider} />
-            <View style={styles.summaryRow}>
-              <Text variant="body" color="secondary">
-                Processing time
-              </Text>
-              <Text variant="body">Instant</Text>
-            </View>
-            <View style={styles.summaryDivider} />
-            <View style={styles.summaryRow}>
-              <Text variant="body" color="secondary">
-                Total Charged
-              </Text>
-              <Text variant="body">${totalCharged.toFixed(2)} USD</Text>
-            </View>
-          </View>
+        <Animated.View entering={FadeIn.delay(1800).duration(500)}>
+          <Summary
+            items={[
+              { label: "Fee", value: `$${fee.toFixed(2)}` },
+              { label: "Processing time", value: "Instant" },
+              {
+                label: "Total Charged",
+                value: `$${totalCharged.toFixed(2)} USD`,
+              },
+            ]}
+          />
         </Animated.View>
       </View>
 
@@ -154,11 +131,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   topWrapper: {
-    gap: spacing[8],
+    gap: 48,
     alignSelf: "stretch",
     backgroundColor: semantic.background.primary,
     paddingTop: 42,
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
+    paddingBottom: 16,
   },
   topSection: {
     justifyContent: "center",
@@ -180,7 +158,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: "column",
     alignItems: "center",
-    gap: 12,
     alignSelf: "stretch",
   },
   title: {
@@ -196,37 +173,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: palette.gray[200],
   },
-  detailsSection: {
-    gap: spacing[3],
-  },
-  detailsLabel: {
-    marginBottom: spacing[1],
-  },
-  summaryContainer: {
-    backgroundColor: semantic.surface.primary,
-    borderRadius: 8,
-    paddingHorizontal: spacing[4],
-    paddingVertical: spacing[2],
-  },
-  summaryRow: {
-    display: "flex",
-    paddingVertical: 8,
-    paddingHorizontal: 0,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    alignSelf: "stretch",
-  },
-  summaryDivider: {
-    height: 1,
-    backgroundColor: semantic.border.subtle,
-  },
   bottomSection: {
     flexDirection: "column",
     alignItems: "center",
     gap: 8,
     alignSelf: "stretch",
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
     paddingBottom: 42,
   },
 });

@@ -8,30 +8,30 @@ import {
   View,
 } from "react-native";
 
+import {
+  BankSelect,
+  Button,
+  Card,
+  CurrencyInput,
+  DEFAULT_BANKS,
+  GlassButton,
+  GlassCard,
+  GlassModal,
+  HorizontalScroll,
+  IconButton,
+  Input,
+  PasswordInput,
+  Screen,
+  Select,
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
+  Switch,
+  Text,
+  type HorizontalScrollItem,
+  type SelectOption,
+} from "@/components";
 import { palette, radius, semantic, spacing } from "@/theme";
- import {
-   Button,
-   Card,
-   GlassButton,
-   GlassCard,
-   GlassModal,
-   IconButton,
-   Input,
-   PasswordInput,
-   Screen,
-   Switch,
-   Text,
-   Select,
-   type SelectOption,
-   BankSelect,
-   DEFAULT_BANKS,
-   CurrencyInput,
-   Skeleton,
-   SkeletonText,
-   SkeletonCircle,
-    HorizontalScroll,
-   type HorizontalScrollItem,
- } from "@/components";
 
 let GlassViewDirect: any = null;
 let isGlassEffectAPIAvailableFn: (() => boolean) | null = null;
@@ -79,72 +79,231 @@ function checkIsGlassEffectAvailable(): boolean {
 }
 
 const COUNTRY_OPTIONS: SelectOption[] = [
-  { value: 'us', label: 'Estados Unidos', subtitle: '+1', icon: <RNText style={{ fontSize: 20 }}>🇺🇸</RNText> },
-  { value: 'mx', label: 'México', subtitle: '+52', icon: <RNText style={{ fontSize: 20 }}>🇲🇽</RNText> },
-  { value: 'co', label: 'Colombia', subtitle: '+57', icon: <RNText style={{ fontSize: 20 }}>🇨🇴</RNText> },
-  { value: 'br', label: 'Brasil', subtitle: '+55', icon: <RNText style={{ fontSize: 20 }}>🇧🇷</RNText> },
-  { value: 'ar', label: 'Argentina', subtitle: '+54', icon: <RNText style={{ fontSize: 20 }}>🇦🇷</RNText> },
-  { value: 'cl', label: 'Chile', subtitle: '+56', icon: <RNText style={{ fontSize: 20 }}>🇨🇱</RNText> },
-  { value: 'pe', label: 'Perú', subtitle: '+51', icon: <RNText style={{ fontSize: 20 }}>🇵🇪</RNText> },
-  { value: 'ec', label: 'Ecuador', subtitle: '+593', icon: <RNText style={{ fontSize: 20 }}>🇪🇨</RNText> },
-  { value: 'es', label: 'España', subtitle: '+34', icon: <RNText style={{ fontSize: 20 }}>🇪🇸</RNText> },
-  { value: 'gb', label: 'Reino Unido', subtitle: '+44', icon: <RNText style={{ fontSize: 20 }}>🇬🇧</RNText> },
-  { value: 'de', label: 'Alemania', subtitle: '+49', icon: <RNText style={{ fontSize: 20 }}>🇩🇪</RNText> },
-  { value: 'fr', label: 'Francia', subtitle: '+33', icon: <RNText style={{ fontSize: 20 }}>🇫🇷</RNText> },
+  {
+    value: "us",
+    label: "Estados Unidos",
+    subtitle: "+1",
+    icon: <RNText style={{ fontSize: 20 }}>🇺🇸</RNText>,
+  },
+  {
+    value: "mx",
+    label: "México",
+    subtitle: "+52",
+    icon: <RNText style={{ fontSize: 20 }}>🇲🇽</RNText>,
+  },
+  {
+    value: "co",
+    label: "Colombia",
+    subtitle: "+57",
+    icon: <RNText style={{ fontSize: 20 }}>🇨🇴</RNText>,
+  },
+  {
+    value: "br",
+    label: "Brasil",
+    subtitle: "+55",
+    icon: <RNText style={{ fontSize: 20 }}>🇧🇷</RNText>,
+  },
+  {
+    value: "ar",
+    label: "Argentina",
+    subtitle: "+54",
+    icon: <RNText style={{ fontSize: 20 }}>🇦🇷</RNText>,
+  },
+  {
+    value: "cl",
+    label: "Chile",
+    subtitle: "+56",
+    icon: <RNText style={{ fontSize: 20 }}>🇨🇱</RNText>,
+  },
+  {
+    value: "pe",
+    label: "Perú",
+    subtitle: "+51",
+    icon: <RNText style={{ fontSize: 20 }}>🇵🇪</RNText>,
+  },
+  {
+    value: "ec",
+    label: "Ecuador",
+    subtitle: "+593",
+    icon: <RNText style={{ fontSize: 20 }}>🇪🇨</RNText>,
+  },
+  {
+    value: "es",
+    label: "España",
+    subtitle: "+34",
+    icon: <RNText style={{ fontSize: 20 }}>🇪🇸</RNText>,
+  },
+  {
+    value: "gb",
+    label: "Reino Unido",
+    subtitle: "+44",
+    icon: <RNText style={{ fontSize: 20 }}>🇬🇧</RNText>,
+  },
+  {
+    value: "de",
+    label: "Alemania",
+    subtitle: "+49",
+    icon: <RNText style={{ fontSize: 20 }}>🇩🇪</RNText>,
+  },
+  {
+    value: "fr",
+    label: "Francia",
+    subtitle: "+33",
+    icon: <RNText style={{ fontSize: 20 }}>🇫🇷</RNText>,
+  },
 ];
 
 const BANK_OPTIONS: SelectOption[] = [
-  { value: 'bbva', label: 'BBVA', icon: <RNText style={{ fontSize: 20 }}>🏦</RNText> },
-  { value: 'santander', label: 'Santander', icon: <RNText style={{ fontSize: 20 }}>💰</RNText> },
-  { value: 'citibanamex', label: 'Citibanamex', icon: <RNText style={{ fontSize: 20 }}>💳</RNText> },
-  { value: 'scotiabank', label: 'Scotiabank', icon: <RNText style={{ fontSize: 20 }}>🏧</RNText> },
-  { value: 'hsbc', label: 'HSBC', icon: <RNText style={{ fontSize: 20 }}>💵</RNText> },
-  { value: 'banorte', label: 'Banorte', icon: <RNText style={{ fontSize: 20 }}>🏛️</RNText> },
-  { value: 'bancolombia', label: 'Bancolombia', icon: <RNText style={{ fontSize: 20 }}>🏦</RNText> },
-  { value: 'itau', label: 'Itaú', icon: <RNText style={{ fontSize: 20 }}>💰</RNText> },
+  {
+    value: "bbva",
+    label: "BBVA",
+    icon: <RNText style={{ fontSize: 20 }}>🏦</RNText>,
+  },
+  {
+    value: "santander",
+    label: "Santander",
+    icon: <RNText style={{ fontSize: 20 }}>💰</RNText>,
+  },
+  {
+    value: "citibanamex",
+    label: "Citibanamex",
+    icon: <RNText style={{ fontSize: 20 }}>💳</RNText>,
+  },
+  {
+    value: "scotiabank",
+    label: "Scotiabank",
+    icon: <RNText style={{ fontSize: 20 }}>🏧</RNText>,
+  },
+  {
+    value: "hsbc",
+    label: "HSBC",
+    icon: <RNText style={{ fontSize: 20 }}>💵</RNText>,
+  },
+  {
+    value: "banorte",
+    label: "Banorte",
+    icon: <RNText style={{ fontSize: 20 }}>🏛️</RNText>,
+  },
+  {
+    value: "bancolombia",
+    label: "Bancolombia",
+    icon: <RNText style={{ fontSize: 20 }}>🏦</RNText>,
+  },
+  {
+    value: "itau",
+    label: "Itaú",
+    icon: <RNText style={{ fontSize: 20 }}>💰</RNText>,
+  },
 ];
 
- const CRYPTO_OPTIONS: SelectOption[] = [
-   { value: 'btc', label: 'Bitcoin', subtitle: 'BTC', icon: <RNText style={{ fontSize: 20 }}>₿</RNText> },
-   { value: 'eth', label: 'Ethereum', subtitle: 'ETH', icon: <RNText style={{ fontSize: 20 }}>Ξ</RNText> },
-   { value: 'usdt', label: 'Tether', subtitle: 'USDT', icon: <RNText style={{ fontSize: 20 }}>💲</RNText> },
-   { value: 'usdc', label: 'USD Coin', subtitle: 'USDC', icon: <RNText style={{ fontSize: 20 }}>💵</RNText> },
-   { value: 'bnb', label: 'BNB', subtitle: 'BNB', icon: <RNText style={{ fontSize: 20 }}>🪙</RNText> },
-   { value: 'sol', label: 'Solana', subtitle: 'SOL', icon: <RNText style={{ fontSize: 20 }}>☀️</RNText> },
-   { value: 'ada', label: 'Cardano', subtitle: 'ADA', icon: <RNText style={{ fontSize: 20 }}>💎</RNText> },
-   { value: 'doge', label: 'Dogecoin', subtitle: 'DOGE', icon: <RNText style={{ fontSize: 20 }}>🐕</RNText> },
- ];
+const CRYPTO_OPTIONS: SelectOption[] = [
+  {
+    value: "btc",
+    label: "Bitcoin",
+    subtitle: "BTC",
+    icon: <RNText style={{ fontSize: 20 }}>₿</RNText>,
+  },
+  {
+    value: "eth",
+    label: "Ethereum",
+    subtitle: "ETH",
+    icon: <RNText style={{ fontSize: 20 }}>Ξ</RNText>,
+  },
+  {
+    value: "usdt",
+    label: "Tether",
+    subtitle: "USDT",
+    icon: <RNText style={{ fontSize: 20 }}>💲</RNText>,
+  },
+  {
+    value: "usdc",
+    label: "USD Coin",
+    subtitle: "USDC",
+    icon: <RNText style={{ fontSize: 20 }}>💵</RNText>,
+  },
+  {
+    value: "bnb",
+    label: "BNB",
+    subtitle: "BNB",
+    icon: <RNText style={{ fontSize: 20 }}>🪙</RNText>,
+  },
+  {
+    value: "sol",
+    label: "Solana",
+    subtitle: "SOL",
+    icon: <RNText style={{ fontSize: 20 }}>☀️</RNText>,
+  },
+  {
+    value: "ada",
+    label: "Cardano",
+    subtitle: "ADA",
+    icon: <RNText style={{ fontSize: 20 }}>💎</RNText>,
+  },
+  {
+    value: "doge",
+    label: "Dogecoin",
+    subtitle: "DOGE",
+    icon: <RNText style={{ fontSize: 20 }}>🐕</RNText>,
+  },
+];
 
- const HORIZONTAL_ITEMS: HorizontalScrollItem[] = [
-   { id: 'send', label: 'Enviar', icon: <RNText style={{ fontSize: 24 }}>📤</RNText>, badge: 3 },
-   { id: 'receive', label: 'Recibir', icon: <RNText style={{ fontSize: 24 }}>📥</RNText> },
-   { id: 'swap', label: 'Cambiar', icon: <RNText style={{ fontSize: 24 }}>🔄</RNText> },
-   { id: 'buy', label: 'Comprar', icon: <RNText style={{ fontSize: 24 }}>🛒</RNText>, badge: 'Nuevo' },
-   { id: 'sell', label: 'Vender', icon: <RNText style={{ fontSize: 24 }}>💰</RNText> },
-   { id: 'history', label: 'Historial', icon: <RNText style={{ fontSize: 24 }}>📋</RNText> },
- ];
+const HORIZONTAL_ITEMS: HorizontalScrollItem[] = [
+  {
+    id: "send",
+    label: "Enviar",
+    icon: <RNText style={{ fontSize: 24 }}>📤</RNText>,
+    badge: 3,
+  },
+  {
+    id: "receive",
+    label: "Recibir",
+    icon: <RNText style={{ fontSize: 24 }}>📥</RNText>,
+  },
+  {
+    id: "swap",
+    label: "Cambiar",
+    icon: <RNText style={{ fontSize: 24 }}>🔄</RNText>,
+  },
+  {
+    id: "buy",
+    label: "Comprar",
+    icon: <RNText style={{ fontSize: 24 }}>🛒</RNText>,
+    badge: "Nuevo",
+  },
+  {
+    id: "sell",
+    label: "Vender",
+    icon: <RNText style={{ fontSize: 24 }}>💰</RNText>,
+  },
+  {
+    id: "history",
+    label: "Historial",
+    icon: <RNText style={{ fontSize: 24 }}>📋</RNText>,
+  },
+];
 
- const INFINITE_LIST_ITEMS = Array.from({ length: 20 }, (_, i) => ({
-   id: `item-${i + 1}`,
-   title: `Elemento ${i + 1}`,
-   subtitle: `Descripción del elemento ${i + 1}`,
-   amount: (Math.random() * 1000).toFixed(2),
- }));
+const INFINITE_LIST_ITEMS = Array.from({ length: 20 }, (_, i) => ({
+  id: `item-${i + 1}`,
+  title: `Elemento ${i + 1}`,
+  subtitle: `Descripción del elemento ${i + 1}`,
+  amount: (Math.random() * 1000).toFixed(2),
+}));
 
- export default function ComponentsScreen() {
+export default function ComponentsScreen() {
   const [switchValue, setSwitchValue] = React.useState(true);
   const [switchValue2, setSwitchValue2] = React.useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
 
-   const [selectedCountry, setSelectedCountry] = React.useState<string>('');
-   const [selectedBank, setSelectedBank] = React.useState<string>('');
-   const [selectedCrypto, setSelectedCrypto] = React.useState<string>('');
-   const [selectedDisabled, setSelectedDisabled] = React.useState<string>('mx');
+  const [selectedCountry, setSelectedCountry] = React.useState<string>("");
+  const [selectedBank, setSelectedBank] = React.useState<string>("");
+  const [selectedCrypto, setSelectedCrypto] = React.useState<string>("");
+  const [selectedDisabled, setSelectedDisabled] = React.useState<string>("mx");
 
-   const [currencyValue, setCurrencyValue] = React.useState<number>(0);
-   const [selectedHorizontalItem, setSelectedHorizontalItem] = React.useState<string>('send');
+  const [currencyValue, setCurrencyValue] = React.useState<number>(0);
+  const [selectedHorizontalItem, setSelectedHorizontalItem] =
+    React.useState<string>("send");
 
-   const [apiStatus, setApiStatus] = React.useState({
+  const [apiStatus, setApiStatus] = React.useState({
     isGlassEffectAvailable: false,
     isLiquidGlassAvailable: false,
     isGlassEffectAPIAvailable: false,
@@ -171,10 +330,10 @@ const BANK_OPTIONS: SelectOption[] = [
 
   return (
     <Screen>
-       <ScrollView 
-         contentContainerStyle={{ paddingVertical: spacing[8] }}
-         keyboardShouldPersistTaps="handled"
-       >
+      <ScrollView
+        contentContainerStyle={{ paddingVertical: spacing[8] }}
+        keyboardShouldPersistTaps="handled"
+      >
         {/* ============================================
              API STATUS DIAGNOSTIC - MUY IMPORTANTE
             ============================================ */}
@@ -534,7 +693,7 @@ const BANK_OPTIONS: SelectOption[] = [
                 Loading
               </Text>
               <Button variant="primary" loading onPress={() => {}}>
-                Cargando...
+                Loading...
               </Button>
             </View>
           </Card.Content>
@@ -648,7 +807,7 @@ const BANK_OPTIONS: SelectOption[] = [
                 Loading
               </Text>
               <Button variant="secondary" loading onPress={() => {}}>
-                Cargando...
+                Loading...
               </Button>
             </View>
           </Card.Content>
@@ -816,126 +975,127 @@ const BANK_OPTIONS: SelectOption[] = [
                 Disabled border:
               </Text>
               <Text variant="mono">1px, rgba(255,255,255,0.15)</Text>
-             </View>
-           </Card.Content>
-         </Card>
+            </View>
+          </Card.Content>
+        </Card>
 
-         {/* ============================================
+        {/* ============================================
              PASSWORD INPUT
             ============================================ */}
-         <Card variant="outlined" className="mb-6">
-           <Card.Content>
-             <Text variant="h3" className="mb-6">
-               Password Input
-             </Text>
+        <Card variant="outlined" className="mb-6">
+          <Card.Content>
+            <Text variant="h3" className="mb-6">
+              Password Input
+            </Text>
 
-             <View style={styles.section}>
-               <Text variant="bodySmall" color="secondary" className="mb-3">
-                 Default (toca el icono 👁️ para mostrar/ocultar)
-               </Text>
-               <PasswordInput
-                 placeholder="Escribe tu contraseña..."
-                 defaultValue="miPassword123"
-               />
-               <Text variant="caption" color="muted" className="mt-2">
-                 Alterna entre puntos y texto visible
-               </Text>
-             </View>
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="secondary" className="mb-3">
+                Default (toca el icono 👁️ para mostrar/ocultar)
+              </Text>
+              <PasswordInput
+                placeholder="Escribe tu contraseña..."
+                defaultValue="miPassword123"
+              />
+              <Text variant="caption" color="muted" className="mt-2">
+                Alterna entre puntos y texto visible
+              </Text>
+            </View>
 
-             <View style={styles.section}>
-               <Text variant="bodySmall" color="secondary" className="mb-3">
-                 Focused (toca para ver)
-               </Text>
-               <PasswordInput placeholder="Contraseña..." />
-             </View>
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="secondary" className="mb-3">
+                Focused (toca para ver)
+              </Text>
+              <PasswordInput placeholder="Contraseña..." />
+            </View>
 
-             <View style={styles.section}>
-               <Text variant="bodySmall" color="secondary" className="mb-3">
-                 Disabled
-               </Text>
-               <PasswordInput
-                 placeholder="Desactivado..."
-                 defaultValue="noEditable"
-                 disabled
-               />
-             </View>
-            </Card.Content>
-          </Card>
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="secondary" className="mb-3">
+                Disabled
+              </Text>
+              <PasswordInput
+                placeholder="Desactivado..."
+                defaultValue="noEditable"
+                disabled
+              />
+            </View>
+          </Card.Content>
+        </Card>
 
-          {/* ============================================
+        {/* ============================================
               TEXT VARIANTS PARA VISTAS
              ============================================ */}
-          <Card variant="outlined" className="mb-6">
-            <Card.Content>
-              <Text variant="h3" className="mb-6">
-                Text Variants (Vistas)
+        <Card variant="outlined" className="mb-6">
+          <Card.Content>
+            <Text variant="h3" className="mb-6">
+              Text Variants (Vistas)
+            </Text>
+
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="muted" className="mb-2">
+                pageTitle (28px, 600, white) — Login, Bienvenida, Crear Cuenta
               </Text>
+              <Text variant="pageTitle">Iniciar Sesión</Text>
+            </View>
 
-              <View style={styles.section}>
-                <Text variant="bodySmall" color="muted" className="mb-2">
-                  pageTitle (28px, 600, white) — Login, Bienvenida, Crear Cuenta
-                </Text>
-                <Text variant="pageTitle">Iniciar Sesión</Text>
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="muted" className="mb-2">
+                sectionTitle (24px, 600, white, centered) — Confirmación
+                transacciones
+              </Text>
+              <View style={{ alignItems: "center" }}>
+                <Text variant="sectionTitle">¿Confirmas el envío?</Text>
               </View>
+            </View>
 
-              <View style={styles.section}>
-                <Text variant="bodySmall" color="muted" className="mb-2">
-                  sectionTitle (24px, 600, white, centered) — Confirmación transacciones
-                </Text>
-                <View style={{ alignItems: 'center' }}>
-                  <Text variant="sectionTitle">¿Confirmas el envío?</Text>
-                </View>
-              </View>
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="muted" className="mb-2">
+                subtitleLarge (18px, 500, gray200) — Subtitulos
+              </Text>
+              <Text variant="subtitleLarge" color="secondary">
+                Ingresa tus credenciales para continuar
+              </Text>
+            </View>
 
-              <View style={styles.section}>
-                <Text variant="bodySmall" color="muted" className="mb-2">
-                  subtitleLarge (18px, 500, gray200) — Subtitulos
-                </Text>
-                <Text variant="subtitleLarge" color="secondary">
-                  Ingresa tus credenciales para continuar
-                </Text>
-              </View>
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="muted" className="mb-2">
+                bodyLarge (16px, 500, gray200) — Texto base
+              </Text>
+              <Text variant="bodyLarge" color="secondary">
+                Este es el texto principal de las vistas.
+              </Text>
+            </View>
 
-              <View style={styles.section}>
-                <Text variant="bodySmall" color="muted" className="mb-2">
-                  bodyLarge (16px, 500, gray200) — Texto base
-                </Text>
-                <Text variant="bodyLarge" color="secondary">
-                  Este es el texto principal de las vistas.
-                </Text>
-              </View>
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="muted" className="mb-2">
+                captionLarge (14px, 500, gray200) — Textos complementarios
+              </Text>
+              <Text variant="captionLarge" color="secondary">
+                Texto pequeño para ayudas y descripciones.
+              </Text>
+            </View>
 
-              <View style={styles.section}>
-                <Text variant="bodySmall" color="muted" className="mb-2">
-                  captionLarge (14px, 500, gray200) — Textos complementarios
-                </Text>
-                <Text variant="captionLarge" color="secondary">
-                  Texto pequeño para ayudas y descripciones.
-                </Text>
-              </View>
+            <View style={[styles.specRow, { marginTop: spacing[4] }]}>
+              <Text variant="bodySmall" color="secondary">
+                Color primary:
+              </Text>
+              <Text variant="mono">#FFFFFF</Text>
+            </View>
+            <View style={styles.specRow}>
+              <Text variant="bodySmall" color="secondary">
+                Color secondary (gray200):
+              </Text>
+              <Text variant="mono">#C7C9D3</Text>
+            </View>
+            <View style={styles.specRow}>
+              <Text variant="bodySmall" color="secondary">
+                Font family:
+              </Text>
+              <Text variant="mono">Neue Haas Grotesk Display Pro</Text>
+            </View>
+          </Card.Content>
+        </Card>
 
-              <View style={[styles.specRow, { marginTop: spacing[4] }]}>
-                <Text variant="bodySmall" color="secondary">
-                  Color primary:
-                </Text>
-                <Text variant="mono">#FFFFFF</Text>
-              </View>
-              <View style={styles.specRow}>
-                <Text variant="bodySmall" color="secondary">
-                  Color secondary (gray200):
-                </Text>
-                <Text variant="mono">#C7C9D3</Text>
-              </View>
-              <View style={styles.specRow}>
-                <Text variant="bodySmall" color="secondary">
-                  Font family:
-                </Text>
-                <Text variant="mono">Neue Haas Grotesk Display Pro</Text>
-              </View>
-            </Card.Content>
-          </Card>
-
-          {/* ============================================
+        {/* ============================================
               SELECT (COMBO BOX)
              ============================================ */}
         <Card variant="outlined" className="mb-6">
@@ -975,10 +1135,14 @@ const BANK_OPTIONS: SelectOption[] = [
               />
               {selectedCountry && (
                 <Text variant="caption" color="muted" className="mt-2">
-                  Seleccionado: {COUNTRY_OPTIONS.find(o => o.value === selectedCountry)?.label}
+                  Seleccionado:{" "}
+                  {
+                    COUNTRY_OPTIONS.find((o) => o.value === selectedCountry)
+                      ?.label
+                  }
                 </Text>
               )}
-             </View>
+            </View>
 
             <View style={styles.section}>
               <Text variant="bodySmall" color="secondary" className="mb-3">
@@ -993,7 +1157,8 @@ const BANK_OPTIONS: SelectOption[] = [
               />
               {selectedBank && (
                 <Text variant="caption" color="muted" className="mt-2">
-                  Seleccionado: {BANK_OPTIONS.find(o => o.value === selectedBank)?.label}
+                  Seleccionado:{" "}
+                  {BANK_OPTIONS.find((o) => o.value === selectedBank)?.label}
                 </Text>
               )}
             </View>
@@ -1011,7 +1176,11 @@ const BANK_OPTIONS: SelectOption[] = [
               />
               {selectedCrypto && (
                 <Text variant="caption" color="muted" className="mt-2">
-                  Seleccionado: {CRYPTO_OPTIONS.find(o => o.value === selectedCrypto)?.label}
+                  Seleccionado:{" "}
+                  {
+                    CRYPTO_OPTIONS.find((o) => o.value === selectedCrypto)
+                      ?.label
+                  }
                 </Text>
               )}
             </View>
@@ -1094,230 +1263,246 @@ const BANK_OPTIONS: SelectOption[] = [
               <Text variant="mono">24x24</Text>
             </View>
 
-             <View style={styles.specRow}>
-               <Text variant="bodySmall" color="secondary">
-                 Soporta:
-               </Text>
-               <Text variant="mono">label, subtitle, icon, image</Text>
-             </View>
-           </Card.Content>
-         </Card>
+            <View style={styles.specRow}>
+              <Text variant="bodySmall" color="secondary">
+                Soporta:
+              </Text>
+              <Text variant="mono">label, subtitle, icon, image</Text>
+            </View>
+          </Card.Content>
+        </Card>
 
-         {/* ============================================
+        {/* ============================================
              BANK SELECT
             ============================================ */}
-         <Card variant="outlined" className="mb-6">
-           <Card.Content>
-             <Text variant="h3" className="mb-6">
-               BankSelect
-             </Text>
+        <Card variant="outlined" className="mb-6">
+          <Card.Content>
+            <Text variant="h3" className="mb-6">
+              BankSelect
+            </Text>
 
-             <View style={styles.section}>
-               <Text variant="bodySmall" color="secondary" className="mb-3">
-                 Seleccionar banco
-               </Text>
-               <BankSelect
-                 banks={DEFAULT_BANKS}
-                 value={selectedBank}
-                 onChange={(value) => setSelectedBank(value)}
-               />
-               {selectedBank && (
-                 <Text variant="caption" color="muted" className="mt-2">
-                   Seleccionado: {DEFAULT_BANKS.find(b => b.value === selectedBank)?.label}
-                 </Text>
-               )}
-             </View>
-           </Card.Content>
-         </Card>
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="secondary" className="mb-3">
+                Seleccionar banco
+              </Text>
+              <BankSelect
+                banks={DEFAULT_BANKS}
+                value={selectedBank}
+                onChange={(value) => setSelectedBank(value)}
+              />
+              {selectedBank && (
+                <Text variant="caption" color="muted" className="mt-2">
+                  Seleccionado:{" "}
+                  {DEFAULT_BANKS.find((b) => b.value === selectedBank)?.label}
+                </Text>
+              )}
+            </View>
+          </Card.Content>
+        </Card>
 
-         {/* ============================================
+        {/* ============================================
              CURRENCY INPUT
             ============================================ */}
-         <Card variant="outlined" className="mb-6">
-           <Card.Content>
-             <Text variant="h3" className="mb-6">
-               CurrencyInput
-             </Text>
+        <Card variant="outlined" className="mb-6">
+          <Card.Content>
+            <Text variant="h3" className="mb-6">
+              CurrencyInput
+            </Text>
 
-             <View style={styles.section}>
-               <Text variant="bodySmall" color="secondary" className="mb-3">
-                 Monto en USD (con límites: min 10, max 10000)
-               </Text>
-               <CurrencyInput
-                 value={currencyValue}
-                 onChange={setCurrencyValue}
-                 currency="USD"
-                 currencyPosition="left"
-                 min={10}
-                 max={10000}
-                 placeholder="0.00"
-               />
-               <Text variant="caption" color="muted" className="mt-2">
-                 Valor actual: ${currencyValue.toFixed(2)}
-               </Text>
-             </View>
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="secondary" className="mb-3">
+                Monto en USD (con límites: min 10, max 10000)
+              </Text>
+              <CurrencyInput
+                value={currencyValue}
+                onChange={setCurrencyValue}
+                currency="USD"
+                currencyPosition="left"
+                min={10}
+                max={10000}
+                placeholder="0.00"
+              />
+              <Text variant="caption" color="muted" className="mt-2">
+                Valor actual: ${currencyValue.toFixed(2)}
+              </Text>
+            </View>
 
-             <View style={styles.section}>
-               <Text variant="bodySmall" color="secondary" className="mb-3">
-                 Moneda a la derecha
-               </Text>
-               <CurrencyInput
-                 value={currencyValue}
-                 onChange={setCurrencyValue}
-                 currency="EUR"
-                 currencyPosition="right"
-               />
-             </View>
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="secondary" className="mb-3">
+                Moneda a la derecha
+              </Text>
+              <CurrencyInput
+                value={currencyValue}
+                onChange={setCurrencyValue}
+                currency="EUR"
+                currencyPosition="right"
+              />
+            </View>
 
-             <View style={styles.section}>
-               <Text variant="bodySmall" color="secondary" className="mb-3">
-                 Desactivado
-               </Text>
-               <CurrencyInput
-                 value={999.99}
-                 currency="USD"
-                 disabled
-               />
-             </View>
-           </Card.Content>
-         </Card>
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="secondary" className="mb-3">
+                Desactivado
+              </Text>
+              <CurrencyInput value={999.99} currency="USD" disabled />
+            </View>
+          </Card.Content>
+        </Card>
 
-         {/* ============================================
+        {/* ============================================
              SKELETON LOADING
             ============================================ */}
-         <Card variant="outlined" className="mb-6">
-           <Card.Content>
-             <Text variant="h3" className="mb-6">
-               Skeleton Loading
-             </Text>
+        <Card variant="outlined" className="mb-6">
+          <Card.Content>
+            <Text variant="h3" className="mb-6">
+              Skeleton Loading
+            </Text>
 
-             <View style={styles.section}>
-               <Text variant="bodySmall" color="secondary" className="mb-3">
-                 Tipos de Skeleton
-               </Text>
-               
-               <View style={styles.skeletonDemoRow}>
-                 <View style={styles.skeletonDemoItem}>
-                   <Text variant="caption" color="muted" className="mb-2">Circular</Text>
-                   <SkeletonCircle size={48} />
-                 </View>
-                 
-                 <View style={styles.skeletonDemoItem}>
-                   <Text variant="caption" color="muted" className="mb-2">Texto</Text>
-                   <Skeleton width={120} height={16} variant="text" />
-                 </View>
-                 
-                 <View style={styles.skeletonDemoItem}>
-                   <Text variant="caption" color="muted" className="mb-2">Rectangular</Text>
-                   <Skeleton width={80} height={40} variant="rectangular" />
-                 </View>
-               </View>
-             </View>
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="secondary" className="mb-3">
+                Tipos de Skeleton
+              </Text>
 
-             <View style={styles.section}>
-               <Text variant="bodySmall" color="secondary" className="mb-3">
-                 SkeletonText (múltiples líneas)
-               </Text>
-               <View style={styles.skeletonListDemo}>
-                 <SkeletonCircle size={40} />
-                 <View style={styles.skeletonTextContainer}>
-                   <SkeletonText lines={2} />
-                 </View>
-               </View>
-             </View>
-           </Card.Content>
-         </Card>
+              <View style={styles.skeletonDemoRow}>
+                <View style={styles.skeletonDemoItem}>
+                  <Text variant="caption" color="muted" className="mb-2">
+                    Circular
+                  </Text>
+                  <SkeletonCircle size={48} />
+                </View>
 
-         {/* ============================================
+                <View style={styles.skeletonDemoItem}>
+                  <Text variant="caption" color="muted" className="mb-2">
+                    Texto
+                  </Text>
+                  <Skeleton width={120} height={16} variant="text" />
+                </View>
+
+                <View style={styles.skeletonDemoItem}>
+                  <Text variant="caption" color="muted" className="mb-2">
+                    Rectangular
+                  </Text>
+                  <Skeleton width={80} height={40} variant="rectangular" />
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="secondary" className="mb-3">
+                SkeletonText (múltiples líneas)
+              </Text>
+              <View style={styles.skeletonListDemo}>
+                <SkeletonCircle size={40} />
+                <View style={styles.skeletonTextContainer}>
+                  <SkeletonText lines={2} />
+                </View>
+              </View>
+            </View>
+          </Card.Content>
+        </Card>
+
+        {/* ============================================
              HORIZONTAL SCROLL
             ============================================ */}
-         <Card variant="outlined" className="mb-6">
-           <Card.Content>
-             <Text variant="h3" className="mb-6">
-               HorizontalScroll
-             </Text>
+        <Card variant="outlined" className="mb-6">
+          <Card.Content>
+            <Text variant="h3" className="mb-6">
+              HorizontalScroll
+            </Text>
 
-             <View style={styles.section}>
-               <Text variant="bodySmall" color="secondary" className="mb-3">
-                 Botones de comercio (con badges)
-               </Text>
-               <HorizontalScroll
-                 items={HORIZONTAL_ITEMS}
-                 selectedId={selectedHorizontalItem}
-                 onSelect={(id) => setSelectedHorizontalItem(id)}
-               />
-               <Text variant="caption" color="muted" className="mt-2">
-                 Seleccionado: {HORIZONTAL_ITEMS.find(i => i.id === selectedHorizontalItem)?.label}
-               </Text>
-             </View>
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="secondary" className="mb-3">
+                Botones de comercio (con badges)
+              </Text>
+              <HorizontalScroll
+                items={HORIZONTAL_ITEMS}
+                selectedId={selectedHorizontalItem}
+                onSelect={(id) => setSelectedHorizontalItem(id)}
+              />
+              <Text variant="caption" color="muted" className="mt-2">
+                Seleccionado:{" "}
+                {
+                  HORIZONTAL_ITEMS.find((i) => i.id === selectedHorizontalItem)
+                    ?.label
+                }
+              </Text>
+            </View>
 
-             <View style={styles.section}>
-               <Text variant="bodySmall" color="secondary" className="mb-3">
-                 Variante compact
-               </Text>
-               <HorizontalScroll
-                 items={HORIZONTAL_ITEMS.slice(0, 4)}
-                 variant="compact"
-                 onSelect={(id) => console.log('Compact selected:', id)}
-               />
-             </View>
-           </Card.Content>
-         </Card>
+            <View style={styles.section}>
+              <Text variant="bodySmall" color="secondary" className="mb-3">
+                Variante compact
+              </Text>
+              <HorizontalScroll
+                items={HORIZONTAL_ITEMS.slice(0, 4)}
+                variant="compact"
+                onSelect={(id) => console.log("Compact selected:", id)}
+              />
+            </View>
+          </Card.Content>
+        </Card>
 
-         {/* ============================================
+        {/* ============================================
              INFINITE SCROLL LIST
             ============================================ */}
-         <Card variant="outlined" className="mb-6">
-           <Card.Content>
-             <Text variant="h3" className="mb-4">
-               InfiniteScrollList
-             </Text>
-             <Text variant="bodySmall" color="muted" className="mb-6">
-               Lista con scroll infinito, skeleton loading y pull-to-refresh
-             </Text>
+        <Card variant="outlined" className="mb-6">
+          <Card.Content>
+            <Text variant="h3" className="mb-4">
+              InfiniteScrollList
+            </Text>
+            <Text variant="bodySmall" color="muted" className="mb-6">
+              Lista con scroll infinito, skeleton loading y pull-to-refresh
+            </Text>
 
-              <View style={styles.infiniteListDemo}>
-                <ScrollView
-                  style={styles.infiniteListScroll}
-                  contentContainerStyle={styles.infiniteListContent}
-                  showsVerticalScrollIndicator={false}
-                >
-                  {INFINITE_LIST_ITEMS.slice(0, 8).map((item, index) => (
-                    <View key={item.id}>
-                      <View style={styles.listItem}>
-                        <View style={styles.listItemIcon}>
-                          <SkeletonCircle size={40} />
-                        </View>
-                        <View style={styles.listItemContent}>
-                          <Text variant="body">{item.title}</Text>
-                          <Text variant="caption" color="muted">{item.subtitle}</Text>
-                        </View>
-                        <Text variant="body" style={{ color: semantic.brand.primary }}>
-                          ${item.amount}
+            <View style={styles.infiniteListDemo}>
+              <ScrollView
+                style={styles.infiniteListScroll}
+                contentContainerStyle={styles.infiniteListContent}
+                showsVerticalScrollIndicator={false}
+              >
+                {INFINITE_LIST_ITEMS.slice(0, 8).map((item, index) => (
+                  <View key={item.id}>
+                    <View style={styles.listItem}>
+                      <View style={styles.listItemIcon}>
+                        <SkeletonCircle size={40} />
+                      </View>
+                      <View style={styles.listItemContent}>
+                        <Text variant="body">{item.title}</Text>
+                        <Text variant="caption" color="muted">
+                          {item.subtitle}
                         </Text>
                       </View>
-                      {index < 7 && <View style={styles.listDivider} />}
+                      <Text
+                        variant="body"
+                        style={{ color: semantic.brand.primary }}
+                      >
+                        ${item.amount}
+                      </Text>
                     </View>
-                  ))}
-                </ScrollView>
-              </View>
+                    {index < 7 && <View style={styles.listDivider} />}
+                  </View>
+                ))}
+              </ScrollView>
+            </View>
 
-              <View style={styles.specRow}>
-                <Text variant="bodySmall" color="secondary">
-                  Características:
-                </Text>
-                <Text variant="mono">skeleton loading, pull-to-refresh, load more, dividers</Text>
-              </View>
-              <View style={styles.specRow}>
-                <Text variant="bodySmall" color="secondary">
-                  Nota:
-                </Text>
-                <Text variant="mono">Usar como componente principal (no anidado en ScrollView)</Text>
-              </View>
-           </Card.Content>
-         </Card>
+            <View style={styles.specRow}>
+              <Text variant="bodySmall" color="secondary">
+                Características:
+              </Text>
+              <Text variant="mono">
+                skeleton loading, pull-to-refresh, load more, dividers
+              </Text>
+            </View>
+            <View style={styles.specRow}>
+              <Text variant="bodySmall" color="secondary">
+                Nota:
+              </Text>
+              <Text variant="mono">
+                Usar como componente principal (no anidado en ScrollView)
+              </Text>
+            </View>
+          </Card.Content>
+        </Card>
 
-         {/* ============================================
+        {/* ============================================
              ICON BUTTON (BOTÓN REDONDO)
             ============================================ */}
         <Card variant="outlined" className="mb-6">
@@ -1732,72 +1917,68 @@ const BANK_OPTIONS: SelectOption[] = [
               Glass Button
             </Text>
 
-             <View style={styles.glassRow}>
-               <View style={styles.glassSection}>
-                 <Text variant="bodySmall" color="secondary" className="mb-3">
-                   Circular (iconName)
-                 </Text>
-                 <GlassButton
-                   iconName="send"
-                   onPress={() => console.log("Send pressed")}
-                 />
-               </View>
+            <View style={styles.glassRow}>
+              <View style={styles.glassSection}>
+                <Text variant="bodySmall" color="secondary" className="mb-3">
+                  Circular (iconName)
+                </Text>
+                <GlassButton
+                  iconName="send"
+                  onPress={() => console.log("Send pressed")}
+                />
+              </View>
 
-               <View style={styles.glassSection}>
-                 <Text variant="bodySmall" color="secondary" className="mb-3">
-                   Circular 2
-                 </Text>
-                 <GlassButton
-                   iconName="receive"
-                   onPress={() => console.log("Receive pressed")}
-                 />
-               </View>
+              <View style={styles.glassSection}>
+                <Text variant="bodySmall" color="secondary" className="mb-3">
+                  Circular 2
+                </Text>
+                <GlassButton
+                  iconName="receive"
+                  onPress={() => console.log("Receive pressed")}
+                />
+              </View>
 
-               <View style={styles.glassSection}>
-                 <Text variant="bodySmall" color="secondary" className="mb-3">
-                   Con Search
-                 </Text>
-                 <GlassButton
-                   iconName="search"
-                   onPress={() => console.log("Search pressed")}
-                 />
-               </View>
+              <View style={styles.glassSection}>
+                <Text variant="bodySmall" color="secondary" className="mb-3">
+                  Con Search
+                </Text>
+                <GlassButton
+                  iconName="search"
+                  onPress={() => console.log("Search pressed")}
+                />
+              </View>
 
-               <View style={styles.glassSection}>
-                 <Text variant="bodySmall" color="secondary" className="mb-3">
-                   Disabled
-                 </Text>
-                 <GlassButton
-                   iconName="clock"
-                   disabled
-                   onPress={() => {}}
-                 />
-               </View>
-             </View>
+              <View style={styles.glassSection}>
+                <Text variant="bodySmall" color="secondary" className="mb-3">
+                  Disabled
+                </Text>
+                <GlassButton iconName="clock" disabled onPress={() => {}} />
+              </View>
+            </View>
 
-             <View style={styles.glassRow}>
-               <View style={styles.glassSection}>
-                 <Text variant="bodySmall" color="secondary" className="mb-3">
-                   + Label
-                 </Text>
-                 <GlassButton
-                   iconName="add"
-                   label="Agregar"
-                   onPress={() => {}}
-                 />
-               </View>
+            <View style={styles.glassRow}>
+              <View style={styles.glassSection}>
+                <Text variant="bodySmall" color="secondary" className="mb-3">
+                  + Label
+                </Text>
+                <GlassButton
+                  iconName="add"
+                  label="Agregar"
+                  onPress={() => {}}
+                />
+              </View>
 
-               <View style={styles.glassSection}>
-                 <Text variant="bodySmall" color="secondary" className="mb-3">
-                   Enviar
-                 </Text>
-                 <GlassButton
-                   iconName="send"
-                   label="Enviar"
-                   onPress={() => {}}
-                 />
-               </View>
-             </View>
+              <View style={styles.glassSection}>
+                <Text variant="bodySmall" color="secondary" className="mb-3">
+                  Enviar
+                </Text>
+                <GlassButton
+                  iconName="send"
+                  label="Enviar"
+                  onPress={() => {}}
+                />
+              </View>
+            </View>
           </Card.Content>
         </Card>
 
@@ -2273,67 +2454,67 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing[3],
     minWidth: 100,
   },
-   glassButtonContent: {
-     flex: 1,
-     flexDirection: "row",
-     alignItems: "center",
-     justifyContent: "center",
-     gap: 4,
-     zIndex: 1,
-   },
-   skeletonDemoRow: {
-     flexDirection: "row",
-     gap: spacing[6],
-     alignItems: "flex-start",
-   },
-   skeletonDemoItem: {
-     alignItems: "center",
-   },
-   skeletonListDemo: {
-     flexDirection: "row",
-     alignItems: "center",
-     gap: spacing[3],
-     padding: spacing[3],
-     backgroundColor: semantic.surface.secondary,
-     borderRadius: radius.sm,
-   },
-   skeletonTextContainer: {
-     flex: 1,
-     gap: spacing[2],
-   },
-    infiniteListDemo: {
-      height: 300,
-      width: "100%",
-      backgroundColor: semantic.background.secondary,
-      borderRadius: radius.sm,
-      overflow: "hidden",
-    },
-    infiniteListScroll: {
-      flex: 1,
-      width: "100%",
-    },
-    infiniteListContent: {
-      flexGrow: 1,
-    },
-    listItem: {
-      flexDirection: "row",
-      alignItems: "center",
-      padding: spacing[3],
-      gap: spacing[3],
-    },
-    listItemIcon: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-      overflow: "hidden",
-    },
-    listItemContent: {
-      flex: 1,
-      gap: spacing[1],
-    },
-    listDivider: {
-      height: 1,
-      backgroundColor: semantic.border.subtle,
-      marginHorizontal: spacing[3],
-    },
-  });
+  glassButtonContent: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 4,
+    zIndex: 1,
+  },
+  skeletonDemoRow: {
+    flexDirection: "row",
+    gap: spacing[6],
+    alignItems: "flex-start",
+  },
+  skeletonDemoItem: {
+    alignItems: "center",
+  },
+  skeletonListDemo: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing[3],
+    padding: spacing[3],
+    backgroundColor: semantic.surface.secondary,
+    borderRadius: radius.sm,
+  },
+  skeletonTextContainer: {
+    flex: 1,
+    gap: spacing[2],
+  },
+  infiniteListDemo: {
+    height: 300,
+    width: "100%",
+    backgroundColor: semantic.background.secondary,
+    borderRadius: radius.sm,
+    overflow: "hidden",
+  },
+  infiniteListScroll: {
+    flex: 1,
+    width: "100%",
+  },
+  infiniteListContent: {
+    flexGrow: 1,
+  },
+  listItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: spacing[3],
+    gap: spacing[3],
+  },
+  listItemIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    overflow: "hidden",
+  },
+  listItemContent: {
+    flex: 1,
+    gap: spacing[1],
+  },
+  listDivider: {
+    height: 1,
+    backgroundColor: semantic.border.subtle,
+    marginHorizontal: spacing[3],
+  },
+});

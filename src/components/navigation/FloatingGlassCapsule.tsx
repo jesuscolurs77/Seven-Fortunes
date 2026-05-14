@@ -13,19 +13,35 @@ export interface FloatingGlassCapsuleProps {
     'highlightOpacity'
   >;
   height?: number;
+  colorScheme?: 'light' | 'dark';
 }
 
 export function FloatingGlassCapsule({
   animation,
   height = 40,
+  colorScheme = 'dark',
 }: FloatingGlassCapsuleProps) {
   const isGlassAvailable = useIsGlassAvailable();
 
   const { capsuleAnimatedStyle, highlightAnimatedStyle, highlightOpacity } = animation;
 
-  const fallbackBgColor = 'rgba(255, 255, 255, 0.18)';
-  const fallbackBorderColor = 'rgba(255, 255, 255, 0.25)';
-  const highlightBgColor = 'rgba(255, 255, 255, 0.3)';
+  const isLight = colorScheme === 'light';
+
+  const fallbackBgColor = isLight
+    ? 'rgba(0, 0, 0, 0.08)'
+    : 'rgba(255, 255, 255, 0.18)';
+  const fallbackBorderColor = isLight
+    ? 'rgba(0, 0, 0, 0.12)'
+    : 'rgba(255, 255, 255, 0.25)';
+  const highlightBgColor = isLight
+    ? 'rgba(0, 0, 0, 0.06)'
+    : 'rgba(255, 255, 255, 0.3)';
+  const glassTint = isLight
+    ? 'rgba(0, 0, 0, 0.10)'
+    : 'rgba(255, 255, 255, 0.15)';
+  const cornerBorderColor = isLight
+    ? 'rgba(0, 0, 0, 0.18)'
+    : 'rgba(255, 255, 255, 0.3)';
 
   if (!isGlassAvailable) {
     return (
@@ -64,8 +80,8 @@ export function FloatingGlassCapsule({
       <GlassViewComponent
         style={StyleSheet.absoluteFill}
         glassEffectStyle="regular"
-        tintColor="rgba(255, 255, 255, 0.15)"
-        colorScheme="dark"
+        tintColor={glassTint}
+        colorScheme={colorScheme}
         isInteractive={true}
       />
       <Animated.View
@@ -75,8 +91,10 @@ export function FloatingGlassCapsule({
           highlightAnimatedStyle,
         ]}
       />
-      <View style={styles.cornerTopLeft} />
-      <View style={styles.cornerBottomRight} />
+      <View style={[styles.cornerTopLeft, { borderColor: cornerBorderColor }]} />
+      <View
+        style={[styles.cornerBottomRight, { borderColor: cornerBorderColor }]}
+      />
     </Animated.View>
   );
 }

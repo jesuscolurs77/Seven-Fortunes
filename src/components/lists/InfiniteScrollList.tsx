@@ -1,19 +1,22 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from "react";
 import {
-  View,
+  ActivityIndicator,
   FlatList,
-  StyleSheet,
   Text as RNText,
   RefreshControl,
+  StyleSheet,
+  View,
   type FlatListProps,
   type ListRenderItem,
-} from 'react-native';
-import { SvgXml } from 'react-native-svg';
+} from "react-native";
 
-import { palette, radius, spacing, semantic } from '@/theme';
-import { Skeleton, SkeletonText, SkeletonCircle } from '@/components/loaders/Skeleton';
+import { Icon } from "@/icons";
+import { palette, semantic, spacing } from "@/theme";
 
-export interface InfiniteScrollListProps<T> extends Omit<FlatListProps<T>, 'data' | 'renderItem' | 'refreshControl'> {
+export interface InfiniteScrollListProps<T> extends Omit<
+  FlatListProps<T>,
+  "data" | "renderItem" | "refreshControl"
+> {
   data: T[];
   renderItem: ListRenderItem<T>;
   keyExtractor?: (item: T, index: number) => string;
@@ -24,6 +27,7 @@ export interface InfiniteScrollListProps<T> extends Omit<FlatListProps<T>, 'data
   hasMore?: boolean;
   loadingMore?: boolean;
   emptyText?: string;
+  emptyIcon?: string;
   loadingSkeletonCount?: number;
   showDividers?: boolean;
   renderSkeletonItem?: () => React.ReactNode;
@@ -31,15 +35,11 @@ export interface InfiniteScrollListProps<T> extends Omit<FlatListProps<T>, 'data
 
 const DEFAULT_SKELETON_COUNT = 5;
 
-const skeletonDotXml = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-  <rect x="6.35352" y="5.64648" width="12" height="12" rx="6" fill="white" fill-opacity="0.15"/>
-</svg>`;
-
 function DefaultSkeletonItem() {
   return (
     <View style={styles.skeletonItem}>
       <View style={styles.skeletonIconBox}>
-        <SvgXml xml={skeletonDotXml} />
+        <Icon name="reload" color={palette.white} opacity={0.15} />
       </View>
       <View style={styles.skeletonMiddle}>
         <View style={styles.skeletonBar} />
@@ -56,14 +56,20 @@ function DefaultSkeletonItem() {
 function LoadingMoreIndicator() {
   return (
     <View style={styles.loadingMoreContainer}>
-      <Skeleton height={4} width={80} borderRadius={2} />
+      <ActivityIndicator size="small" color={palette.blue[500]} />
+      <RNText style={styles.loadingMoreText}>Loading more...</RNText>
     </View>
   );
 }
 
-function EmptyState({ text }: { text: string }) {
+function EmptyState({ text, icon }: { text: string; icon?: string }) {
   return (
     <View style={styles.emptyContainer}>
+      {icon && (
+        <View style={styles.emptyIconBox}>
+          <Icon name={icon} color={palette.gray[600]} />
+        </View>
+      )}
       <RNText style={styles.emptyText}>{text}</RNText>
     </View>
   );
@@ -79,23 +85,21 @@ export function InfiniteScrollList<T>({
   onLoadMore,
   hasMore = true,
   loadingMore = false,
-  emptyText = 'No hay elementos que mostrar',
+  emptyText = "No hay elementos que mostrar",
   loadingSkeletonCount = DEFAULT_SKELETON_COUNT,
   showDividers = false,
   renderSkeletonItem,
+  emptyIcon,
   style,
   contentContainerStyle,
   ...props
 }: InfiniteScrollListProps<T>) {
-  const defaultKeyExtractor = useCallback(
-    (item: T, index: number): string => {
-      if (typeof item === 'object' && item !== null && 'id' in item) {
-        return String((item as { id: string | number }).id);
-      }
-      return String(index);
-    },
-    []
-  );
+  const defaultKeyExtractor = useCallback((item: T, index: number): string => {
+    if (typeof item === "object" && item !== null && "id" in item) {
+      return String((item as { id: string | number }).id);
+    }
+    return String(index);
+  }, []);
 
   const handleEndReached = useCallback(() => {
     if (hasMore && !loadingMore && onLoadMore) {
@@ -115,7 +119,7 @@ export function InfiniteScrollList<T>({
         </View>
       );
     },
-    [renderItem, showDividers, data.length]
+    [renderItem, showDividers, data.length],
   );
 
   const renderFooter = useCallback(() => {
@@ -125,7 +129,7 @@ export function InfiniteScrollList<T>({
     if (!hasMore && data.length > 0) {
       return (
         <View style={styles.endContainer}>
-          <RNText style={styles.endText}>Has llegado al final</RNText>
+          <RNText style={styles.endText}>No more moves to show</RNText>
         </View>
       );
     }
@@ -136,17 +140,21 @@ export function InfiniteScrollList<T>({
     if (loading) {
       return null;
     }
-    return <EmptyState text={emptyText} />;
-  }, [loading, emptyText]);
+    return <EmptyState text={emptyText} icon={emptyIcon} />;
+  }, [loading, emptyText, emptyIcon]);
 
-  if (loading && data.length === 0) {
+  const showSkeleton = loading && data.length === 0;
+
+  if (showSkeleton) {
     const SkeletonItem = renderSkeletonItem || DefaultSkeletonItem;
     return (
       <View style={[styles.skeletonContainer, style]}>
         {Array.from({ length: loadingSkeletonCount }).map((_, index) => (
           <View key={index}>
             <SkeletonItem />
-            {showDividers && index < loadingSkeletonCount - 1 && <View style={styles.divider} />}
+            {showDividers && index < loadingSkeletonCount - 1 && (
+              <View style={styles.divider} />
+            )}
           </View>
         ))}
       </View>
@@ -188,58 +196,59 @@ export function InfiniteScrollList<T>({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
+    width: "100%",
   },
   skeletonContainer: {
-    width: '100%',
+    flex: 1,
+    width: "100%",
   },
   contentContainer: {
     flexGrow: 1,
   },
   emptyContentContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   skeletonItem: {
-    display: 'flex',
+    display: "flex",
     paddingVertical: 16,
-    alignItems: 'center',
+    alignItems: "center",
     gap: 12,
-    alignSelf: 'stretch',
-    flexDirection: 'row',
+    alignSelf: "stretch",
+    flexDirection: "row",
   },
   skeletonIconBox: {
-    display: 'flex',
+    display: "flex",
     width: 42,
     height: 42,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 16,
     backgroundColor: palette.gray[900],
   },
   skeletonMiddle: {
-    display: 'flex',
-    alignItems: 'flex-start',
+    display: "flex",
+    alignItems: "flex-start",
     gap: 12,
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: "column",
   },
   skeletonBar: {
     width: 128,
     height: 14,
     borderRadius: 4,
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    backgroundColor: "rgba(255, 255, 255, 0.15)",
   },
   skeletonBarSmall: {
     width: 80,
     height: 12,
     borderRadius: 4,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    backgroundColor: "rgba(255, 255, 255, 0.05)",
   },
   skeletonRight: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-end',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-end",
     gap: 4,
     flex: 1,
   },
@@ -247,13 +256,13 @@ const styles = StyleSheet.create({
     width: 68,
     height: 12,
     borderRadius: 4,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    backgroundColor: "rgba(255, 255, 255, 0.05)",
   },
   skeletonAmountBar: {
     width: 48,
     height: 14,
     borderRadius: 4,
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    backgroundColor: "rgba(255, 255, 255, 0.15)",
   },
   divider: {
     height: 1,
@@ -261,24 +270,41 @@ const styles = StyleSheet.create({
     marginHorizontal: spacing[4],
   },
   loadingMoreContainer: {
-    paddingVertical: spacing[4],
-    alignItems: 'center',
+    paddingVertical: spacing[5],
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: spacing[2],
+  },
+  loadingMoreText: {
+    fontSize: 13,
+    color: semantic.text.muted,
+    includeFontPadding: false,
   },
   emptyContainer: {
     flex: 1,
     padding: spacing[8],
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
+    gap: spacing[3],
+  },
+  emptyIconBox: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: palette.gray[900],
+    alignItems: "center",
+    justifyContent: "center",
   },
   emptyText: {
     fontSize: 14,
     color: semantic.text.muted,
     includeFontPadding: false,
-    textAlign: 'center',
+    textAlign: "center",
   },
   endContainer: {
     paddingVertical: spacing[4],
-    alignItems: 'center',
+    alignItems: "center",
   },
   endText: {
     fontSize: 12,
@@ -286,5 +312,3 @@ const styles = StyleSheet.create({
     includeFontPadding: false,
   },
 });
-
-
