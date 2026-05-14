@@ -13,6 +13,8 @@ export interface InputAmountProps extends Omit<TextInputProps, 'style'> {
   label?: string;
   hint?: string;
   prefix?: string;
+  hasError?: boolean;
+  errorMessage?: string;
 }
 
 function formatThousands(value: string): string {
@@ -27,6 +29,8 @@ export function InputAmount({
   prefix = '$',
   onChangeText,
   placeholder,
+  hasError = false,
+  errorMessage,
   ...props
 }: InputAmountProps) {
   const [isFocused, setIsFocused] = useState(false);
@@ -59,7 +63,9 @@ export function InputAmount({
           {...props}
         />
       </View>
-      <RNText style={styles.hint}>{hint}</RNText>
+      <RNText style={[styles.hint, hasError && styles.hintError]}>
+        {errorMessage || hint}
+      </RNText>
     </View>
   );
 }
@@ -115,5 +121,8 @@ const styles = StyleSheet.create({
     fontFamily: 'NeueHaasGroteskDisplayPro',
     fontSize: 14,
     fontWeight: '400',
+  },
+  hintError: {
+    color: '#FF453A',
   },
 });

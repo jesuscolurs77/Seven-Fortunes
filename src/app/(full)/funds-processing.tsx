@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     color: palette.white,
     fontFamily: fontFamily.displaySemiBold,
     fontSize: 24,
+    lineHeight: 32,
   },
   subtitle: {
     alignSelf: "stretch",

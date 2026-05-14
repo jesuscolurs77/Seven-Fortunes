@@ -6,27 +6,15 @@ import {
   Button,
   Select,
   Text,
-  type SelectOption,
 } from '@/components';
+import { BankPreviewTrigger } from '@/components/selects/BankSelect';
 import { InputAmount } from '@/components/inputs/InputAmount';
+import { CARD_OPTIONS } from '@/constants/banks';
 import { palette, semantic, spacing } from '@/theme';
 
 const FEE_RATE = 0.025;
-
-const CARD_OPTIONS: SelectOption[] = [
-  {
-    value: 'acc_001',
-    label: 'Visa •••• 4147',
-    subtitle: 'Maria Lafourcade',
-    image: require('../../img/bank/JP_morgan.png'),
-  },
-  {
-    value: 'acc_002',
-    label: 'Visa •••• 9943',
-    subtitle: 'Maria Lafourcade',
-    image: require('../../img/bank/JP_morgan.png'),
-  },
-];
+const MIN_AMOUNT = 10;
+const MAX_AMOUNT = 10000;
 
 export default function AddFundsScreen() {
   const router = useRouter();
@@ -37,6 +25,15 @@ export default function AddFundsScreen() {
     return parseInt(amount, 10) || 0;
   }, [amount]);
 
+  const amountError = useMemo(() => {
+    if (numericAmount <= 0) return '';
+    if (numericAmount < MIN_AMOUNT) return `Minimum amount is $${MIN_AMOUNT}.00`;
+    if (numericAmount > MAX_AMOUNT) return `Maximum amount is $${MAX_AMOUNT.toLocaleString()}.00`;
+    return '';
+  }, [numericAmount]);
+
+  const hasAmountError = amountError.length > 0;
+
   const fee = useMemo(() => {
     return numericAmount * FEE_RATE;
   }, [numericAmount]);
@@ -45,7 +42,7 @@ export default function AddFundsScreen() {
     return numericAmount + fee;
   }, [numericAmount, fee]);
 
-  const isButtonDisabled = numericAmount <= 0 || !selectedCard;
+  const isButtonDisabled = numericAmount <= 0 || hasAmountError || !selectedCard;
 
   return (
     <View style={styles.container}>
@@ -57,6 +54,8 @@ export default function AddFundsScreen() {
         <InputAmount
           label="Amount"
           onChangeText={setAmount}
+          hasError={hasAmountError}
+          errorMessage={amountError}
         />
 
         <View style={styles.section}>
@@ -70,6 +69,13 @@ export default function AddFundsScreen() {
             onChange={(value) => setSelectedCard(value)}
             modalTitle="Select card"
             showSearch={false}
+            renderTrigger={({ selectedOption, onPress, placeholder: ph }) => (
+              <BankPreviewTrigger
+                selectedOption={selectedOption}
+                placeholder={ph}
+                onPress={onPress}
+              />
+            )}
           />
         </View>
 
@@ -111,7 +117,7 @@ export default function AddFundsScreen() {
           disabled={isButtonDisabled}
           onPress={() => router.push("/(full)/funds-processing")}
         >
-          Add money
+          Add ${numericAmount.toFixed(2)} USD
         </Button>
       </View>
     </View>

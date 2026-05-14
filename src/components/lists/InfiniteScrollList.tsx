@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   View,
   FlatList,
@@ -142,7 +142,7 @@ export function InfiniteScrollList<T>({
   if (loading && data.length === 0) {
     const SkeletonItem = renderSkeletonItem || DefaultSkeletonItem;
     return (
-      <View style={[styles.container, style]}>
+      <View style={[styles.skeletonContainer, style]}>
         {Array.from({ length: loadingSkeletonCount }).map((_, index) => (
           <View key={index}>
             <SkeletonItem />
@@ -188,6 +188,9 @@ export function InfiniteScrollList<T>({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
+  },
+  skeletonContainer: {
     width: '100%',
   },
   contentContainer: {

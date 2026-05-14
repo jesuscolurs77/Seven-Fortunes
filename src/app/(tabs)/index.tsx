@@ -212,6 +212,7 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
     paddingHorizontal: MAIN_PADDING_H,
+    overflow: "hidden",
   },
   container: {
     display: "flex",

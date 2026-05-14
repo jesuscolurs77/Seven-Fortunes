@@ -35,6 +35,13 @@ export interface SelectProps {
   showSearch?: boolean;
   searchPlaceholder?: string;
   modalTitle?: string;
+  renderTrigger?: (props: {
+    selectedOption?: SelectOption;
+    isOpen: boolean;
+    disabled: boolean;
+    placeholder: string;
+    onPress: () => void;
+  }) => React.ReactNode;
 }
 
 const SEARCH_HEIGHT = 48;
@@ -58,6 +65,7 @@ export function Select({
   showSearch = true,
   searchPlaceholder = 'Buscar...',
   modalTitle,
+  renderTrigger,
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -127,19 +135,31 @@ export function Select({
   const handleSheetPress = useCallback((_e: any) => {
   }, []);
 
+  const triggerProps = {
+    selectedOption,
+    isOpen,
+    disabled,
+    placeholder,
+    onPress: handleOpen,
+  };
+
   if (Platform.OS === 'ios') {
     return (
       <View style={styles.container}>
-        <SelectTrigger
-          placeholder={placeholder}
-          selectedLabel={selectedOption?.label}
-          selectedIcon={selectedOption?.icon}
-          selectedImage={selectedOption?.image}
-          disabled={disabled}
-          isFocused={isOpen}
-          hasError={hasError}
-          onPress={handleOpen}
-        />
+        {renderTrigger ? (
+          renderTrigger(triggerProps)
+        ) : (
+          <SelectTrigger
+            placeholder={placeholder}
+            selectedLabel={selectedOption?.label}
+            selectedIcon={selectedOption?.icon}
+            selectedImage={selectedOption?.image}
+            disabled={disabled}
+            isFocused={isOpen}
+            hasError={hasError}
+            onPress={handleOpen}
+          />
+        )}
 
         <Modal
           visible={isOpen}
@@ -213,16 +233,20 @@ export function Select({
 
   return (
     <View style={styles.container}>
-      <SelectTrigger
-        placeholder={placeholder}
-        selectedLabel={selectedOption?.label}
-        selectedIcon={selectedOption?.icon}
-        selectedImage={selectedOption?.image}
-        disabled={disabled}
-        isFocused={isOpen}
-        hasError={hasError}
-        onPress={handleOpen}
-      />
+      {renderTrigger ? (
+        renderTrigger(triggerProps)
+      ) : (
+        <SelectTrigger
+          placeholder={placeholder}
+          selectedLabel={selectedOption?.label}
+          selectedIcon={selectedOption?.icon}
+          selectedImage={selectedOption?.image}
+          disabled={disabled}
+          isFocused={isOpen}
+          hasError={hasError}
+          onPress={handleOpen}
+        />
+      )}
 
       <Modal
         visible={isOpen}
