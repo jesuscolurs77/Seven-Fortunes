@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useMemo, useState } from "react";
 import {
   Text as RNText,
@@ -84,6 +84,7 @@ function SummaryRow({ label, value }: { label: string; value: string }) {
 }
 
 export default function SendSummaryScreen() {
+  const router = useRouter();
   const params = useLocalSearchParams<{ name?: string; amount?: string }>();
   const initialName = params.name ?? "";
   const numericAmount = parseInt(params.amount ?? "0", 10) || 0;
@@ -112,7 +113,7 @@ export default function SendSummaryScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.amountSection}>
-          <SectionHeader icon="arrow-up" label="Amount to send" />
+          <SectionHeader icon="send" label="Amount to send" />
           <View style={styles.amountRow}>
             <RNText style={styles.amountText}>
               ${" "}
@@ -186,7 +187,20 @@ export default function SendSummaryScreen() {
       </ScrollView>
 
       <View style={styles.bottomSection}>
-        <Button variant="primary" size="lg" onPress={() => {}}>
+        <Button
+          variant="primary"
+          size="lg"
+          onPress={() =>
+            router.replace({
+              pathname: "/(full)/funds-processing",
+              params: {
+                type: "transfer",
+                name: contactName,
+                amount: String(numericAmount),
+              },
+            })
+          }
+        >
           Confirm & Send
         </Button>
       </View>

@@ -1,4 +1,4 @@
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useRef } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import LottieView from "lottie-react-native";
@@ -10,11 +10,25 @@ const loadingAnim = require("@/animations/loading.json");
 
 export default function FundsProcessingScreen() {
   const router = useRouter();
+  const params = useLocalSearchParams<{
+    type?: string;
+    name?: string;
+    amount?: string;
+  }>();
   const lottieRef = useRef<LottieView>(null);
+
+  const isTransfer = params.type === "transfer";
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.replace("/(full)/funds-confirmation");
+      router.replace({
+        pathname: "/(full)/funds-confirmation",
+        params: {
+          ...(params.type ? { type: params.type } : {}),
+          ...(params.name ? { name: params.name } : {}),
+          ...(params.amount ? { amount: params.amount } : {}),
+        },
+      });
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
@@ -36,7 +50,11 @@ export default function FundsProcessingScreen() {
       </View>
 
       <View style={styles.textBlock}>
-        <Text style={styles.title}>Your funds are being added</Text>
+        <Text style={styles.title}>
+          {isTransfer
+            ? "Your transfer is being processed"
+            : "Your funds are being added"}
+        </Text>
         <Text variant="body" style={styles.subtitle}>
           Please wait a moment while we process your transaction.
         </Text>

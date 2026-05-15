@@ -73,6 +73,10 @@ export default function FullScreenLayout() {
             name="add-funds"
             options={{ gestureEnabled: false, fullScreenGestureEnabled: false }}
           />
+          <Stack.Screen
+            name="funds-confirmation"
+            options={{ gestureEnabled: false, fullScreenGestureEnabled: false }}
+          />
         </Stack>
       </SafeAreaView>
     </View>
