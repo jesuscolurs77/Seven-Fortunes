@@ -92,7 +92,12 @@ export default function HomeScreen() {
     ({ item }: { item: Transaction }) => (
       <TouchableOpacity
         style={styles.transactionRow}
-        onPress={() => router.push("/(tabs)/add-money")}
+        onPress={() =>
+          router.push({
+            pathname: "/(full)/transaction-detail",
+            params: { id: item.id },
+          })
+        }
         activeOpacity={0.7}
       >
         <View style={styles.transactionIconWrapper}>
