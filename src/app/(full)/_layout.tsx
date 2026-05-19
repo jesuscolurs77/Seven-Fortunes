@@ -18,6 +18,7 @@ const TITLES: Record<string, string> = {
   "send-summary": "Transaction Summary",
   "select-payment-method": "Selecciona método de pago",
   "pay-qr": "Pagar con QR",
+  merchants: "Nuestros Convenios",
 };
 
 const NO_NAVBAR_ROUTES = new Set(["funds-processing", "funds-confirmation"]);

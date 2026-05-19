@@ -137,6 +137,14 @@ export {
   type ContactListProps,
 } from './contacts';
 
+// Merchants
+export {
+  MerchantList,
+  type Merchant,
+  type MerchantSection,
+  type MerchantListProps,
+} from './merchants';
+
 // Feedback
 export {
   ToastContent,

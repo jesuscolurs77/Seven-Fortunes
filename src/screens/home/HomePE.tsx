@@ -268,7 +268,11 @@ export default function HomePE() {
           <Text variant="subtitleLarge" color="primary">
             Convenios (99)
           </Text>
-          <TouchableOpacity onPress={() => {}} activeOpacity={0.7} hitSlop={8}>
+          <TouchableOpacity
+            onPress={() => router.push("/(full)/merchants")}
+            activeOpacity={0.7}
+            hitSlop={8}
+          >
             <View style={styles.seeAllUnderline}>
               <RNText style={styles.seeAllLink}>Ver todos</RNText>
             </View>
