@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
 import {
-  View,
+  Image,
+  Text as RNText,
   ScrollView,
   StyleSheet,
-  Text as RNText,
-  TouchableWithoutFeedback,
-  Image,
+  View,
   type ImageSourcePropType,
   type ViewStyle,
-} from 'react-native';
+} from "react-native";
 
-import { palette, radius, spacing, semantic } from '@/theme';
+import { PressableScale } from "@/components/common/PressableScale";
+import { fontFamily, palette, semantic, spacing } from "@/theme";
 
 export interface HorizontalScrollItem {
   id: string;
@@ -29,7 +29,7 @@ export interface HorizontalScrollProps {
   showIndicators?: boolean;
   itemWidth?: number;
   itemHeight?: number;
-  variant?: 'default' | 'compact' | 'large';
+  variant?: "default" | "compact" | "large";
   style?: ViewStyle;
 }
 
@@ -42,18 +42,18 @@ function CommerceButton({
   item,
   selected,
   onPress,
-  variant = 'default',
+  variant = "default",
 }: {
   item: HorizontalScrollItem;
   selected: boolean;
   onPress: () => void;
-  variant?: 'default' | 'compact' | 'large';
+  variant?: "default" | "compact" | "large";
 }) {
   const getItemHeight = () => {
     switch (variant) {
-      case 'compact':
+      case "compact":
         return COMPACT_ITEM_HEIGHT;
-      case 'large':
+      case "large":
         return LARGE_ITEM_HEIGHT;
       default:
         return DEFAULT_ITEM_HEIGHT;
@@ -79,46 +79,41 @@ function CommerceButton({
   };
 
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View
-        style={[
-          styles.itemContainer,
-          { height: getItemHeight() },
-          selected && styles.itemSelected,
-        ]}
-      >
-        {item.badge !== undefined && (
-          <View style={styles.badgeContainer}>
-            <RNText style={styles.badgeText}>
-              {typeof item.badge === 'number' ? item.badge : item.badge}
-            </RNText>
-          </View>
-        )}
-
-        <View style={styles.itemIconWrapper}>
-          {renderIcon()}
+    <PressableScale
+      onPress={onPress}
+      activeOpacity={0.6}
+      style={[
+        styles.itemContainer,
+        variant !== "default" && { height: getItemHeight() },
+        selected && styles.itemSelected,
+      ]}
+    >
+      {item.badge !== undefined && (
+        <View style={styles.badgeContainer}>
+          <RNText style={styles.badgeText}>
+            {typeof item.badge === "number" ? item.badge : item.badge}
+          </RNText>
         </View>
+      )}
 
-        {variant !== 'compact' && (
-          <View style={styles.itemTextContainer}>
-            <RNText
-              style={[
-                styles.itemLabel,
-                selected && styles.itemLabelSelected,
-              ]}
-              numberOfLines={1}
-            >
-              {item.label}
+      <View style={styles.itemIconWrapper}>{renderIcon()}</View>
+
+      {variant !== "compact" && (
+        <View style={styles.itemTextContainer}>
+          <RNText
+            style={[styles.itemLabel, selected && styles.itemLabelSelected]}
+            numberOfLines={1}
+          >
+            {item.label}
+          </RNText>
+          {item.subtitle && variant === "large" && (
+            <RNText style={styles.itemSubtitle} numberOfLines={1}>
+              {item.subtitle}
             </RNText>
-            {item.subtitle && variant === 'large' && (
-              <RNText style={styles.itemSubtitle} numberOfLines={1}>
-                {item.subtitle}
-              </RNText>
-            )}
-          </View>
-        )}
-      </View>
-    </TouchableWithoutFeedback>
+          )}
+        </View>
+      )}
+    </PressableScale>
   );
 }
 
@@ -127,7 +122,7 @@ export function HorizontalScroll({
   selectedId,
   onSelect,
   showIndicators = false,
-  variant = 'default',
+  variant = "default",
   style,
 }: HorizontalScrollProps) {
   const handlePress = (item: HorizontalScrollItem) => {
@@ -174,7 +169,7 @@ export function HorizontalScroll({
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: "100%",
   },
   scrollContent: {
     paddingHorizontal: spacing[4],
@@ -183,79 +178,77 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     width: DEFAULT_ITEM_WIDTH,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: spacing[2],
-    paddingHorizontal: spacing[2],
-    borderRadius: radius.lg,
-    backgroundColor: semantic.surface.secondary,
-    borderWidth: 1,
-    borderColor: 'transparent',
+    paddingHorizontal: 0,
+    borderRadius: 16,
+    gap: spacing[2],
   },
   itemSelected: {
-    backgroundColor: semantic.brand.muted,
-    borderColor: semantic.brand.primary,
+    backgroundColor: "rgba(255,255,255,0.06)",
   },
   itemIconWrapper: {
-    width: 44,
-    height: 44,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: spacing[2],
+    width: 56,
+    height: 56,
+    aspectRatio: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   itemIconContainer: {
     width: 32,
     height: 32,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   itemImage: {
-    width: 32,
-    height: 32,
+    width: "100%",
+    height: "100%",
   },
   itemTextContainer: {
-    alignItems: 'center',
-    width: '100%',
+    alignItems: "center",
+    width: "100%",
   },
   itemLabel: {
-    fontSize: 12,
-    fontWeight: '500',
-    color: semantic.text.secondary,
+    fontSize: 14,
+    fontWeight: "500",
+    fontFamily: fontFamily.displayMedium,
+    color: palette.white,
     includeFontPadding: false,
-    textAlign: 'center',
+    textAlign: "center",
   },
   itemLabelSelected: {
-    color: semantic.text.primary,
-    fontWeight: '600',
+    color: palette.white,
+    fontWeight: "500",
   },
   itemSubtitle: {
     fontSize: 10,
     color: semantic.text.muted,
     includeFontPadding: false,
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 2,
   },
   badgeContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 4,
     right: 4,
     minWidth: 20,
     height: 20,
     borderRadius: 10,
     backgroundColor: semantic.brand.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingHorizontal: 4,
   },
   badgeText: {
     fontSize: 10,
-    fontWeight: '600',
+    fontWeight: "600",
     color: palette.white,
     includeFontPadding: false,
   },
   indicatorsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     gap: spacing[2],
     marginTop: spacing[2],
   },
@@ -270,5 +263,3 @@ const styles = StyleSheet.create({
     backgroundColor: semantic.brand.primary,
   },
 });
-
-

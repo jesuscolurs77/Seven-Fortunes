@@ -332,7 +332,8 @@ const styles = StyleSheet.create({
   },
   label: {
     color: palette.gray[200],
-    fontFamily: fontFamily.displayMedium,
+    fontFamily: fontFamily.body,
+    fontWeight: "400",
     fontSize: 16,
   },
   firstLabel: {

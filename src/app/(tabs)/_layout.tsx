@@ -23,7 +23,7 @@ import { AddMoneyIcon, HomeIcon, ProfileIcon } from "@/icons/tab-icons";
 const HOME_BG = require("../../img/Background_home.png");
 
 export default function TabLayout() {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const systemColorScheme = useColorScheme();
@@ -101,7 +101,8 @@ export default function TabLayout() {
   const getTitle = TAB_TITLES[TAB_KEYS[activeIndex]] ?? "Home";
 
   const isHome = activeIndex === 0;
-  const showBackground = isHome || activeIndex === 1;
+  const isPeruUser = user?.country === "PE";
+  const showBackground = (isHome || activeIndex === 1) && !isPeruUser;
 
   return (
     <View style={styles.root}>
@@ -122,6 +123,7 @@ export default function TabLayout() {
           leftIcon={
             isHome ? "qr" : activeIndex === 2 ? "arrow-left" : undefined
           }
+          leftLabel={isHome && isPeruUser ? "Pagar" : undefined}
           rightIcon={isHome ? "clock" : undefined}
           onLeftPress={activeIndex === 2 ? () => router.back() : undefined}
           onRightPress={isHome ? () => router.push("/(full)/movement-history") : undefined}

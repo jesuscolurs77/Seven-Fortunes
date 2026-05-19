@@ -13,6 +13,7 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 export interface PressableScaleProps extends PressableProps {
   scale?: number;
   activeScale?: number;
+  activeOpacity?: number;
   children: React.ReactNode;
 }
 
@@ -20,6 +21,7 @@ export function PressableScale({
   style,
   scale = 0.95,
   activeScale = scale,
+  activeOpacity = 1,
   children,
   ...props
 }: PressableScaleProps) {
@@ -32,8 +34,9 @@ export function PressableScale({
           scale: withSpring(pressed.value ? activeScale : 1, spring.snappy),
         },
       ],
+      opacity: withSpring(pressed.value ? activeOpacity : 1, spring.snappy),
     };
-  }, [pressed, activeScale]);
+  }, [pressed, activeScale, activeOpacity]);
 
   return (
     <AnimatedPressable

@@ -18,6 +18,8 @@ export interface GlassNavbarProps {
   rightContent?: React.ReactNode;
   leftIcon?: string;
   rightIcon?: string;
+  leftLabel?: string;
+  rightLabel?: string;
   onLeftPress?: () => void;
   onRightPress?: () => void;
   transparent?: boolean;
@@ -31,6 +33,8 @@ export function GlassNavbar({
   rightContent,
   leftIcon,
   rightIcon,
+  leftLabel,
+  rightLabel,
   onLeftPress,
   onRightPress,
   transparent = false,
@@ -51,6 +55,7 @@ export function GlassNavbar({
       return (
         <GlassButton
           iconName={leftIcon}
+          label={leftLabel}
           onPress={onLeftPress}
         />
       );
@@ -66,6 +71,7 @@ export function GlassNavbar({
       return (
         <GlassButton
           iconName={rightIcon}
+          label={rightLabel}
           onPress={onRightPress}
         />
       );
@@ -119,7 +125,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   sideSection: {
-    width: 42,
+    minWidth: 42,
     alignItems: 'flex-start',
     justifyContent: 'center',
   },

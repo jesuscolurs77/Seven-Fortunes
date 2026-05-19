@@ -45,7 +45,7 @@ export const typography: Record<TextVariant, TypographyStyle> = {
     fontWeight: fontWeight.subtitle,
   },
   subtitleLarge: {
-    fontFamily: fontFamily.displayMedium,
+    fontFamily: fontFamily.display,
     fontSize: fontSize.subtitleLarge,
     lineHeight: lineHeight.subtitleLarge,
     letterSpacing: letterSpacing.subtitleLarge,
