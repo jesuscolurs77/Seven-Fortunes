@@ -8,3 +8,7 @@ export {
 } from './Card';
 export { GlassCard, type GlassCardProps } from './GlassCard';
 export { Summary, type SummaryProps, type SummaryItem } from './Summary';
+export {
+  SavingsAlertCard,
+  type SavingsAlertCardProps,
+} from './SavingsAlertCard';

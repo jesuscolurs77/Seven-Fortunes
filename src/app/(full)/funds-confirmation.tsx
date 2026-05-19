@@ -21,7 +21,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import { Button, Summary, Text } from "@/components";
+import { Button, SavingsAlertCard, Summary, Text } from "@/components";
 import { Icon } from "@/icons";
 import { fontFamily, palette, semantic } from "@/theme";
 import { captureAndShare } from "@/utils";
@@ -63,6 +63,7 @@ export default function FundsConfirmationScreen() {
   const handleDone = () => setDone(true);
 
   const isTransfer = params.type === "transfer";
+  const isQrPayment = params.type === "qr-payment";
 
   return (
     <>
@@ -73,7 +74,13 @@ export default function FundsConfirmationScreen() {
           headerBackVisible: false,
         }}
       />
-      {isTransfer ? (
+      {isQrPayment ? (
+        <QrPaymentComplete
+          onDone={handleDone}
+          merchant={params.name ?? "Tienda Plaza Vea Norte"}
+          amount={parseFloat(params.amount ?? "0") || 0}
+        />
+      ) : isTransfer ? (
         <TransferComplete
           onDone={handleDone}
           name={params.name ?? "Recipient"}
@@ -368,6 +375,140 @@ function TransferComplete({
   );
 }
 
+function QrPaymentComplete({
+  onDone,
+  merchant,
+  amount,
+}: {
+  onDone: () => void;
+  merchant: string;
+  amount: number;
+}) {
+  const receiptRef = useRef<View>(null);
+  const { height: screenHeight } = useWindowDimensions();
+
+  const { savings, originalAmount } = useMemo(() => {
+    const s = amount * 0.0807;
+    return { savings: s, originalAmount: amount + s };
+  }, [amount]);
+
+  const logoScale = useSharedValue(0.6);
+  const logoOpacity = useSharedValue(0);
+  const logoTranslateY = useSharedValue(
+    screenHeight / 2 - TOP_PADDING - LOGO_SIZE / 2 - 80,
+  );
+
+  useEffect(() => {
+    logoOpacity.value = withTiming(1, {
+      duration: 400,
+      easing: Easing.out(Easing.cubic),
+    });
+    logoScale.value = withTiming(1, {
+      duration: 400,
+      easing: Easing.out(Easing.cubic),
+    });
+    logoTranslateY.value = withDelay(
+      500,
+      withTiming(0, { duration: 600, easing: Easing.inOut(Easing.cubic) }),
+    );
+  }, []);
+
+  const logoAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: logoOpacity.value,
+    transform: [
+      { scale: logoScale.value },
+      { translateY: logoTranslateY.value },
+    ],
+  }));
+
+  const formatPen = (n: number) =>
+    `S/ ${n.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
+
+  return (
+    <View style={styles.container}>
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <View
+          style={styles.qrTopWrapper}
+          ref={receiptRef}
+          collapsable={false}
+        >
+          <View style={styles.qrHeader}>
+            <Animated.View style={[styles.circle, logoAnimatedStyle]}>
+              <Icon name="check" width={42} height={42} color={palette.white} />
+            </Animated.View>
+            <Animated.View
+              entering={FadeInUp.delay(1200)
+                .duration(500)
+                .springify()
+                .damping(25)
+                .stiffness(300)}
+              style={styles.transferTextBlock}
+            >
+              <RNText style={styles.transferTitle}>Pago Exitoso</RNText>
+              <RNText style={styles.transferSubtitle}>
+                Tu pago fue procesado correctamente
+              </RNText>
+            </Animated.View>
+          </View>
+
+          <Animated.View entering={FadeIn.delay(1500).duration(500)}>
+            <SavingsAlertCard
+              amount={formatPen(amount)}
+              originalAmount={formatPen(originalAmount)}
+              savings={formatPen(savings)}
+            />
+          </Animated.View>
+
+          <Animated.View entering={FadeIn.delay(1800).duration(500)}>
+            <Summary
+              items={[
+                { label: "Total pagado", value: formatPen(amount) },
+                {
+                  label: "fIPE enviados",
+                  value: `${amount.toFixed(0)} fIPE`,
+                },
+                { label: "Balance final", value: "1,008 fIPE" },
+                { label: "Tienda", value: merchant },
+                { label: "Fecha", value: "Ene 2, 2026 - 2:34 PM" },
+                { label: "Referencia", value: "POS-20260412-088" },
+              ]}
+            />
+          </Animated.View>
+        </View>
+      </ScrollView>
+
+      <Animated.View
+        entering={FadeInUp.delay(2200)
+          .duration(500)
+          .springify()
+          .damping(25)
+          .stiffness(300)}
+        style={styles.bottomSection}
+      >
+        <Button
+          variant="secondary"
+          size="lg"
+          onPress={() =>
+            captureAndShare(receiptRef, { title: "Compartir comprobante" })
+          }
+        >
+          Compartir comprobante
+        </Button>
+        <Button variant="primary" size="lg" onPress={onDone}>
+          Listo
+        </Button>
+      </Animated.View>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -395,6 +536,22 @@ const styles = StyleSheet.create({
     paddingTop: 32,
     paddingHorizontal: 16,
     paddingBottom: 16,
+  },
+  qrTopWrapper: {
+    gap: 24,
+    alignSelf: "stretch",
+    backgroundColor: semantic.background.primary,
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+  },
+  qrHeader: {
+    flexDirection: "column",
+    gap: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 24,
+    alignSelf: "stretch",
   },
   topSection: {
     justifyContent: "center",

@@ -216,4 +216,15 @@ export const ICON_REGISTRY: Record<string, IconData> = {
     defaultWidth: 13,
     defaultHeight: 13,
   },
+  'sale': {
+    svg: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M3.5 12.5L11.5 20.5C12.05 21.05 12.95 21.05 13.5 20.5L20.5 13.5C21.05 12.95 21.05 12.05 20.5 11.5L11.5 2.5H4.5C3.95 2.5 3.5 2.95 3.5 3.5V12.5Z" stroke="{{color}}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="7.5" cy="6.5" r="1.1" fill="{{color}}"/>
+  <path d="M14.5 9.5L9.5 14.5" stroke="{{color}}" stroke-width="1.4" stroke-linecap="round"/>
+  <circle cx="10" cy="10" r="0.9" fill="{{color}}"/>
+  <circle cx="14" cy="14" r="0.9" fill="{{color}}"/>
+</svg>`,
+    defaultWidth: 16,
+    defaultHeight: 16,
+  },
 };

@@ -125,7 +125,13 @@ export default function TabLayout() {
           }
           leftLabel={isHome && isPeruUser ? "Pagar" : undefined}
           rightIcon={isHome ? "clock" : undefined}
-          onLeftPress={activeIndex === 2 ? () => router.back() : undefined}
+          onLeftPress={
+            activeIndex === 2
+              ? () => router.back()
+              : isHome && isPeruUser
+                ? () => router.push("/(full)/select-payment-method")
+                : undefined
+          }
           onRightPress={isHome ? () => router.push("/(full)/movement-history") : undefined}
           transparent={true}
         />

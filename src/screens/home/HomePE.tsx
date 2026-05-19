@@ -253,9 +253,10 @@ export default function HomePE() {
               <IconButton
                 variant="secondary"
                 icon={<Icon name="send" color={palette.white} />}
+                onPress={() => router.push("/(full)/select-payment-method")}
               />
               <Text variant="bodyLarge" color="primary">
-                Compra
+                Pagar
               </Text>
             </View>
           </View>
