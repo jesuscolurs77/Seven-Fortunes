@@ -266,8 +266,8 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
   },
   avatar: {
-    width: 36,
-    height: 36,
+    width: 28,
+    height: 28,
     borderRadius: 26,
     borderWidth: 1,
     borderColor: palette.blue[100],
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
   avatarText: {
     color: palette.blue[700],
     fontFamily: fontFamily.display,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: fontWeight.body,
     includeFontPadding: false,
   },
