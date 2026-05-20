@@ -192,6 +192,7 @@ export default function HomeUS() {
           <IconButton
             variant="secondary"
             icon={<Icon name="exchange" color={palette.white} />}
+            onPress={() => router.push("/(full)/work-in-progress")}
           />
           <Text variant="bodyLarge" color="primary">
             Convert
@@ -201,6 +202,7 @@ export default function HomeUS() {
           <IconButton
             variant="secondary"
             icon={<Icon name="receive" color={palette.white} />}
+            onPress={() => router.push("/(full)/work-in-progress")}
           />
           <Text variant="bodyLarge" color="primary">
             Receive

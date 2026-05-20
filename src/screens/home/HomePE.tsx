@@ -335,6 +335,7 @@ export default function HomePE() {
               <IconButton
                 variant="secondary"
                 icon={<Icon name="receive" color={palette.white} />}
+                onPress={() => router.push("/(full)/work-in-progress")}
               />
               <Text variant="bodyLarge" color="primary">
                 Recibe
@@ -344,6 +345,7 @@ export default function HomePE() {
               <IconButton
                 variant="secondary"
                 icon={<Icon name="retira" color={palette.white} />}
+                onPress={() => router.push("/(full)/work-in-progress")}
               />
               <Text variant="bodyLarge" color="primary">
                 Retira

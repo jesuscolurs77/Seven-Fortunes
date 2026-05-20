@@ -130,7 +130,9 @@ export default function TabLayout() {
               ? () => router.back()
               : isHome && isPeruUser
                 ? () => router.push("/(full)/select-payment-method")
-                : undefined
+                : isHome
+                  ? () => router.push("/(full)/work-in-progress")
+                  : undefined
           }
           onRightPress={isHome ? () => router.push("/(full)/movement-history") : undefined}
           transparent={true}
