@@ -78,6 +78,7 @@ export default function HomeUS() {
   const [balanceLoading, setBalanceLoading] = useState(true);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [hasMore] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -85,6 +86,16 @@ export default function HomeUS() {
       setTransactions(MOCK_TRANSACTIONS);
     }, 2000);
     return () => clearTimeout(timer);
+  }, []);
+
+  const handleRefresh = useCallback(() => {
+    setRefreshing(true);
+    setBalanceLoading(true);
+    setTimeout(() => {
+      setTransactions(MOCK_TRANSACTIONS);
+      setBalanceLoading(false);
+      setRefreshing(false);
+    }, 1000);
   }, []);
 
   const router = useRouter();
@@ -135,8 +146,8 @@ export default function HomeUS() {
     [router],
   );
 
-  return (
-    <View style={styles.parent}>
+  const ListHeader = (
+    <View>
       <View style={styles.container}>
         <View style={styles.con1}>
           <View style={styles.usdcBadge}>
@@ -207,32 +218,39 @@ export default function HomeUS() {
         </View>
       </View>
 
-      <View style={styles.activitySection}>
+      <View style={styles.activityTitle}>
         <Text variant="subtitleLarge" color="primary">
           Activity
         </Text>
-        <InfiniteScrollList
-          data={transactions}
-          renderItem={renderTransaction}
-          loading={balanceLoading}
-          hasMore={hasMore}
-          showDividers
-          loadingSkeletonCount={4}
-        />
       </View>
     </View>
+  );
+
+  return (
+    <InfiniteScrollList
+      data={transactions}
+      renderItem={renderTransaction}
+      loading={balanceLoading}
+      refreshing={refreshing}
+      onRefresh={handleRefresh}
+      hasMore={hasMore}
+      showDividers
+      loadingSkeletonCount={4}
+      style={styles.parent}
+      contentContainerStyle={styles.scrollContent}
+      ListHeaderComponent={ListHeader}
+    />
   );
 }
 
 const styles = StyleSheet.create({
   parent: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    gap: spacing[2],
-    width: "100%",
     flex: 1,
+    width: "100%",
+  },
+  scrollContent: {
     paddingHorizontal: MAIN_PADDING_H,
+    paddingBottom: spacing[6],
   },
   container: {
     display: "flex",
@@ -298,14 +316,9 @@ const styles = StyleSheet.create({
     gap: spacing[2],
     flexDirection: "row",
   },
-  activitySection: {
-    display: "flex",
-    width: "100%",
-    flex: 1,
-    paddingVertical: spacing[3],
-    flexDirection: "column",
-    alignItems: "flex-start",
-    gap: spacing[3],
+  activityTitle: {
+    paddingTop: spacing[3],
+    paddingBottom: spacing[2],
   },
   transactionRow: {
     display: "flex",
