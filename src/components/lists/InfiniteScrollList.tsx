@@ -4,6 +4,7 @@ import {
   FlatList,
   Text as RNText,
   RefreshControl,
+  ScrollView,
   StyleSheet,
   View,
   type FlatListProps,
@@ -92,6 +93,7 @@ export function InfiniteScrollList<T>({
   emptyIcon,
   style,
   contentContainerStyle,
+  ListHeaderComponent,
   ...props
 }: InfiniteScrollListProps<T>) {
   const defaultKeyExtractor = useCallback((item: T, index: number): string => {
@@ -145,10 +147,33 @@ export function InfiniteScrollList<T>({
 
   const showSkeleton = loading && data.length === 0;
 
+  const renderHeader = useCallback(() => {
+    if (!ListHeaderComponent) return null;
+    if (React.isValidElement(ListHeaderComponent)) return ListHeaderComponent;
+    const HeaderComp = ListHeaderComponent as React.ComponentType;
+    return <HeaderComp />;
+  }, [ListHeaderComponent]);
+
   if (showSkeleton) {
     const SkeletonItem = renderSkeletonItem || DefaultSkeletonItem;
     return (
-      <View style={[styles.skeletonContainer, style]}>
+      <ScrollView
+        style={[styles.skeletonContainer, style]}
+        contentContainerStyle={contentContainerStyle}
+        refreshControl={
+          onRefresh ? (
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={palette.white}
+              colors={[palette.blue[500]]}
+              progressBackgroundColor={palette.gray[900]}
+            />
+          ) : undefined
+        }
+        showsVerticalScrollIndicator={false}
+      >
+        {renderHeader()}
         {Array.from({ length: loadingSkeletonCount }).map((_, index) => (
           <View key={index}>
             <SkeletonItem />
@@ -157,7 +182,7 @@ export function InfiniteScrollList<T>({
             )}
           </View>
         ))}
-      </View>
+      </ScrollView>
     );
   }
 
@@ -168,6 +193,7 @@ export function InfiniteScrollList<T>({
       keyExtractor={keyExtractor || defaultKeyExtractor}
       onEndReached={handleEndReached}
       onEndReachedThreshold={0.5}
+      ListHeaderComponent={ListHeaderComponent}
       ListFooterComponent={renderFooter}
       ListEmptyComponent={renderEmpty}
       refreshControl={

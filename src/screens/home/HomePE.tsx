@@ -107,12 +107,88 @@ const MOCK_TRANSACTIONS: Transaction[] = [
   },
 ];
 
+const MORE_MOCK_PAGES: Transaction[][] = [
+  [
+    {
+      id: "5",
+      title: "Popeyes",
+      description: "Compra con tarjeta",
+      amount: 34.9,
+      date: "Dic 28, 2025",
+      type: "send",
+    },
+    {
+      id: "6",
+      title: "Transferencia",
+      description: "De: Luis Ramos",
+      amount: 220,
+      date: "Dic 27, 2025",
+      type: "receive",
+    },
+    {
+      id: "7",
+      title: "Cruz Verde",
+      description: "Compra con tarjeta",
+      amount: 18.7,
+      date: "Dic 26, 2025",
+      type: "send",
+    },
+    {
+      id: "8",
+      title: "Recarga Yape",
+      description: "Tarjeta *2983",
+      amount: 80,
+      date: "Dic 25, 2025",
+      type: "add",
+    },
+  ],
+  [
+    {
+      id: "9",
+      title: "China Wok",
+      description: "Compra con tarjeta",
+      amount: 45.5,
+      date: "Dic 22, 2025",
+      type: "send",
+    },
+    {
+      id: "10",
+      title: "Vivanda",
+      description: "Compra con tarjeta",
+      amount: 156.3,
+      date: "Dic 20, 2025",
+      type: "send",
+    },
+    {
+      id: "11",
+      title: "Cambio USD → PEN",
+      description: "100 USD",
+      amount: 380,
+      date: "Dic 18, 2025",
+      type: "exchange",
+    },
+    {
+      id: "12",
+      title: "Transferencia",
+      description: "De: Ana Torres",
+      amount: 150,
+      date: "Dic 15, 2025",
+      type: "receive",
+    },
+  ],
+];
+
+const TOTAL_PAGES = MORE_MOCK_PAGES.length;
+
 export default function HomePE() {
   const router = useRouter();
   const [showBalance, setShowBalance] = useState(true);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
-  const [hasMore] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -121,6 +197,30 @@ export default function HomePE() {
     }, 1500);
     return () => clearTimeout(timer);
   }, []);
+
+  const handleRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setTransactions(MOCK_TRANSACTIONS);
+      setPage(0);
+      setHasMore(true);
+      setRefreshing(false);
+    }, 1000);
+  }, []);
+
+  const handleLoadMore = useCallback(() => {
+    if (loadingMore || !hasMore) return;
+    setLoadingMore(true);
+    setTimeout(() => {
+      const nextPage = page;
+      const newItems = MORE_MOCK_PAGES[nextPage] ?? [];
+      setTransactions((prev) => [...prev, ...newItems]);
+      const nextIndex = nextPage + 1;
+      setPage(nextIndex);
+      setHasMore(nextIndex < TOTAL_PAGES);
+      setLoadingMore(false);
+    }, 800);
+  }, [loadingMore, hasMore, page]);
 
   const renderTransaction = useCallback(
     ({ item }: { item: Transaction }) => (
@@ -171,8 +271,8 @@ export default function HomePE() {
     [router],
   );
 
-  return (
-    <View style={styles.parent}>
+  const ListHeader = (
+    <View>
       <View style={styles.cardWrapper}>
         <ImageBackground
           source={CARD_BG_IMAGE}
@@ -281,20 +381,30 @@ export default function HomePE() {
         <HorizontalScroll items={COMMERCES} style={styles.commercesScroll} />
       </View>
 
-      <View style={styles.activitySection}>
+      <View style={styles.activityHeader}>
         <Text variant="subtitleLarge" color="primary">
           Actividad
         </Text>
-        <InfiniteScrollList
-          data={transactions}
-          renderItem={renderTransaction}
-          loading={loading}
-          hasMore={hasMore}
-          showDividers
-          loadingSkeletonCount={4}
-        />
       </View>
     </View>
+  );
+
+  return (
+    <InfiniteScrollList
+      data={transactions}
+      renderItem={renderTransaction}
+      loading={loading}
+      refreshing={refreshing}
+      onRefresh={handleRefresh}
+      onLoadMore={handleLoadMore}
+      hasMore={hasMore}
+      loadingMore={loadingMore}
+      showDividers
+      loadingSkeletonCount={4}
+      style={styles.parent}
+      contentContainerStyle={styles.scrollContent}
+      ListHeaderComponent={ListHeader}
+    />
   );
 }
 
@@ -302,11 +412,12 @@ const styles = StyleSheet.create({
   parent: {
     flex: 1,
     width: "100%",
+  },
+  scrollContent: {
     paddingHorizontal: MAIN_PADDING_H,
-    gap: spacing[2],
+    paddingBottom: spacing[6],
   },
   cardWrapper: {
-    paddingHorizontal: 0,
     paddingTop: spacing[3],
   },
   card: {
@@ -402,7 +513,7 @@ const styles = StyleSheet.create({
     gap: spacing[2],
   },
   commercesSection: {
-    paddingTop: spacing[3],
+    paddingTop: spacing[5],
     gap: spacing[3],
   },
   commercesHeader: {
@@ -424,11 +535,9 @@ const styles = StyleSheet.create({
   commercesScroll: {
     marginHorizontal: -MAIN_PADDING_H,
   },
-  activitySection: {
-    flex: 1,
-    paddingVertical: spacing[3],
-    gap: spacing[3],
-    alignItems: "flex-start",
+  activityHeader: {
+    paddingTop: spacing[5],
+    paddingBottom: spacing[2],
   },
   transactionRow: {
     flexDirection: "row",
