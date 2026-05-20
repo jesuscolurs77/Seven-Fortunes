@@ -36,7 +36,6 @@ export function InputAmount({
   errorMessage,
   ...props
 }: InputAmountProps) {
-  const [isFocused, setIsFocused] = useState(false);
   const [displayText, setDisplayText] = useState("");
 
   const handleChangeText = useCallback(
@@ -51,7 +50,7 @@ export function InputAmount({
   return (
     <View style={styles.container}>
       <RNText style={styles.label}>{label}</RNText>
-      <View style={[styles.inputRow, isFocused && styles.inputRowFocused]}>
+      <View style={styles.inputRow}>
         <RNText style={styles.prefix}>{prefix}</RNText>
         <TextInput
           style={styles.input}
@@ -61,8 +60,6 @@ export function InputAmount({
           placeholderTextColor="rgba(255,255,255,0.30)"
           keyboardType="decimal-pad"
           keyboardAppearance="dark"
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
           {...props}
         />
       </View>
@@ -96,12 +93,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 4,
     alignSelf: "stretch",
-    borderBottomWidth: 1,
-    borderBottomColor: palette.gray[800],
     paddingBottom: 8,
-  },
-  inputRowFocused: {
-    borderBottomColor: palette.blue[500],
   },
   prefix: {
     color: palette.white,
