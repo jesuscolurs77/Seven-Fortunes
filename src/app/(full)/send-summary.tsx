@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 
-import { Button } from "@/components";
+import { Button, Summary } from "@/components";
 import { Select, type SelectOption } from "@/components/selects";
 import { Icon } from "@/icons";
 import { fontFamily, fontWeight, palette, spacing } from "@/theme";
@@ -70,15 +70,6 @@ function SectionHeader({ icon, label }: { icon: string; label: string }) {
         <Icon name={icon} width={20} height={20} color={palette.white} />
       </View>
       <RNText style={styles.headerLabel}>{label}</RNText>
-    </View>
-  );
-}
-
-function SummaryRow({ label, value }: { label: string; value: string }) {
-  return (
-    <View style={styles.summaryRow}>
-      <RNText style={styles.summaryLabel}>{label}</RNText>
-      <RNText style={styles.summaryValue}>{value}</RNText>
     </View>
   );
 }
@@ -153,37 +144,37 @@ export default function SendSummaryScreen() {
           />
         </View>
 
-        <View style={styles.detailsSection}>
-          <RNText style={styles.detailsLabel}>Transaction Details</RNText>
-          <View style={styles.detailsGroup}>
-            <SummaryRow label="Sending" value={`$${numericAmount} USD`} />
-            <SummaryRow label="Fee" value={`$${fee.toFixed(0)} USD`} />
-            <SummaryRow
-              label="Total Charged"
-              value={`$${total.toFixed(0)} USD`}
-            />
-          </View>
-          <View style={styles.detailsGroup}>
-            <SummaryRow
-              label="Exchange Rate"
-              value={`1 USD = ${EXCHANGE_RATE} ${TARGET_CURRENCY}`}
-            />
-            <SummaryRow
-              label={`${contactName.split(" ")[0] || "Recipient"} Gets`}
-              value={`${targetAmount.toLocaleString("en-US", {
+        <Summary
+          items={[
+            { label: "Sending", value: `$${numericAmount} USD` },
+            { label: "Fee", value: `$${fee.toFixed(0)} USD` },
+            { label: "Total Charged", value: `$${total.toFixed(0)} USD` },
+          ]}
+        />
+
+        <Summary
+          title=""
+          items={[
+            {
+              label: "Exchange Rate",
+              value: `1 USD = ${EXCHANGE_RATE} ${TARGET_CURRENCY}`,
+            },
+            {
+              label: `${contactName.split(" ")[0] || "Recipient"} Gets`,
+              value: `${targetAmount.toLocaleString("en-US", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
-              })} ${TARGET_CURRENCY}`}
-            />
-            <SummaryRow
-              label="Equivalent"
-              value={`= S/ ${equivalentPen.toLocaleString("en-US", {
+              })} ${TARGET_CURRENCY}`,
+            },
+            {
+              label: "Equivalent",
+              value: `= S/ ${equivalentPen.toLocaleString("en-US", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
-              })}`}
-            />
-          </View>
-        </View>
+              })}`,
+            },
+          ]}
+        />
       </ScrollView>
 
       <View style={styles.bottomSection}>
@@ -307,49 +298,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  changeButtonPressed: {
-    backgroundColor: "rgba(255, 255, 255, 0.18)",
-  },
   changeText: {
     color: palette.white,
     fontFamily: fontFamily.display,
     fontSize: 14,
     fontWeight: fontWeight.body,
-    includeFontPadding: false,
-  },
-  detailsSection: {
-    gap: spacing[3],
-    alignSelf: "stretch",
-  },
-  detailsLabel: {
-    color: palette.gray[200],
-    fontFamily: fontFamily.display,
-    fontSize: 16,
-    fontWeight: fontWeight.body,
-    includeFontPadding: false,
-  },
-  detailsGroup: {
-    alignSelf: "stretch",
-  },
-  summaryRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: spacing[2],
-    alignSelf: "stretch",
-  },
-  summaryLabel: {
-    color: palette.white,
-    fontFamily: fontFamily.display,
-    fontSize: 16,
-    fontWeight: fontWeight.body,
-    includeFontPadding: false,
-  },
-  summaryValue: {
-    color: palette.white,
-    fontFamily: fontFamily.displayMedium,
-    fontSize: 16,
-    fontWeight: fontWeight.bodyLarge,
     includeFontPadding: false,
   },
   bottomSection: {
